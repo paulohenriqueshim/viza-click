@@ -1,10 +1,108 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>viza.click</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paulo Shim | Viza.click Premium</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="card-premium.css">
 </head>
 <body>
-  <h1>viza.click no ar 🚀</h1>
+
+<main class="card-container">
+
+  <!-- CAPA -->
+  <div class="cover">
+    <img src="fundo-viza.click.jpeg" alt="Capa Viza.click">
+  </div>
+
+  <!-- PERFIL -->
+  <div class="profile">
+    <img class="avatar" src="logo-vizaclick.jpeg" alt="Paulo Shim">
+    <h1>Viza.Click</h1>
+    <h2>Paulo Shim</h2>
+    <span class="role">Desenvolvedor</span>
+  </div>
+
+  <!-- ABAS (RADIO) -->
+  <input type="radio" name="tab" id="tab-apresentacao" checked>
+  <input type="radio" name="tab" id="tab-contato">
+
+  <!-- MENU DAS ABAS -->
+  <div class="tabs">
+    <label for="tab-apresentacao" class="tab">Apresentação</label>
+    <label for="tab-contato" class="tab">Contate-me</label>
+  </div>
+
+  <!-- CONTEÚDO -->
+  <div class="tab-content">
+
+    <!-- APRESENTAÇÃO -->
+    <section class="content apresentacao">
+      <h3>Quem sou eu</h3>
+      <p>
+        Sou desenvolvedor especializado em criar páginas modernas e orientadas à conversão para profissionais autônomos e pequenos negócios.
+      </p>
+
+      <h3>Formação</h3>
+      <p>
+        Análise e Desenvolvimento de Sistemas, com foco em soluções digitais personalizadas.
+      </p>
+
+      <h3>O que entrego</h3>
+      <p>
+        Cartões de visita digitais que fortalecem sua presença online e facilitam o contato com clientes.
+      </p>
+
+      <h3>Serviços</h3>
+      <ul>
+        <strong>
+            <li>Viza Standard</li>
+        </strong>
+        <p>Bio + Links</p>
+        <br>
+        <strong>
+            <li>Viza Pro</li>
+        </strong>
+        <p>Mini portifólio + Links</p>
+      </ul>
+    </section>
+
+    <!-- CONTATO -->
+    <section class="content contato">
+      <div class="actions">
+
+        <a href="https://wa.me/5511995945650"
+           class="btn outline whatsapp" target="_blank">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="">
+          WhatsApp
+        </a>
+
+        <a href="https://instagram.com/paulo_shim"
+           class="btn outline instagram" target="_blank">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="">
+          Instagram
+        </a>
+
+        <a href="https://maps.app.goo.gl/PWfUDiDXwHKkDHM79"
+           class="btn outline location" target="_blank">
+          📍 Localização
+        </a>
+
+        <a href="paulo-shim.vcf" class="btn solid">
+          💾 Salvar contato
+        </a>
+
+      </div>
+    </section>
+
+  </div>
+
+</main>
+
 </body>
 </html>
