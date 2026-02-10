@@ -135,6 +135,12 @@ input[type="radio"] {
   padding: 12px;
   border-radius: 12px;
   font-size: 0.9rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
   text-align: center;
 }
 
