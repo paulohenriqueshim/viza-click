@@ -16,7 +16,7 @@ body {
   margin: 0 auto;
   background: #0f172a;
   overflow: hidden;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
 }
 
 /* CAPA */
@@ -39,8 +39,8 @@ body {
   border-radius: 50%;
   background: #0f172a;
   padding: 6px;
-  object-fit: cover; 
-  box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+  object-fit: cover;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
 }
 
 .profile h1 {
@@ -76,13 +76,13 @@ input[type="radio"] {
   position: relative;
 }
 
-#tab-apresentacao:checked ~ .tabs label[for="tab-apresentacao"],
-#tab-contato:checked ~ .tabs label[for="tab-contato"] {
+#tab-apresentacao:checked~.tabs label[for="tab-apresentacao"],
+#tab-contato:checked~.tabs label[for="tab-contato"] {
   color: #38bdf8;
 }
 
-#tab-apresentacao:checked ~ .tabs label[for="tab-apresentacao"]::after,
-#tab-contato:checked ~ .tabs label[for="tab-contato"]::after {
+#tab-apresentacao:checked~.tabs label[for="tab-apresentacao"]::after,
+#tab-contato:checked~.tabs label[for="tab-contato"]::after {
   content: '';
   position: absolute;
   left: 0;
@@ -99,14 +99,13 @@ input[type="radio"] {
 
 .content {
   display: none;
-  animation: fade 0.3s ease;
 }
 
-#tab-apresentacao:checked ~ .tab-content .apresentacao {
+#tab-apresentacao:checked~.tab-content .apresentacao {
   display: block;
 }
 
-#tab-contato:checked ~ .tab-content .contato {
+#tab-contato:checked~.tab-content .contato {
   display: block;
 }
 
@@ -135,12 +134,9 @@ input[type="radio"] {
   padding: 12px;
   border-radius: 12px;
   font-size: 0.9rem;
-
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-
   text-align: center;
 }
 
@@ -200,7 +196,7 @@ input[type="radio"] {
 .solid {
   background: linear-gradient(135deg, #22c55e, #16a34a);
   color: #020617;
-  box-shadow: 0 14px 30px rgba(34,197,94,0.35);
+  box-shadow: 0 14px 30px rgba(34, 197, 94, 0.35);
 }
 
 .solid:hover {
@@ -216,14 +212,14 @@ input[type="radio"] {
   background: #020617;
 }
 
-/* ANIMAÇÃO */
-@keyframes fade {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ANIMAÇÃO AO SCROLL */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
 }

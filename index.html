@@ -1,112 +1,132 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Viza.Click | Cartão Digital Profissional</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="card-premium.css">
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+  <main class="card-container">
 
-<main class="card-container">
+    <!-- CAPA -->
+    <div class="cover">
+      <img src="capa-vizaclick.png" alt="Capa Viza.Click">
+    </div>
 
-  <!-- CAPA -->
-  <div class="cover">
-    <img src="capa-vizaclick.png" alt="Capa Viza.Click">
-  </div>
+    <!-- PERFIL -->
+    <div class="profile">
+      <img class="avatar" src="logo-vizaclick.jpeg" alt="Viza.Click">
+      <h1>Viza.Click</h1>
+      <p class="subtitle">Cartão de visita digital profissional</p>
+    </div>
 
-  <!-- PERFIL -->
-  <div class="profile">
-    <img class="avatar" src="logo-vizaclick.jpeg" alt="Viza.Click">
-    <h1>Viza.Click</h1>
-    <p class="subtitle">Cartão de visita digital profissional</p>
-  </div>
+    <!-- ABAS -->
+    <input type="radio" name="tab" id="tab-apresentacao" checked>
+    <input type="radio" name="tab" id="tab-contato">
 
-  <!-- ABAS -->
-  <input type="radio" name="tab" id="tab-apresentacao" checked>
-  <input type="radio" name="tab" id="tab-contato">
+    <div class="tabs">
+      <label for="tab-apresentacao" class="tab">Sobre</label>
+      <label for="tab-contato" class="tab">Contato</label>
+    </div>
 
-  <div class="tabs">
-    <label for="tab-apresentacao" class="tab">Sobre</label>
-    <label for="tab-contato" class="tab">Contato</label>
-  </div>
+    <div class="tab-content">
 
-  <div class="tab-content">
-
-    <!-- SOBRE -->
-    <section class="content apresentacao">
-
-      <div class="highlight">
-        <h3>Seu contato em um único link</h3>
-        <p>
-          Apresente-se com profissionalismo, facilite o contato e aumente suas chances de conversão com um cartão digital moderno.
-        </p>
-        
-      </div>
-
-      <div class="features">
-        <div class="feature-card">✔ Contato imediato</div>
-        <div class="feature-card">✔ Aparência profissional</div>
-        <div class="feature-card">✔ Link único para divulgar</div>
-        <div class="feature-card">✔ Apresentação estratégica</div>
-      </div>
-
-      <div class="plans">
-        <div class="plan">
-          <h4>Viza Start</h4>
+      <!-- SOBRE -->
+      <section class="content apresentacao">
+        <div class="highlight reveal">
+          <h3>Seu contato em um único link</h3>
           <p>
-            Bio profissional + botões inteligentes para quem quer começar com presença digital de verdade.
+            Apresente-se com profissionalismo, facilite o contato e aumente suas chances de conversão com um cartão
+            digital moderno.
           </p>
         </div>
 
-        <div class="plan highlight-plan">
-          <h4>Viza Prime</h4>
-          <p>
-            Apresentação estratégica focada em conversão, com hierarquia visual e destaque para contato.
-          </p>
+        <div class="features reveal">
+          <div class="feature-card">✔ Contato imediato</div>
+          <div class="feature-card">✔ Aparência profissional</div>
+          <div class="feature-card">✔ Link único para divulgar</div>
+          <div class="feature-card">✔ Apresentação estratégica</div>
         </div>
 
-        <div class="plan">
-          <h4>Viza Authority</h4>
-          <p>
-            Mini portfólio integrado para posicionar você como referência e gerar máxima confiança.
-          </p>
+        <div class="plans reveal">
+          <div class="plan">
+            <h4>Viza Start</h4>
+            <p>Bio profissional + botões inteligentes para quem quer começar com presença digital de verdade.</p>
+          </div>
+
+          <div class="plan highlight-plan">
+            <h4>Viza Prime</h4>
+            <p>Apresentação estratégica focada em conversão, com hierarquia visual e destaque para contato.</p>
+          </div>
+
+          <div class="plan">
+            <h4>Viza Authority</h4>
+            <p>Mini portfólio integrado para posicionar você como referência e gerar máxima confiança.</p>
+          </div>
         </div>
-      </div>
+      </section>
 
-    </section>
+      <!-- CONTATO -->
+      <section class="content contato">
+        <div class="actions reveal">
+          <a href="https://wa.me/5511995945650?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20Viza.Click"
+            class="btn solid whatsapp" target="_blank">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="">
+            Falar no WhatsApp
+          </a>
 
-    <!-- CONTATO -->
-    <section class="content contato">
-      <div class="actions">
+          <a href="https://instagram.com/viza.click" class="btn outline instagram" target="_blank">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="">
+            Instagram
+          </a>
 
-        <a href="https://wa.me/5511995945650?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20Viza.Click"
-           class="btn solid whatsapp" target="_blank">
-          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="">
-          Falar no WhatsApp
-        </a>
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=paulo.henrique.shim@gmail.com&su=Contato%20pelo%20Viza.Click&body=Olá,%20vim%20pelo%20site%20Viza.Click."
+            target="_blank" class="btn outline">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg" alt="">
+            Enviar Email
+          </a>
 
-        <a href="https://instagram.com/viza.click"
-           class="btn outline instagram" target="_blank">
-          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="">
-          Instagram
-        </a>
+          <a href="https://maps.app.goo.gl/3ieUVmrtoAeJpfg36" target="_blank" class="btn outline">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/googlemaps.svg" alt="">
+            Localização
+          </a>
 
-        <a href="paulo-shim.vcf" class="btn outline">
-          💾 Salvar contato
-        </a>
 
-      </div>
-    </section>
 
-  </div>
+          <a href="paulo-shim.vcf" class="btn outline">
+            💾 Salvar contato
+          </a>
+        </div>
+      </section>
 
-</main>
+    </div>
+  </main>
+
+  <!-- SCRIPT ANIMAÇÃO -->
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, {
+      threshold: 0.15
+    });
+
+    reveals.forEach(reveal => {
+      observer.observe(reveal);
+    });
+  </script>
 
 </body>
+
 </html>
