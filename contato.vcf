@@ -1,4 +1,11 @@
 BEGIN:VCARD
 VERSION:3.0
+FN:Paulo Shim
+N:Shim;Paulo;;;
+ORG:Viza.Click
+TITLE:Founder
 TEL;TYPE=CELL:+5511995945650
+EMAIL:paulo.henrique.shim@gmail.com
+URL:https://viza.click
+X-SOCIALPROFILE;TYPE=instagram:https://instagram.com/viza.click
 END:VCARD
