@@ -20,7 +20,7 @@ window.addEventListener("load", revealOnScroll);
 function copiarPix(event) {
   event.preventDefault();
 
-  const codigoPix = "11995495650";
+  const codigoPix = "11995945650";
 
   navigator.clipboard.writeText(codigoPix).then(() => {
     alert("Código Pix copiado! Agora é só colar no seu banco.");
