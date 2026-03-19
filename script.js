@@ -26,11 +26,16 @@ function copiarPix(event) {
     alert("Código Pix copiado! Agora é só colar no seu banco.");
   });
 }
-function verificarInstagram(event) {
-  const isInstagram = navigator.userAgent.includes("Instagram");
 
-  if (isInstagram) {
-    event.preventDefault();
-    alert("Para salvar o contato, toque nos 3 pontos no Instagram e escolha 'Abrir no navegador'.");
-  }
-}
+//salvar ctt no insta
+document.querySelectorAll('.salvar-contato').forEach((btn) => {
+  btn.addEventListener('click', function (event) {
+    const ua = navigator.userAgent.toLowerCase();
+    const isInstagram = ua.includes("instagram");
+
+    if (isInstagram) {
+      event.preventDefault();
+      alert("Para salvar o contato:\n1. Toque nos 3 pontos\n2. Abrir no navegador\n3. Clique novamente 😊");
+    }
+  });
+});
