@@ -26,3 +26,11 @@ function copiarPix(event) {
     alert("Código Pix copiado! Agora é só colar no seu banco.");
   });
 }
+function verificarInstagram(event) {
+  const isInstagram = navigator.userAgent.includes("Instagram");
+
+  if (isInstagram) {
+    event.preventDefault();
+    alert("Para salvar o contato, toque nos 3 pontos no Instagram e escolha 'Abrir no navegador'.");
+  }
+}
