@@ -4,8 +4,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Viza.click</title>
-  <link rel="icon" type="image/png" href="logo-viza.png">
+  <title>Viza.click — Cartão Digital com NFC</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Cartão digital inteligente com tecnologia NFC. Compartilhe seu contato profissional de forma moderna e memorável. Planos a partir de R$ 79.">
+  <meta name="author" content="Viza.click">
+
+  <!-- Open Graph (WhatsApp, Instagram, Facebook) -->
+  <meta property="og:title" content="Viza.click — Cartão Digital com NFC">
+  <meta property="og:description" content="Aproximou o celular, seu contato abre na hora. Cartão digital profissional a partir de R$ 79.">
+  <meta property="og:image" content="https://viza.click/logo-vizaclick.jpeg">
+  <meta property="og:url" content="https://viza.click">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+
+  <!-- Twitter/X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Viza.click — Cartão Digital com NFC">
+  <meta name="twitter:description" content="Aproximou o celular, seu contato abre na hora. Cartão digital profissional a partir de R$ 79.">
+  <meta name="twitter:image" content="https://viza.click/logo-vizaclick.jpeg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="logo-vizaclick.jpeg">
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4L3FRDXM0C"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-4L3FRDXM0C');
+  </script>
+
   <link rel="stylesheet" href="style.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 </head>
@@ -70,6 +100,37 @@
         </div>
       </section>
 
+      <!-- COMO FUNCIONA -->
+      <section class="como-funciona">
+        <h2 class="section-title reveal">Como funciona</h2>
+
+        <div class="steps">
+
+          <div class="step reveal-item">
+            <div class="step-number">1</div>
+            <h3>Escolha seu plano</h3>
+            <p>Selecione o plano ideal para o seu perfil e entre em contato pelo WhatsApp.</p>
+          </div>
+
+          <div class="step-divider reveal-item">→</div>
+
+          <div class="step reveal-item">
+            <div class="step-number">2</div>
+            <h3>Envie suas informações</h3>
+            <p>Me mande seus dados: nome, profissão, contatos e o que quiser exibir no cartão.</p>
+          </div>
+
+          <div class="step-divider reveal-item">→</div>
+
+          <div class="step reveal-item">
+            <div class="step-number">3</div>
+            <h3>Receba pronto</h3>
+            <p>Seu cartão digital + NFC chegam configurados e prontos para usar.</p>
+          </div>
+
+        </div>
+      </section>
+
       <!-- PLANOS -->
       <section id="servicos" class="servicos">
         <h2 class="section-title reveal">Escolha seu plano</h2>
@@ -78,35 +139,42 @@
 
           <div class="plan-card reveal-item">
             <h3>Viza Start</h3>
+            <div class="plan-price">R$ 79<span>/único</span></div>
+            <p class="plan-price-sub">Pagamento único, sem mensalidade</p>
             <ul>
               <li>✔ Bio profissional</li>
               <li>✔ Botões inteligentes</li>
               <li>✔ Link personalizado</li>
               <li>✔ Design limpo e moderno</li>
-              <li>✔ 1 Cartão NFC ou 1 Etiqueta NFC</li>
+              <li>✔ 1 Cartão NFC <em>ou</em> 1 Etiqueta NFC</li>
             </ul>
             <a href="https://start.viza.click" target="_blank" class="plan-link">
-              Conhecer o plano Start
+              Ver exemplo do plano →
             </a>
           </div>
 
-          <div class="plan-card reveal-item">
+          <div class="plan-card plan-card--destaque reveal-item">
+            <div class="plan-badge">Mais popular</div>
             <h3>Viza Prime</h3>
+            <div class="plan-price">R$ 109<span>/único</span></div>
+            <p class="plan-price-sub">Pagamento único, sem mensalidade</p>
             <ul>
               <li>✔ Tudo do Start</li>
               <li>✔ Estrutura estratégica</li>
               <li>✔ Seção de serviços</li>
               <li>✔ Seção de diferenciais</li>
               <li>✔ Link de localização</li>
-              <li>✔ 1 Cartão NFC ou 1 Etiqueta NFC</li>
+              <li>✔ 1 Cartão NFC <em>ou</em> 1 Etiqueta NFC</li>
             </ul>
             <a href="https://prime.viza.click" target="_blank" class="plan-link">
-              Conhecer o plano Prime
+              Ver exemplo do plano →
             </a>
           </div>
 
           <div class="plan-card reveal-item">
             <h3>Viza Authority</h3>
+            <div class="plan-price">R$ 149<span>/único</span></div>
+            <p class="plan-price-sub">Pagamento único, sem mensalidade</p>
             <ul>
               <li>✔ Tudo do Prime</li>
               <li>✔ Mini portfólio com galeria</li>
@@ -116,8 +184,39 @@
               <li>✔ Cartão NFC + Etiqueta NFC</li>
             </ul>
             <a href="https://viza.click" target="_blank" class="plan-link">
-              Conhecer o plano Authority
+              Ver exemplo do plano →
             </a>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- DEPOIMENTOS -->
+      <section class="depoimentos">
+        <h2 class="section-title reveal">O que estão dizendo</h2>
+
+        <div class="depoimentos-grid">
+
+          <div class="depoimento-card reveal-item">
+            <p>"Meus clientes ficam impressionados quando aproximo o cartão no celular deles e meu contato abre na hora. Profissional demais, recomendo muito."</p>
+            <div class="depoimento-autor">
+              <div class="depoimento-avatar">M</div>
+              <div>
+                <strong>M2 Pisos</strong>
+                <span>Revestimentos e Pisos</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="depoimento-card reveal-item">
+            <p>"Como advogada, a primeira impressão conta muito. O cartão digital me ajuda a transmitir credibilidade logo no primeiro contato. Excelente serviço."</p>
+            <div class="depoimento-autor">
+              <div class="depoimento-avatar">B</div>
+              <div>
+                <strong>Bruna Mendes</strong>
+                <span>Advogada</span>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -133,10 +232,12 @@
             Falar no WhatsApp
           </a>
 
-          <a href="#" class="pix-button" onclick="copiarPix(event)">
-            Pagar via Pix
-          </a>
+          <button class="pix-button" id="pixBtn" onclick="copiarPix()">
+            <i class="fas fa-copy" style="margin-right:6px"></i> Pagar via Pix
+          </button>
         </div>
+
+        <p class="pix-hint">Chave Pix: <strong>11995945650</strong> (celular)</p>
       </div>
 
     </div>

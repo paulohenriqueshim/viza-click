@@ -14,20 +14,41 @@ function revealOnScroll() {
     }
   });
 }
- 
+
 window.addEventListener("scroll", revealOnScroll);
 window.addEventListener("load", revealOnScroll);
-function copiarPix(event) {
-  event.preventDefault();
 
+function copiarPix() {
   const codigoPix = "11995945650";
+  const btn = document.getElementById("pixBtn");
 
   navigator.clipboard.writeText(codigoPix).then(() => {
-    alert("Código Pix copiado! Agora é só colar no seu banco.");
+    btn.textContent = "✔ Chave copiada!";
+    btn.classList.add("copiado");
+
+    setTimeout(() => {
+      btn.innerHTML = '<i class="fas fa-copy" style="margin-right:6px"></i> Pagar via Pix';
+      btn.classList.remove("copiado");
+    }, 2500);
+  }).catch(() => {
+    // fallback para navegadores mais antigos
+    const el = document.createElement("textarea");
+    el.value = codigoPix;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+
+    btn.textContent = "✔ Chave copiada!";
+    btn.classList.add("copiado");
+
+    setTimeout(() => {
+      btn.innerHTML = '<i class="fas fa-copy" style="margin-right:6px"></i> Pagar via Pix';
+      btn.classList.remove("copiado");
+    }, 2500);
   });
 }
 
-//salvar ctt no insta
 document.querySelectorAll('.salvar-contato').forEach((btn) => {
   btn.addEventListener('click', function (event) {
     const ua = navigator.userAgent.toLowerCase();
