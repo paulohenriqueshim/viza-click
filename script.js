@@ -83,9 +83,9 @@ function animatePrice() {
   const el = document.getElementById('priceCounter');
   if (!el) return;
 
-  const startValue = 347;
+  const startValue = 2000;
   const endValue = 97;
-  const duration = 1800; // ms
+  const duration = 4000; // ms
   const startTime = performance.now();
 
   // Easing out cubic — desacelera no final
@@ -99,13 +99,8 @@ function animatePrice() {
     const eased = easeOutCubic(progress);
 
     const current = Math.round(startValue - (startValue - endValue) * eased);
-
-    // Efeito de blur rápido a cada troca
-    el.classList.add('changing');
     el.textContent = current;
-    requestAnimationFrame(() => {
-      el.classList.remove('changing');
-    });
+
 
     if (progress < 1) {
       requestAnimationFrame(step);
