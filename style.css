@@ -286,6 +286,69 @@ nav.s {
 }
 
 /* ============================================
+   BRAND HERO
+   ============================================ */
+.brand-name-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  line-height: 1;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.brand-v {
+  font-size: clamp(72px, 14vw, 130px);
+  font-weight: 900;
+  color: var(--blue2);
+  letter-spacing: -2px;
+}
+
+.brand-rest {
+  font-size: clamp(72px, 14vw, 130px);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -2px;
+}
+
+/* Shimmer que percorre o nome ao carregar */
+.hero-brand {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-brand::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 70%
+  );
+  animation: shimmer 1.8s ease forwards;
+  animation-delay: 1s;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  to { left: 160%; }
+}
+
+/* Tagline menor, logo abaixo */
+.tagline {
+  font-size: clamp(22px, 3.5vw, 38px);
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 28px;
+  color: #fff;
+}
+
+/* ============================================
    BADGE / TÍTULO
    ============================================ */
 .badge {
