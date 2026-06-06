@@ -11,6 +11,8 @@
   --tm:#8b909e;
   --td:#555b6e;
   --green:#22c55e;
+  --gold:#b4823c;
+  --gold2:#d4a055;
   --font-head:'Syne',sans-serif;
   --font-body:'DM Sans',sans-serif;
 }
@@ -103,26 +105,41 @@ nav.s{background:rgba(4,6,11,.92);backdrop-filter:blur(20px);border-bottom:1px s
 .browser-dots span:nth-child(2){background:#febc2e}
 .browser-dots span:nth-child(3){background:#28c840}
 .browser-url{flex:1;background:rgba(255,255,255,.06);border-radius:6px;padding:3px 10px;font-size:10px;color:var(--td);text-align:center}
+
+/* default mockup screen */
 .mockup-screen{background:linear-gradient(160deg,#0a0f1c,#070c17);border:1px solid rgba(27,99,217,.2);border-top:none;border-radius:0 0 14px 14px;padding:20px 16px;animation:floatMock 4s ease-in-out infinite}
+
+/* M2 Pisos floor mockup variant */
+.mockup-screen--floor{background:linear-gradient(160deg,#100d07,#0e0b05);border-color:rgba(180,130,60,.25)}
+
 @keyframes floatMock{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 .ms-hero-block{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:16px}
 .ms-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue2));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;font-family:var(--font-head);margin-bottom:4px;box-shadow:0 0 24px rgba(27,99,217,.3)}
+.ms-avatar--floor{background:linear-gradient(135deg,#92400e,#d97706);box-shadow:0 0 24px rgba(180,130,60,.3)}
 .ms-name{font-size:14px;font-weight:700;font-family:var(--font-head)}
 .ms-role{font-size:10px;color:var(--td)}
 .ms-cta-btn{background:var(--blue);color:#fff;padding:7px 20px;border-radius:50px;font-size:10px;font-weight:600;margin-top:6px;cursor:default}
+.ms-cta-btn--floor{background:linear-gradient(135deg,#92400e,#d97706)}
 .ms-stats-row{display:flex;justify-content:space-around;margin-bottom:12px;padding:10px 0;border-top:1px solid var(--b0);border-bottom:1px solid var(--b0)}
 .ms-stat{text-align:center}
 .ms-stat span{font-size:14px;font-weight:800;font-family:var(--font-head);color:var(--blue2);display:block}
+
+/* gold stats for floor variant */
+.mockup-screen--floor .ms-stat span{color:var(--gold2)}
+
 .ms-stat small{font-size:8px;color:var(--td)}
 .ms-services{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}
 .ms-tag{background:rgba(27,99,217,.12);border:1px solid rgba(27,99,217,.2);border-radius:50px;padding:3px 9px;font-size:9px;color:var(--blue2)}
+.ms-tag--floor{background:rgba(180,130,60,.12);border-color:rgba(180,130,60,.25);color:var(--gold2)}
 
 /* NFC CARD FLOAT */
 .nfc-card-float{position:absolute;bottom:-10px;right:-24px;animation:floatCard 3.5s ease-in-out infinite}
 @keyframes floatCard{0%,100%{transform:rotate(8deg) translateY(0)}50%{transform:rotate(6deg) translateY(-12px)}}
 .nfc-card-inner{width:130px;padding:12px;background:linear-gradient(135deg,#0d1726,#131d33);border:1px solid rgba(27,99,217,.35);border-radius:12px;box-shadow:0 18px 50px rgba(0,0,0,.5),0 0 24px rgba(27,99,217,.16)}
+.nfc-card-inner--floor{background:linear-gradient(135deg,#1a1108,#221508);border-color:rgba(180,130,60,.4);box-shadow:0 18px 50px rgba(0,0,0,.5),0 0 24px rgba(180,130,60,.12)}
 .nfc-card-name{font-size:9px;font-weight:700;letter-spacing:.4px;font-family:var(--font-head)}
 .nfc-card-sub{font-size:7px;color:var(--blue2);margin-top:16px}
+.nfc-card-inner--floor .nfc-card-sub{color:var(--gold2)}
 .nfc-icon-wrap{display:flex;justify-content:flex-end;margin-top:2px}
 
 /* ─── SECTIONS ─── */
@@ -143,6 +160,8 @@ section{position:relative;z-index:1}
 .scard:hover{border-color:var(--b1);transform:translateY(-5px);background:var(--s2)}
 .scard.featured-service{background:linear-gradient(160deg,#0d1424,#0a1020);border-color:var(--b1);box-shadow:0 0 50px rgba(27,99,217,.1)}
 .feat-badge{display:inline-block;background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:3px 13px;border-radius:50px;margin-bottom:14px;letter-spacing:.4px;text-transform:uppercase;font-family:var(--font-head)}
+.feat-badge--subtle{background:rgba(27,99,217,.12);border:1px solid rgba(27,99,217,.28);color:var(--blue2)}
+.man-opt{display:inline-block;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:#4ade80;font-size:9px;font-weight:700;padding:1px 7px;border-radius:50px;letter-spacing:.3px;text-transform:uppercase;vertical-align:middle;margin-left:5px;font-family:var(--font-head)}
 .sico{width:48px;height:48px;background:rgba(27,99,217,.1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px}
 .scard h3{font-size:17px;font-weight:700;margin-bottom:10px;font-family:var(--font-head)}
 .scard p{color:var(--tm);font-size:13px;line-height:1.65;font-weight:300;margin-bottom:18px}
@@ -215,9 +234,15 @@ section{position:relative;z-index:1}
 .pc.hot{background:linear-gradient(160deg,#0d1424,#0a1020);border-color:var(--b1);box-shadow:0 0 50px rgba(27,99,217,.1)}
 .pc.hot:hover{box-shadow:0 18px 70px rgba(27,99,217,.2)}
 .pbadge{display:inline-block;background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:3px 13px;border-radius:50px;margin-bottom:10px;letter-spacing:.4px;text-transform:uppercase;font-family:var(--font-head)}
+.pbadge-comp{display:inline-block;background:rgba(27,99,217,.15);border:1px solid rgba(27,99,217,.3);color:var(--blue2);font-size:10px;font-weight:700;padding:3px 13px;border-radius:50px;margin-bottom:10px;letter-spacing:.4px;text-transform:uppercase;font-family:var(--font-head)}
 .pname{font-size:21px;font-weight:800;margin-bottom:4px;font-family:var(--font-head)}
 .pdesc{color:var(--td);font-size:12px;margin-bottom:20px}
-.pprice{font-size:40px;font-weight:900;margin-bottom:4px;font-family:var(--font-head)}
+
+/* PROMO PRICE */
+.pprice-promo{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.pprice-old{font-size:20px;font-weight:600;color:var(--td);text-decoration:line-through;font-family:var(--font-head)}
+.pprice{font-size:40px;font-weight:900;font-family:var(--font-head)}
+
 .ponce{font-size:11px;color:var(--td);margin-bottom:24px}
 .pdiv{height:1px;background:var(--b0);margin-bottom:20px}
 .pfs{list-style:none;margin-bottom:26px}
@@ -244,6 +269,8 @@ section{position:relative;z-index:1}
 .addon-ico{font-size:18px}
 .addon-name{font-size:12px;font-weight:600;flex:1}
 .addon-price{font-size:12px;color:var(--blue2);font-weight:700;white-space:nowrap}
+.addon-price-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
+.addon-price-old{font-size:10px;color:var(--td);text-decoration:line-through;white-space:nowrap}
 
 /* ─── DEPOIMENTOS ─── */
 .testi{padding:0 0 110px}
