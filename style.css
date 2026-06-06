@@ -241,7 +241,7 @@ section{position:relative;z-index:1}
 /* PROMO PRICE */
 .pprice-promo{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
 .pprice-old{font-size:20px;font-weight:600;color:var(--td);text-decoration:line-through;font-family:var(--font-head)}
-.pprice{font-size:40px;font-weight:900;font-family:var(--font-head)}
+.pprice{font-size:32px;font-weight:900;font-family:var(--font-head)}
 
 .ponce{font-size:11px;color:var(--td);margin-bottom:24px}
 .pdiv{height:1px;background:var(--b0);margin-bottom:20px}
