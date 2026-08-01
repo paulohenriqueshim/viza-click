@@ -22,6 +22,8 @@
 </head>
 
 <body>
+  <canvas id="hero-canvas"></canvas>
+  <div class="bg-vignette"></div>
   <div class="cursor" id="cursor"></div>
   <div class="cursor-trail" id="cursorTrail"></div>
 
@@ -40,29 +42,24 @@
     </a>
   </nav>
 
-  <!-- HERO 3D -->
+  <!-- HERO -->
   <section class="hero3d" id="top">
-    <div class="hero3d-inner">
-      <canvas id="hero-canvas"></canvas>
-      <div class="hero3d-vignette"></div>
+    <div class="hero-copy">
+      <div class="hero-eyebrow" id="heroEyebrow"><span class="dot"></span> Agência de Inteligência Artificial</div>
+      <h1 class="hero-title" id="heroTitle" aria-label="VIZA CLICK"></h1>
+      <p class="hero-sub" id="heroSub">
+        <span class="subtitle-line">IA que atende, automatiza e vende</span>
+        <span class="subtitle-line">pelo seu negócio, todos os dias.</span>
+      </p>
+      <a href="https://wa.me/5511995945650?text=Olá!%20Vim%20pelo%20site%20da%20Viza%20Click%20e%20quero%20saber%20mais." target="_blank" class="hero-cta" id="heroCta">
+        Falar no WhatsApp
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
 
-      <div class="hero-copy">
-        <div class="hero-eyebrow" id="heroEyebrow"><span class="dot"></span> Agência de Inteligência Artificial</div>
-        <h1 class="hero-title" id="heroTitle" aria-label="VIZA CLICK"></h1>
-        <p class="hero-sub" id="heroSub">
-          <span class="subtitle-line">IA que atende, automatiza e vende</span>
-          <span class="subtitle-line">pelo seu negócio, todos os dias.</span>
-        </p>
-        <a href="https://wa.me/5511995945650?text=Olá!%20Vim%20pelo%20site%20da%20Viza%20Click%20e%20quero%20saber%20mais." target="_blank" class="hero-cta" id="heroCta">
-          Falar no WhatsApp
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>
-      </div>
-
-      <div class="scroll-progress" id="scrollProgress">
-        <span class="scroll-text">role para explorar</span>
-        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-      </div>
+    <div class="scroll-progress" id="scrollProgress">
+      <span class="scroll-text">role para explorar</span>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
     </div>
   </section>
 
@@ -112,72 +109,73 @@
   <!-- PORTFÓLIO -->
   <section class="portfolio" id="portfolio">
     <div class="container">
-      <div class="sh rev">
-        <div class="stag">Portfólio</div>
-        <h2 class="stitle">Projetos entregues</h2>
+      <div class="sh rev port-sh">
+        <div>
+          <div class="stag">Portfólio</div>
+          <h2 class="stitle">Projetos entregues</h2>
+        </div>
+        <div class="port-nav">
+          <button class="port-arrow" id="portPrev" aria-label="Anterior">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button class="port-arrow" id="portNext" aria-label="Próximo">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
       </div>
-      <div class="pgrid-port">
+    </div>
 
-        <div class="pcard rev d1">
-          <div class="pcard-screen">
-            <div class="pcs-header">
-              <div class="pcs-dots"><span></span><span></span><span></span></div>
-              <div class="pcs-url">humberto.viza.click</div>
-            </div>
-            <div class="pcs-body engineering">
-              <div class="pcs-avatar-wrap"><div class="pcs-av eng">HS</div></div>
-              <div class="pcs-name">Humberto Schmitz</div>
-              <div class="pcs-role">Engenharia HVAC · Engetab</div>
-              <div class="pcs-btn">Entre em contato</div>
-            </div>
-          </div>
-          <div class="pcard-info">
-            <div class="pcard-tipo">Landing Page</div>
-            <div class="pcard-nome">Humberto Schmitz</div>
-            <a href="https://humberto.viza.click" target="_blank" class="pcard-link">Ver projeto →</a>
-          </div>
+    <div class="port-track rev" id="portTrack">
+      <div class="pcard cv-eng">
+        <div class="pcard-cover">
+          <div class="pcard-avatar">HS</div>
+          <span class="pcard-tag">Landing Page</span>
         </div>
-
-        <div class="pcard rev d2">
-          <div class="pcard-screen">
-            <div class="pcs-header">
-              <div class="pcs-dots"><span></span><span></span><span></span></div>
-              <div class="pcs-url">m2pisos.viza.click</div>
-            </div>
-            <div class="pcs-body flooring">
-              <div class="pcs-avatar-wrap"><div class="pcs-av floor">M2</div></div>
-              <div class="pcs-name">M2 Pisos</div>
-              <div class="pcs-role">Revestimentos e Pisos</div>
-              <div class="pcs-btn">Ver catálogo</div>
-            </div>
-          </div>
-          <div class="pcard-info">
-            <div class="pcard-tipo">Landing Page</div>
-            <div class="pcard-nome">M2 Pisos</div>
-            <a href="https://m2pisos.viza.click" target="_blank" class="pcard-link">Ver projeto →</a>
-          </div>
+        <div class="pcard-body">
+          <div class="pcard-nome">Humberto Schmitz</div>
+          <div class="pcard-role">Engenharia HVAC · Engetab</div>
+          <p class="pcard-desc">Perfil profissional com animações, contadores e portfólio de projetos.</p>
+          <a href="https://humberto.viza.click" target="_blank" class="pcard-link">Ver projeto <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
+      </div>
 
-        <div class="pcard rev d3">
-          <div class="pcard-screen">
-            <div class="pcs-header">
-              <div class="pcs-dots"><span></span><span></span><span></span></div>
-              <div class="pcs-url">bruna.viza.click</div>
-            </div>
-            <div class="pcs-body legal">
-              <div class="pcs-avatar-wrap"><div class="pcs-av law">BM</div></div>
-              <div class="pcs-name">Bruna Mendes</div>
-              <div class="pcs-role">Advogada · OAB/SP</div>
-              <div class="pcs-btn">Agendar consulta</div>
-            </div>
-          </div>
-          <div class="pcard-info">
-            <div class="pcard-tipo">Landing Page</div>
-            <div class="pcard-nome">Bruna Mendes</div>
-            <a href="https://mendeslimaadv.viza.click" target="_blank" class="pcard-link">Ver projeto →</a>
-          </div>
+      <div class="pcard cv-floor">
+        <div class="pcard-cover">
+          <div class="pcard-avatar">M2</div>
+          <span class="pcard-tag">Landing Page</span>
         </div>
+        <div class="pcard-body">
+          <div class="pcard-nome">M2 Pisos</div>
+          <div class="pcard-role">Revestimentos e Pisos</div>
+          <p class="pcard-desc">Catálogo de produtos, galeria de projetos e contato direto via WhatsApp.</p>
+          <a href="https://m2pisos.viza.click" target="_blank" class="pcard-link">Ver projeto <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
 
+      <div class="pcard cv-law">
+        <div class="pcard-cover">
+          <div class="pcard-avatar">BM</div>
+          <span class="pcard-tag">Landing Page</span>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-nome">Bruna Mendes</div>
+          <div class="pcard-role">Advogada · OAB/SP</div>
+          <p class="pcard-desc">Página de captação com áreas de atuação e agendamento direto de consulta.</p>
+          <a href="https://mendeslimaadv.viza.click" target="_blank" class="pcard-link">Ver projeto <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+
+      <div class="pcard cv-tac">
+        <div class="pcard-cover">
+          <div class="pcard-avatar">JG</div>
+          <span class="pcard-tag">Landing Page</span>
+        </div>
+        <div class="pcard-body">
+          <div class="pcard-nome">João Vitor Godoy</div>
+          <div class="pcard-role">Instrutor de Tiro · São Paulo</div>
+          <p class="pcard-desc">Página institucional para cursos de tiro, certificação CR/Posse e agendamento de treinos.</p>
+          <a href="https://instrutorgodoy.viza.click" target="_blank" class="pcard-link">Ver projeto <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
       </div>
     </div>
   </section>
@@ -214,7 +212,6 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script type="module" src="hero.js"></script>
   <script src="script.js"></script>
 </body>

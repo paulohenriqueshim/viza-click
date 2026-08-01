@@ -1,20 +1,16 @@
 import * as THREE from 'three';
-import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
 // Text/intro animation must run no matter what happens with the 3D scene below.
 setupHeroText();
 
 const canvas = document.getElementById('hero-canvas');
-const container = document.querySelector('.hero3d-inner');
-const heroSection = document.querySelector('.hero3d');
+const heroSection = document.getElementById('top');
 
 const isMobile = window.innerWidth < 760;
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-let W = container.clientWidth, H = container.clientHeight;
-let renderer, scene, camera, composer;
+let W = window.innerWidth, H = window.innerHeight;
+let renderer, scene, camera;
 const stars = [];
 const mountains = [];
 let nebula;
@@ -22,6 +18,9 @@ let running = true;
 let rafId = null;
 let targetCam = { x: 0, y: 22, z: 140 };
 let curCam = { x: 0, y: 22, z: 140 };
+let scrollProgress = 0; // 0..1 across the whole document
+let heroProgress = 0;   // 0..1 across just the hero section (for the text overlay fade)
+let lastFrame = performance.now();
 
 function supportsWebGL() {
   try {
@@ -30,51 +29,33 @@ function supportsWebGL() {
   } catch (e) { return false; }
 }
 
-if (!supportsWebGL()) {
-  heroSection.classList.add('no-webgl');
-} else {
-  try {
-    init();
-  } catch (err) {
-    console.error('Hero 3D scene failed to initialize:', err);
-    heroSection.classList.add('no-webgl');
-  }
-}
-
 function init() {
   scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x03040a, 0.00035);
+  scene.fog = new THREE.FogExp2(0x03040a, 0.00028);
 
   camera = new THREE.PerspectiveCamera(70, W / H, 0.1, 3000);
-  camera.position.set(0, 22, 140);
+  camera.position.set(curCam.x, curCam.y, curCam.z);
 
-  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setSize(W, H);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.55;
-
-  composer = new EffectComposer(renderer);
-  composer.addPass(new RenderPass(scene, camera));
-  if (!isMobile) {
-    const bloom = new UnrealBloomPass(new THREE.Vector2(W, H), 0.75, 0.4, 0.86);
-    composer.addPass(bloom);
-  }
 
   createStars();
   createNebula();
   createMountains();
 
-  window.addEventListener('resize', onResize, { passive: true });
-
-  animate();
+  setupResize();
   setupScroll();
   setupIO();
+
+  animate();
 }
 
 function createStars() {
   const layers = isMobile ? 1 : 2;
-  const count = isMobile ? 1400 : 2600;
+  const count = isMobile ? 900 : 2600;
 
   for (let l = 0; l < layers; l++) {
     const geometry = new THREE.BufferGeometry();
@@ -83,7 +64,7 @@ function createStars() {
     const sizes = new Float32Array(count);
 
     for (let i = 0; i < count; i++) {
-      const radius = 200 + Math.random() * 900;
+      const radius = 200 + Math.random() * 1400;
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(Math.random() * 2 - 1);
 
@@ -93,11 +74,12 @@ function createStars() {
 
       const c = new THREE.Color();
       const pick = Math.random();
-      if (pick < 0.78) c.setHSL(0.6, 0.35, 0.85);
-      else c.setHSL(0.58, 0.7, 0.65);
+      if (pick < 0.72) c.setHSL(0.6, 0.35, 0.85);
+      else if (pick < 0.94) c.setHSL(0.58, 0.7, 0.65);
+      else c.setHSL(0.5, 0.8, 0.7);
 
       colors[i * 3] = c.r; colors[i * 3 + 1] = c.g; colors[i * 3 + 2] = c.b;
-      sizes[i] = Math.random() * 1.8 + 0.4;
+      sizes[i] = Math.random() * 1.9 + 0.5;
     }
 
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -115,7 +97,7 @@ function createStars() {
         void main() {
           vColor = color;
           vec3 pos = position;
-          float angle = time * 0.025 * (1.0 - depth * 0.3);
+          float angle = time * 0.02 * (1.0 - depth * 0.3);
           mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
           pos.xy = rot * pos.xy;
           vec4 mv = modelViewMatrix * vec4(pos, 1.0);
@@ -144,13 +126,13 @@ function createStars() {
 }
 
 function createNebula() {
-  const geometry = new THREE.PlaneGeometry(6000, 3000, isMobile ? 20 : 60, isMobile ? 20 : 60);
+  const geometry = new THREE.PlaneGeometry(7000, 3600, isMobile ? 16 : 50, isMobile ? 16 : 50);
   const material = new THREE.ShaderMaterial({
     uniforms: {
       time: { value: 0 },
       color1: { value: new THREE.Color(0x1b63d9) },
-      color2: { value: new THREE.Color(0x3d80f5) },
-      opacity: { value: 0.22 }
+      color2: { value: new THREE.Color(0x7dd3fc) },
+      opacity: { value: 0.24 }
     },
     vertexShader: `
       varying vec2 vUv;
@@ -183,7 +165,7 @@ function createNebula() {
   });
 
   nebula = new THREE.Mesh(geometry, material);
-  nebula.position.z = -900;
+  nebula.position.z = -1400;
   scene.add(nebula);
 }
 
@@ -222,67 +204,115 @@ function createMountains() {
   });
 }
 
+// ─── Camera flight path across the ENTIRE document ───
+// A handful of keyframes the camera flies through as the whole page is scrolled.
+const CAM_KEYFRAMES = [
+  { p: 0,    x: 0,  y: 22,  z: 140  },
+  { p: 0.15, x: 8,  y: 34,  z: -60  },
+  { p: 0.4,  x: -6, y: 46,  z: -320 },
+  { p: 0.7,  x: 6,  y: 40,  z: -680 },
+  { p: 1,    x: 0,  y: 30,  z: -1080 }
+];
+
+function camAtProgress(p) {
+  for (let i = 0; i < CAM_KEYFRAMES.length - 1; i++) {
+    const a = CAM_KEYFRAMES[i], b = CAM_KEYFRAMES[i + 1];
+    if (p >= a.p && p <= b.p) {
+      const t = (p - a.p) / (b.p - a.p || 1);
+      const ease = t * t * (3 - 2 * t); // smoothstep
+      return {
+        x: a.x + (b.x - a.x) * ease,
+        y: a.y + (b.y - a.y) * ease,
+        z: a.z + (b.z - a.z) * ease
+      };
+    }
+  }
+  const last = CAM_KEYFRAMES[CAM_KEYFRAMES.length - 1];
+  return { x: last.x, y: last.y, z: last.z };
+}
+
+function updateScrollProgress() {
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  scrollProgress = docH > 0 ? Math.min(Math.max(window.scrollY / docH, 0), 1) : 0;
+
+  const heroH = heroSection ? heroSection.offsetHeight : window.innerHeight;
+  heroProgress = Math.min(Math.max(window.scrollY / (heroH * 0.9), 0), 1);
+}
+
+function setupScroll() {
+  updateScrollProgress();
+  window.addEventListener('scroll', () => {
+    updateScrollProgress();
+  }, { passive: true });
+}
+
 function animate() {
   if (!running) return;
   rafId = requestAnimationFrame(animate);
-  const t = performance.now() * 0.001;
+
+  const now = performance.now();
+  const dt = Math.min((now - lastFrame) / 1000, 0.05);
+  lastFrame = now;
+  const t = now * 0.001;
 
   stars.forEach(s => { if (s.material.uniforms) s.material.uniforms.time.value = t; });
-  if (nebula) nebula.material.uniforms.time.value = t * 0.4;
+  if (nebula) nebula.material.uniforms.time.value = t * 0.35;
 
-  const ease = 0.055;
-  curCam.x += (targetCam.x - curCam.x) * ease;
-  curCam.y += (targetCam.y - curCam.y) * ease;
-  curCam.z += (targetCam.z - curCam.z) * ease;
+  targetCam = camAtProgress(scrollProgress);
 
-  const floatX = Math.sin(t * 0.12) * 1.5;
-  const floatY = Math.cos(t * 0.16) * 0.8;
+  // Frame-rate independent smoothing (no jitter regardless of device fps)
+  const smoothing = 1 - Math.pow(0.001, dt);
+  curCam.x += (targetCam.x - curCam.x) * smoothing;
+  curCam.y += (targetCam.y - curCam.y) * smoothing;
+  curCam.z += (targetCam.z - curCam.z) * smoothing;
+
+  const idleAmount = isMobile ? 0.6 : 1.5;
+  const floatX = Math.sin(t * 0.12) * idleAmount;
+  const floatY = Math.cos(t * 0.16) * (idleAmount * 0.6);
 
   camera.position.x = curCam.x + floatX;
   camera.position.y = curCam.y + floatY;
   camera.position.z = curCam.z;
-  camera.lookAt(0, 14, -500);
+  camera.lookAt(0, 14, curCam.z - 500);
 
   mountains.forEach((m, i) => {
     const p = 1 + i * 0.4;
-    m.position.x = Math.sin(t * 0.1) * 1.5 * p;
+    m.position.x = Math.sin(t * 0.1) * 1.2 * p;
   });
 
-  composer.render();
+  const progressFill = document.getElementById('progressFill');
+  if (progressFill) progressFill.style.width = (heroProgress * 100) + '%';
+
+  const copy = document.querySelector('.hero-copy');
+  if (copy) {
+    const fade = Math.max(0, 1 - heroProgress * 1.5);
+    copy.style.opacity = String(fade);
+    copy.style.transform = `translateY(${heroProgress * -30}px)`;
+    copy.style.pointerEvents = fade < 0.05 ? 'none' : 'auto';
+  }
+
+  renderer.render(scene, camera);
 }
 
-function onResize() {
-  W = container.clientWidth; H = container.clientHeight;
-  camera.aspect = W / H;
-  camera.updateProjectionMatrix();
-  renderer.setSize(W, H);
-  composer.setSize(W, H);
-}
+function setupResize() {
+  let lastW = window.innerWidth, lastH = window.innerHeight;
+  let resizeTimer = null;
 
-function setupScroll() {
-  if (!window.ScrollTrigger) return;
-  gsap.registerPlugin(ScrollTrigger);
+  function applyResize() {
+    W = window.innerWidth; H = window.innerHeight;
+    camera.aspect = W / H;
+    camera.updateProjectionMatrix();
+    renderer.setSize(W, H);
+  }
 
-  ScrollTrigger.create({
-    trigger: heroSection,
-    start: 'top top',
-    end: 'bottom bottom',
-    scrub: 0.6,
-    onUpdate: self => {
-      const p = self.progress;
-      targetCam = {
-        x: 0,
-        y: 22 + p * 30,
-        z: 140 - p * 260
-      };
-      document.getElementById('progressFill').style.width = (p * 100) + '%';
-      const copy = document.querySelector('.hero-copy');
-      if (copy) {
-        copy.style.opacity = String(Math.max(0, 1 - p * 1.6));
-        copy.style.transform = `translateY(${p * -40}px)`;
-      }
-    }
-  });
+  window.addEventListener('resize', () => {
+    const w = window.innerWidth, h = window.innerHeight;
+    // Ignore small height-only changes caused by mobile browser address bar show/hide.
+    if (Math.abs(w - lastW) < 2 && Math.abs(h - lastH) < 120) return;
+    lastW = w; lastH = h;
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(applyResize, 120);
+  }, { passive: true });
 }
 
 function setupIO() {
@@ -290,14 +320,15 @@ function setupIO() {
     entries.forEach(e => {
       if (e.isIntersecting && !running) {
         running = true;
+        lastFrame = performance.now();
         animate();
       } else if (!e.isIntersecting && running) {
         running = false;
         if (rafId) cancelAnimationFrame(rafId);
       }
     });
-  }, { threshold: 0.05 });
-  io.observe(heroSection);
+  }, { threshold: 0 });
+  io.observe(document.body);
 }
 
 // TEXT INTRO ANIMATION
@@ -321,5 +352,17 @@ function setupHeroText() {
       .from('#scrollProgress', { opacity: 0, y: 16, duration: .6, ease: 'power2.out' }, '-=.4');
   } else {
     titleEl.style.opacity = 1;
+  }
+}
+
+// ─── BOOT (runs last, after every const/let above has been initialized) ───
+if (!supportsWebGL() || reducedMotion) {
+  document.body.classList.add('no-webgl');
+} else {
+  try {
+    init();
+  } catch (err) {
+    console.error('Hero 3D scene failed to initialize:', err);
+    document.body.classList.add('no-webgl');
   }
 }
