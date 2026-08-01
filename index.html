@@ -3,110 +3,82 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Viza.click — Sites e Landing Pages que Convertem</title>
-  <meta name="description" content="Criamos landing pages e sites profissionais que transformam visitantes em clientes. Do design à entrega, com cartão NFC incluso.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Viza Click | IA para negócios</title>
+  <meta name="description" content="Agentes de inteligência artificial, automações e presença digital para o seu negócio vender todos os dias — mesmo fora do horário comercial.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
 </head>
 
 <body>
-  <canvas id="pc"></canvas>
-  <div class="pglow" id="pg"></div>
   <div class="cursor" id="cursor"></div>
   <div class="cursor-trail" id="cursorTrail"></div>
 
   <!-- NAV -->
   <nav id="nb">
-    <a href="#" class="nlogo">
-      <img src="img/logo-vizaclick.jpeg" onerror="this.style.background='#1b63d9';this.alt='V';" alt="V">
-      Viza.click
+    <a href="#top" class="nlogo">
+      <img src="img/logo-viza.png" onerror="this.style.background='#3d80f5';this.alt='V';" alt="V">
+      Viza Click
     </a>
     <div class="nav-links">
       <a href="#servicos">Serviços</a>
       <a href="#portfolio">Portfólio</a>
-      <a href="#planos">Planos</a>
     </div>
-    <a href="https://wa.me/5511995945650?text=Olá!%20Vim%20pelo%20Viza.click%20e%20quero%20um%20orçamento." target="_blank" class="ncta">
-      Falar no WhatsApp →
+    <a href="https://wa.me/5511995945650?text=Olá!%20Vim%20pelo%20site%20da%20Viza%20Click%20e%20quero%20saber%20mais." target="_blank" class="ncta">
+      WhatsApp
     </a>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hglow"></div>
-    <div class="hi container">
-      <div class="ht">
-        <div class="badge hero-badge"><span class="dot"></span> Design · Conversão · Entrega rápida</div>
+  <!-- HERO 3D -->
+  <section class="hero3d" id="top">
+    <div class="hero3d-inner">
+      <canvas id="hero-canvas"></canvas>
+      <div class="hero3d-vignette"></div>
 
-        <h1 class="hero-title">
-          <span class="hero-line1 slide-up">Sua presença</span>
-          <span class="hero-line2 slide-up d2">digital que</span>
-          <span class="hero-line3 slide-up d3"><span class="hl">converte.</span></span>
-        </h1>
-
-        <p class="hsub hero-sub">Landing pages e sites profissionais para autônomos, profissionais liberais e pequenas empresas. Feito para gerar resultado — não só parecer bonito.</p>
-
-        <div class="hact hero-act">
-          <a href="https://wa.me/5511995945650?text=Olá!%20Vim%20pelo%20Viza.click%20e%20quero%20um%20orçamento." target="_blank" class="bp">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.561 4.14 1.535 5.874L0 24l6.335-1.536A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.808 9.808 0 01-5.044-1.393l-.361-.215-3.762.912.958-3.657-.236-.375A9.787 9.787 0 012.182 12c0-5.413 4.405-9.818 9.818-9.818s9.818 4.405 9.818 9.818-4.405 9.818-9.818 9.818z"/></svg>
-            Quero meu orçamento
-          </a>
-          <a href="#portfolio" class="bo">Ver portfólio</a>
-        </div>
-
-        <div class="hstats hero-stats">
-          <div class="stat"><span class="sn">3–5</span><span class="sl">dias de entrega</span></div>
-          <div class="stat"><span class="sn">100%</span><span class="sl">personalizado</span></div>
-          <div class="stat"><span class="sn">+NFC</span><span class="sl">cartão incluso</span></div>
-        </div>
+      <div class="hero-copy">
+        <div class="hero-eyebrow" id="heroEyebrow"><span class="dot"></span> Agência de Inteligência Artificial</div>
+        <h1 class="hero-title" id="heroTitle" aria-label="VIZA CLICK"></h1>
+        <p class="hero-sub" id="heroSub">
+          <span class="subtitle-line">IA que atende, automatiza e vende</span>
+          <span class="subtitle-line">pelo seu negócio, todos os dias.</span>
+        </p>
+        <a href="https://wa.me/5511995945650?text=Olá!%20Vim%20pelo%20site%20da%20Viza%20Click%20e%20quero%20saber%20mais." target="_blank" class="hero-cta" id="heroCta">
+          Falar no WhatsApp
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
       </div>
 
-      <!-- HERO VISUAL: mockup M2 Pisos -->
-      <div class="hv hero-visual">
-        <div class="mockup-wrap">
-          <div class="browser-bar">
-            <div class="browser-dots">
-              <span></span><span></span><span></span>
-            </div>
-            <div class="browser-url">m2pisos.viza.click</div>
-          </div>
-          <div class="mockup-screen mockup-screen--floor">
-            <div class="ms-hero-block">
-              <div class="ms-avatar ms-avatar--floor">M2</div>
-              <div class="ms-name">M2 Pisos Vinílicos</div>
-              <div class="ms-role">Revestimentos · São Paulo</div>
-              <div class="ms-cta-btn ms-cta-btn--floor">🏠 Ver catálogo</div>
-            </div>
-            <div class="ms-stats-row">
-              <div class="ms-stat"><span>500+</span><small>projetos</small></div>
-              <div class="ms-stat"><span>10+</span><small>anos</small></div>
-              <div class="ms-stat"><span>SP</span><small>atuação</small></div>
-            </div>
-            <div class="ms-services">
-              <div class="ms-tag ms-tag--floor">Vinílico</div>
-              <div class="ms-tag ms-tag--floor">Porcelanato</div>
-              <div class="ms-tag ms-tag--floor">Madeira</div>
-            </div>
-          </div>
-          <div class="nfc-card-float">
-            <div class="nfc-card-inner nfc-card-inner--floor">
-              <div class="nfc-card-name">M2 PISOS</div>
-              <div class="nfc-card-sub">m2pisos.viza.click</div>
-              <div class="nfc-icon-wrap">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(180,130,60,.7)" stroke-width="2"><path d="M8 12a4 4 0 0 1 4-4"/><path d="M5 12a7 7 0 0 1 7-7"/><circle cx="12" cy="12" r="1" fill="rgba(180,130,60,.7)"/></svg>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="scroll-progress" id="scrollProgress">
+        <span class="scroll-text">role para explorar</span>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
       </div>
     </div>
+  </section>
 
-    <div class="scroll-hint">
-      <div class="scroll-line"></div>
-      <span>scroll</span>
+  <!-- POR QUE IA -->
+  <section class="why3" id="why">
+    <div class="container">
+      <div class="sh rev">
+        <div class="stag">Por que IA agora</div>
+        <h2 class="stitle">Seu concorrente já está usando.</h2>
+        <p class="ssub">Empresas que automatizam o primeiro contato respondem mais rápido, perdem menos clientes e vendem em escala — sem aumentar o time. A Viza Click implementa isso no seu negócio em poucos dias, com tecnologia que se adapta ao seu jeito de atender.</p>
+      </div>
+      <div class="chips rev d1">
+        <div class="chip"><span class="chip-ico">🌙</span> Atendimento 24/7</div>
+        <div class="chip"><span class="chip-ico">⚡</span> Resposta em segundos</div>
+        <div class="chip"><span class="chip-ico">📈</span> Escala sem contratar</div>
+      </div>
     </div>
   </section>
 
@@ -115,83 +87,23 @@
     <div class="container">
       <div class="sh rev">
         <div class="stag">O que fazemos</div>
-        <h2 class="stitle">Presença digital completa</h2>
-        <p class="ssub">Do profissional autônomo à pequena empresa, entregamos páginas que trabalham por você.</p>
+        <h2 class="stitle">Tecnologia aplicada ao seu negócio</h2>
       </div>
       <div class="sgrid">
-        <div class="scard rev d1 featured-service">
-          <div class="feat-badge">Mais solicitado</div>
-          <div class="sico">🎯</div>
-          <h3>Landing Page de Conversão</h3>
-          <p>Uma página focada num único objetivo: transformar visitante em cliente. Estrutura estratégica, copy pensado e CTA direto.</p>
-          <div class="stag-mini">A partir de R$ 797</div>
+        <div class="scard rev d1">
+          <div class="sico">🤖</div>
+          <h3>Agente de IA</h3>
+          <p>Atendimento inteligente no WhatsApp, treinado com o seu negócio, disponível a qualquer hora.</p>
         </div>
         <div class="scard rev d2">
-          <div class="feat-badge feat-badge--subtle">Mais completo</div>
-          <div class="sico">🌐</div>
-          <h3>Site Profissional</h3>
-          <p>Site completo com múltiplas páginas, seção de serviços, portfólio, depoimentos e formulário de contato.</p>
-          <div class="stag-mini">A partir de R$ 1.797</div>
+          <div class="sico">🔗</div>
+          <h3>Automações</h3>
+          <p>Conectamos suas ferramentas e processos para eliminar tarefas manuais e repetitivas.</p>
         </div>
         <div class="scard rev d3">
-          <div class="sico">📇</div>
-          <h3>Cartão Digital + NFC</h3>
-          <p>Perfil digital com link personalizado e cartão físico com chip NFC. Aproximou o cartão, o contato abre na hora.</p>
-          <div class="stag-mini">A partir de R$ 197</div>
-        </div>
-      </div>
-      <div class="manutencao-strip rev">
-        <div class="man-info">
-          <span class="man-ico">🔄</span>
-          <div>
-            <strong>Manutenção mensal <span class="man-opt">opcional</span></strong>
-            <span>Seu site sempre atualizado, sem fidelidade e sem surpresas</span>
-          </div>
-        </div>
-        <div class="man-price">R$ 150<small>/mês</small></div>
-        <a href="https://wa.me/5511995945650?text=Quero%20saber%20sobre%20manutenção%20mensal" target="_blank" class="man-cta">Saiba mais →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- DIFERENCIAIS -->
-  <section class="why">
-    <div class="container">
-      <div class="sh rev">
-        <div class="stag">Por que a Viza.click</div>
-        <h2 class="stitle">Mais do que um site bonito</h2>
-        <p class="ssub">A maioria das agências entrega um site. A gente entrega um argumento de venda.</p>
-      </div>
-      <div class="wgrid">
-        <div class="wcard rev d1">
-          <div class="wico">⚡</div>
-          <h3>Entrega em 3 a 5 dias</h3>
-          <p>Sem enrolação, sem burocracia. Você aprova o briefing hoje, recebe o projeto em dias.</p>
-        </div>
-        <div class="wcard rev d2">
-          <div class="wico">🎯</div>
-          <h3>Foco em conversão real</h3>
-          <p>Cada elemento da página tem uma função. Nada é decorativo — tudo leva ao seu cliente entrar em contato.</p>
-        </div>
-        <div class="wcard rev d3">
-          <div class="wico">💼</div>
-          <h3>Feito sob medida</h3>
-          <p>Sem templates prontos de plataforma. Cada projeto é construído do zero para o seu negócio.</p>
-        </div>
-        <div class="wcard rev d1">
-          <div class="wico">📱</div>
-          <h3>100% responsivo</h3>
-          <p>Funciona perfeitamente no celular, tablet e desktop. Onde o seu cliente estiver, sua página está.</p>
-        </div>
-        <div class="wcard rev d2">
-          <div class="wico">📇</div>
-          <h3>Cartão NFC como diferencial</h3>
-          <p>Pacotes com cartão NFC incluso. Você chega numa reunião e compartilha seu site com um toque no celular.</p>
-        </div>
-        <div class="wcard rev d3">
-          <div class="wico">🔗</div>
-          <h3>Link profissional</h3>
-          <p>Seu nome no link: <strong style="color:var(--blue2)">nome.viza.click</strong> ou no seu próprio domínio.</p>
+          <div class="sico">🌐</div>
+          <h3>Sites & Landing Pages</h3>
+          <p>Presença digital rápida e estratégica, pronta para captar e converter quem chega até você.</p>
         </div>
       </div>
     </div>
@@ -203,7 +115,6 @@
       <div class="sh rev">
         <div class="stag">Portfólio</div>
         <h2 class="stitle">Projetos entregues</h2>
-        <p class="ssub">Cada um com objetivo diferente, cada um construído do zero.</p>
       </div>
       <div class="pgrid-port">
 
@@ -214,23 +125,15 @@
               <div class="pcs-url">humberto.viza.click</div>
             </div>
             <div class="pcs-body engineering">
-              <div class="pcs-avatar-wrap">
-                <div class="pcs-av eng">HS</div>
-              </div>
+              <div class="pcs-avatar-wrap"><div class="pcs-av eng">HS</div></div>
               <div class="pcs-name">Humberto Schmitz</div>
               <div class="pcs-role">Engenharia HVAC · Engetab</div>
-              <div class="pcs-tags">
-                <span>Climatização</span>
-                <span>HVAC</span>
-                <span>Consultoria</span>
-              </div>
               <div class="pcs-btn">Entre em contato</div>
             </div>
           </div>
           <div class="pcard-info">
             <div class="pcard-tipo">Landing Page</div>
             <div class="pcard-nome">Humberto Schmitz</div>
-            <div class="pcard-desc">Engenheiro e diretor da Engetab. Perfil profissional com animações, contadores e portfólio.</div>
             <a href="https://humberto.viza.click" target="_blank" class="pcard-link">Ver projeto →</a>
           </div>
         </div>
@@ -242,23 +145,15 @@
               <div class="pcs-url">m2pisos.viza.click</div>
             </div>
             <div class="pcs-body flooring">
-              <div class="pcs-avatar-wrap">
-                <div class="pcs-av floor">M2</div>
-              </div>
+              <div class="pcs-avatar-wrap"><div class="pcs-av floor">M2</div></div>
               <div class="pcs-name">M2 Pisos</div>
               <div class="pcs-role">Revestimentos e Pisos</div>
-              <div class="pcs-tags">
-                <span>Porcelanato</span>
-                <span>Madeira</span>
-                <span>Vinílico</span>
-              </div>
               <div class="pcs-btn">Ver catálogo</div>
             </div>
           </div>
           <div class="pcard-info">
             <div class="pcard-tipo">Landing Page</div>
             <div class="pcard-nome">M2 Pisos</div>
-            <div class="pcard-desc">Empresa de revestimentos. Site com catálogo de produtos, galeria e contato direto via WhatsApp.</div>
             <a href="https://m2pisos.viza.click" target="_blank" class="pcard-link">Ver projeto →</a>
           </div>
         </div>
@@ -270,208 +165,19 @@
               <div class="pcs-url">bruna.viza.click</div>
             </div>
             <div class="pcs-body legal">
-              <div class="pcs-avatar-wrap">
-                <div class="pcs-av law">BM</div>
-              </div>
+              <div class="pcs-avatar-wrap"><div class="pcs-av law">BM</div></div>
               <div class="pcs-name">Bruna Mendes</div>
               <div class="pcs-role">Advogada · OAB/SP</div>
-              <div class="pcs-tags">
-                <span>Direito Civil</span>
-                <span>Trabalhista</span>
-              </div>
               <div class="pcs-btn">Agendar consulta</div>
             </div>
           </div>
           <div class="pcard-info">
             <div class="pcard-tipo">Landing Page</div>
             <div class="pcard-nome">Bruna Mendes</div>
-            <div class="pcard-desc">Advogada com foco em captação de clientes. Página com áreas de atuação e agendamento direto.</div>
             <a href="https://mendeslimaadv.viza.click" target="_blank" class="pcard-link">Ver projeto →</a>
           </div>
         </div>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- PLANOS -->
-  <section class="plans" id="planos">
-    <div class="container">
-      <div class="sh rev">
-        <div class="stag">Planos</div>
-        <h2 class="stitle">Quanto custa?</h2>
-        <p class="ssub">Preço justo, entrega rápida, sem mensalidade escondida.</p>
-      </div>
-      <div class="pgrid">
-
-        <div class="pc hot rev d1">
-          <div class="pbadge">Mais solicitado</div>
-          <div class="pname">Landing Page</div>
-          <div class="pdesc">Uma página focada em conversão, ideal para autônomos e profissionais liberais.</div>
-          <div class="pprice-promo">
-            <span class="pprice-old">R$ 997</span>
-            <span class="pprice">R$ 797</span>
-          </div>
-          <div class="ponce">Pagamento único · entrega em 3–5 dias</div>
-          <div class="pdiv"></div>
-          <ul class="pfs">
-            <li><span class="ck">✓</span> Design exclusivo e responsivo</li>
-            <li><span class="ck">✓</span> Copy estratégico de conversão</li>
-            <li><span class="ck">✓</span> Seção de serviços e diferenciais</li>
-            <li><span class="ck">✓</span> Botão de WhatsApp e contato</li>
-            <li><span class="ck">✓</span> Link personalizado nome.viza.click</li>
-            <li><span class="ck nfc">✓</span> <span>Cartão NFC incluso</span></li>
-          </ul>
-          <a href="https://wa.me/5511995945650?text=Quero%20uma%20Landing%20Page!" target="_blank" class="pcta fil">Quero minha Landing Page →</a>
-        </div>
-
-        <div class="pc rev d2">
-          <div class="pbadge pbadge-comp">Mais completo</div>
-          <div class="pname">Site Profissional</div>
-          <div class="pdesc">Site com múltiplas páginas, portfólio e estrutura completa para sua empresa.</div>
-          <div class="pprice-promo">
-            <span class="pprice-old">R$ 1.997</span>
-            <span class="pprice">R$ 1.797</span>
-          </div>
-          <div class="ponce">Pagamento único · entrega em 10–14 dias</div>
-          <div class="pdiv"></div>
-          <ul class="pfs">
-            <li><span class="ck">✓</span> Tudo da Landing Page</li>
-            <li><span class="ck">✓</span> Múltiplas páginas/seções</li>
-            <li><span class="ck">✓</span> Portfólio com galeria</li>
-            <li><span class="ck">✓</span> Depoimentos de clientes</li>
-            <li><span class="ck">✓</span> Formulário de contato</li>
-            <li><span class="ck">✓</span> SEO básico configurado</li>
-            <li><span class="ck nfc">✓</span> <span>Cartão NFC incluso</span></li>
-          </ul>
-          <a href="https://wa.me/5511995945650?text=Quero%20um%20Site%20Profissional!" target="_blank" class="pcta out">Quero meu site →</a>
-        </div>
-
-        <div class="pc rev d3">
-          <div class="pbadge pbadge-corp">Para empresas</div>
-          <div class="pname">Projeto Personalizado</div>
-          <div class="pdesc">Time de vendas, múltiplos perfis ou projeto maior? A gente monta uma proposta.</div>
-          <div class="pprice-corp">Sob consulta</div>
-          <div class="ponce">Proposta personalizada para seu negócio</div>
-          <div class="pdiv"></div>
-          <ul class="pfs">
-            <li><span class="ck">✓</span> Escopo definido junto com você</li>
-            <li><span class="ck">✓</span> Múltiplos perfis de equipe</li>
-            <li><span class="ck">✓</span> Identidade visual aplicada</li>
-            <li><span class="ck">✓</span> Integração com sistemas</li>
-            <li><span class="ck nfc">✓</span> <span>NFC para todo o time</span></li>
-          </ul>
-          <a href="https://wa.me/5511995945650?text=Quero%20um%20projeto%20personalizado!" target="_blank" class="pcta out-corp">Falar com a equipe →</a>
-        </div>
-
-      </div>
-
-      <div class="addons-strip rev">
-        <div class="addon-title">Adicione à qualquer plano <span class="man-opt">opcionais</span></div>
-        <div class="addons-row">
-          <div class="addon-item">
-            <span class="addon-ico">🔄</span>
-            <span class="addon-name">Manutenção mensal</span>
-            <span class="addon-price-wrap">
-              <span class="addon-price-old">R$ 250/mês</span>
-              <span class="addon-price">+ R$ 150/mês</span>
-            </span>
-          </div>
-          <div class="addon-item">
-            <span class="addon-ico">📇</span>
-            <span class="addon-name">Cartão NFC extra</span>
-            <span class="addon-price-wrap">
-              <span class="addon-price-old">R$ 97</span>
-              <span class="addon-price">+ R$ 57</span>
-            </span>
-          </div>
-          <div class="addon-item">
-            <span class="addon-ico">🌐</span>
-            <span class="addon-name">Domínio próprio (.com.br)</span>
-            <span class="addon-price">+ R$ 97/ano</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DEPOIMENTOS -->
-  <section class="testi">
-    <div class="container">
-      <div class="sh rev">
-        <div class="stag">Depoimentos</div>
-        <h2 class="stitle">Quem já usa, aprova</h2>
-      </div>
-      <div class="tgrid">
-        <div class="tc rev d1">
-          <div class="tstars">★★★★★</div>
-          <p class="ttxt">"Meus clientes ficam impressionados quando aproximo o cartão no celular deles e meu contato abre na hora. Profissional demais, recomendo muito."</p>
-          <div class="tauth">
-            <div class="tav" style="background:linear-gradient(135deg,#1b63d9,#3d80f5)">M</div>
-            <div>
-              <div class="tname">M2 Pisos</div>
-              <div class="trole">Revestimentos e Pisos</div>
-            </div>
-          </div>
-        </div>
-        <div class="tc rev d2">
-          <div class="tstars">★★★★★</div>
-          <p class="ttxt">"Como advogada, a primeira impressão conta muito. O site me ajuda a transmitir credibilidade logo no primeiro contato. Excelente trabalho."</p>
-          <div class="tauth">
-            <div class="tav" style="background:linear-gradient(135deg,#6d28d9,#8b5cf6)">B</div>
-            <div>
-              <div class="tname">Bruna Mendes</div>
-              <div class="trole">Advogada</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="faq" id="faq">
-    <div class="container">
-      <div class="sh rev" style="margin-bottom:36px">
-        <div class="stag">Dúvidas</div>
-        <h2 class="stitle">Perguntas frequentes</h2>
-      </div>
-      <div class="faq-list">
-        <div class="faq-item rev d1">
-          <button class="faq-q" onclick="toggleFaq(this)">
-            <span>Quanto tempo demora para entregar?</span>
-            <svg class="faq-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-          <div class="faq-a">Landing pages são entregues em 3 a 5 dias úteis após aprovação do briefing. Sites completos em 10 a 14 dias. Projetos maiores têm prazo combinado.</div>
-        </div>
-        <div class="faq-item rev d2">
-          <button class="faq-q" onclick="toggleFaq(this)">
-            <span>Preciso ter domínio próprio?</span>
-            <svg class="faq-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-          <div class="faq-a">Não. Todo projeto inclui um link gratuito no formato nome.viza.click. Se quiser usar seu próprio domínio (.com ou .com.br), cuidamos da configuração por + R$ 97/ano.</div>
-        </div>
-        <div class="faq-item rev d3">
-          <button class="faq-q" onclick="toggleFaq(this)">
-            <span>Posso pedir alterações depois?</span>
-            <svg class="faq-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-          <div class="faq-a">O projeto inclui até 2 rodadas de ajustes sem custo adicional. Para alterações contínuas, o plano de manutenção mensal (R$ 150/mês) cobre tudo.</div>
-        </div>
-        <div class="faq-item rev d1">
-          <button class="faq-q" onclick="toggleFaq(this)">
-            <span>O cartão NFC funciona em qualquer celular?</span>
-            <svg class="faq-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-          <div class="faq-a">Funciona na grande maioria dos smartphones modernos — iPhone XS+ e Android com NFC (quase todos desde 2018). Sem app, sem QR code, sem digitar nada.</div>
-        </div>
-        <div class="faq-item rev d2">
-          <button class="faq-q" onclick="toggleFaq(this)">
-            <span>Como funciona o pagamento?</span>
-            <svg class="faq-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-          <div class="faq-a">Aceitamos Pix, boleto e cartão de crédito. O pagamento é feito após briefing aprovado, antes do início do desenvolvimento.</div>
-        </div>
       </div>
     </div>
   </section>
@@ -481,15 +187,12 @@
     <div class="container">
       <div class="ctabox rev">
         <div class="ctai">
-          <div class="cta-tag">Pronto para começar?</div>
-          <h2>Seu próximo cliente<br>está esperando sua página.</h2>
-          <p>Briefing rápido pelo WhatsApp. Entrega em dias. Resultado que você pode mostrar.</p>
-          <div class="cbtns">
-            <a href="https://wa.me/5511995945650?text=Olá!%20Vim%20pelo%20Viza.click%20e%20quero%20um%20orçamento." target="_blank" class="bp" style="font-size:15px;padding:15px 32px;">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.561 4.14 1.535 5.874L0 24l6.335-1.536A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.808 9.808 0 01-5.044-1.393l-.361-.215-3.762.912.958-3.657-.236-.375A9.787 9.787 0 012.182 12c0-5.413 4.405-9.818 9.818-9.818s9.818 4.405 9.818 9.818-4.405 9.818-9.818 9.818z"/></svg>
-              Pedir orçamento agora
-            </a>
-          </div>
+          <h2>Vamos automatizar<br>o seu atendimento?</h2>
+          <p>Fale agora pelo WhatsApp e entenda como a IA pode trabalhar pelo seu negócio.</p>
+          <a href="https://wa.me/5511995945650?text=Olá!%20Vim%20pelo%20site%20da%20Viza%20Click%20e%20quero%20saber%20mais." target="_blank" class="hero-cta">
+            Falar no WhatsApp
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
         </div>
       </div>
     </div>
@@ -497,22 +200,22 @@
 
   <footer>
     <div class="fsoc">
-      <a href="https://wa.me/5511995945650" target="_blank">
+      <a href="https://wa.me/5511995945650" target="_blank" aria-label="WhatsApp">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.561 4.14 1.535 5.874L0 24l6.335-1.536A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.808 9.808 0 01-5.044-1.393l-.361-.215-3.762.912.958-3.657-.236-.375A9.787 9.787 0 012.182 12c0-5.413 4.405-9.818 9.818-9.818s9.818 4.405 9.818 9.818-4.405 9.818-9.818 9.818z"/></svg>
       </a>
-      <a href="https://instagram.com/viza.click" target="_blank">
+      <a href="https://instagram.com/viza.click" target="_blank" aria-label="Instagram">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
       </a>
-      <a href="mailto:contato@viza.click">
+      <a href="mailto:contato@viza.click" aria-label="E-mail">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
       </a>
-      <a href="contato.vcf" title="Salvar contato">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 0H4C2.9 0 2 .9 2 2v20c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2zm-8 5c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 14H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1z"/></svg>
-      </a>
     </div>
-    <p>© 2026 Viza.click · Sites e Landing Pages que Convertem · <a href="https://instagram.com/viza.click" target="_blank">@viza.click</a></p>
+    <p>© 2026 Viza Click · IA para negócios</p>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script type="module" src="hero.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
