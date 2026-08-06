@@ -9,7 +9,7 @@ export default function Hero() {
       </p>
 
       <Fall>
-        <h1 className="font-display font-normal uppercase leading-[1.08] text-[12vw] md:text-[7vw] tracking-tight max-w-5xl">
+        <h1 className="font-display font-normal uppercase leading-[1.2] text-[12vw] md:text-[7vw] tracking-tight max-w-5xl">
           IA que trabalha enquanto você dorme
         </h1>
       </Fall>

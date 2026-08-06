@@ -145,10 +145,10 @@ export default function Projetos() {
     <section className="py-24 md:py-32 overflow-clip">
       <div className="px-6 md:px-10 mb-12 md:mb-16">
         <p className="font-body text-xs md:text-sm tracking-[0.3em] text-fg-muted uppercase mb-4">
-          Clientes no ar
+          Meus clientes
         </p>
-        <h2 className="font-display font-normal uppercase text-[10vw] md:text-[4.5vw] leading-[1.05] tracking-tight max-w-3xl">
-          Sites que já estão trabalhando
+        <h2 className="font-display font-normal uppercase text-[10vw] md:text-[4.5vw] leading-[1.2] tracking-tight max-w-3xl">
+          Negócios que já contam com a gente
         </h2>
         <p className="font-body text-fg-muted text-sm md:text-base mt-4">
           Arraste para o lado.
@@ -168,7 +168,7 @@ export default function Projetos() {
                 href={cliente.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`shrink-0 w-[78vw] md:w-[32vw] h-[92vw] md:h-[38vw] rounded-[1.5rem] flex flex-col justify-between p-7 md:p-9 no-underline ${
+                className={`shrink-0 w-[72vw] md:w-[27vw] h-[72vw] md:h-[22vw] rounded-[1.25rem] flex flex-col justify-between p-6 md:p-8 no-underline ${
                   index < CLIENTES.length - 1 ? "mr-[4vw] md:mr-[2vw]" : ""
                 }`}
                 style={{
@@ -184,7 +184,7 @@ export default function Projetos() {
                   >
                     {cliente.segmento}
                   </p>
-                  <h3 className="font-display font-normal uppercase text-[7vw] md:text-[2.6vw] leading-[1.05] tracking-tight">
+                  <h3 className="font-display font-normal uppercase text-[6.5vw] md:text-[2.1vw] leading-[1.15] tracking-tight">
                     {cliente.nome}
                   </h3>
                 </div>

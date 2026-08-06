@@ -4,4 +4,4 @@ export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURICo
   WHATSAPP_MESSAGE
 )}`;
 export const INSTAGRAM_URL = "https://instagram.com/viza.click";
-export const EMAIL = "paulo.henrique.shim@gmail.com";
+export const EMAIL = "contato@viza.click";

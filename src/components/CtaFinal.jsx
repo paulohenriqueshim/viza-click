@@ -5,7 +5,7 @@ export default function CtaFinal() {
   return (
     <section className="min-h-[70vh] flex flex-col items-center justify-center px-6 text-center border-t border-border">
       <Fall>
-        <h2 className="font-display font-normal uppercase leading-[1.08] text-[13vw] md:text-[6vw] tracking-tight">
+        <h2 className="font-display font-normal uppercase leading-[1.2] text-[13vw] md:text-[6vw] tracking-tight">
           Vamos conversar?
         </h2>
       </Fall>
