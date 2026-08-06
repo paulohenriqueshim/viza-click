@@ -5,7 +5,7 @@ export default function Sobre() {
     <section className="min-h-screen flex items-center justify-center px-6 py-24">
       <div className="max-w-4xl text-center">
         <Fall color="var(--fg)">
-          <h2 className="font-display font-normal uppercase leading-[0.95] text-[9vw] md:text-[4.5vw] tracking-tight">
+          <h2 className="font-display font-normal uppercase leading-[1.08] text-[9vw] md:text-[4.5vw] tracking-tight">
             Tecnologia de empresa grande. Acessível pra você.
           </h2>
         </Fall>
