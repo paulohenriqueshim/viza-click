@@ -1,6 +1,7 @@
 import { Anton, Inter } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
+import ChatWidget from "@/components/ChatWidget";
 
 const anton = Anton({
   weight: "400",
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
       <body>
         <SmoothScroll />
         {children}
+        <ChatWidget />
       </body>
     </html>
   );
