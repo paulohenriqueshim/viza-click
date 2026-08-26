@@ -142,16 +142,25 @@ export default function Projetos() {
   }, []);
 
   return (
-    <section className="py-24 md:py-32 overflow-clip">
-      <div className="px-6 md:px-10 mb-12 md:mb-16">
-        <p className="font-body text-xs md:text-sm tracking-[0.3em] text-fg-muted uppercase mb-4">
-          Meus clientes
+    <section id="clientes" className="overflow-clip py-28 md:py-40">
+      <div className="mx-auto mb-14 max-w-[110rem] px-6 md:mb-20 md:px-10">
+        <p
+          className="type-label text-fg-muted"
+          data-animate-variant="slide"
+          data-animate-on-scroll="true"
+        >
+          Clientes
         </p>
-        <h2 className="font-display font-normal uppercase text-[10vw] md:text-[4.5vw] leading-[1.2] tracking-tight max-w-3xl">
+        <h2
+          className="type-xl mt-8 max-w-[16ch]"
+          data-animate-variant="slide"
+          data-animate-on-scroll="true"
+        >
           Negócios que já contam com a gente
         </h2>
-        <p className="font-body text-fg-muted text-sm md:text-base mt-4">
-          Arraste para o lado.
+        <p className="type-body mt-8 max-w-xl text-fg-muted">
+          Sites e páginas comerciais entregues pela Viza Click. Arraste para o
+          lado para abrir cada projeto.
         </p>
       </div>
 
@@ -203,6 +212,25 @@ export default function Projetos() {
               </a>
             );
           })}
+        </div>
+      </div>
+
+      <div className="mx-auto mt-20 max-w-[110rem] px-6 md:mt-28 md:px-10">
+        <div className="border-t border-border pt-10 md:pt-14">
+          <p className="type-label text-accent">Teste agora</p>
+          <h3
+            className="type-lg mt-8 max-w-[20ch]"
+            data-animate-variant="slide"
+            data-animate-on-scroll="true"
+          >
+            O atendimento deste site é um agente de IA nosso
+          </h3>
+          <p className="type-body mt-8 max-w-xl text-fg-muted">
+            A Lia atende quem chega aqui, entende o caso e me passa a conversa
+            quando faz sentido. É o mesmo tipo de agente que eu implemento no
+            atendimento da sua empresa. Abre o chat no canto da tela e vê
+            funcionando.
+          </p>
         </div>
       </div>
     </section>

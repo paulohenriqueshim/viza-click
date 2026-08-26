@@ -1,43 +1,82 @@
-const SERVICOS = [
+/**
+ * Serviços como lista tipográfica, não como grade de cards. A ordem é a
+ * ordem de importância comercial: atendimento primeiro, presença digital
+ * por último, marcada como complementar.
+ */
+const FRENTES = [
   {
-    titulo: "Chatbot com IA",
-    desc: "Atendimento automático e inteligente pros seus clientes, a qualquer hora.",
+    numero: "01",
+    titulo: "Atendimento que não dorme",
+    desc: "Agentes de IA que respondem seu cliente na hora, entendem o pedido, separam quem tem interesse real e cobram o retorno que ficou parado. No WhatsApp e no site.",
   },
   {
-    titulo: "Automações",
-    desc: "Processos repetitivos rodando sozinhos, sem depender de você o dia inteiro.",
+    numero: "02",
+    titulo: "Operação no automático",
+    desc: "Fluxos que assumem o trabalho repetitivo do administrativo e fazem as ferramentas que você já usa conversarem entre si, sem ninguém digitando no meio.",
   },
   {
-    titulo: "Landing Pages",
-    desc: "Sites rápidos e certeiros, feitos pra converter visita em cliente.",
+    numero: "03",
+    titulo: "Sistema sob medida",
+    desc: "Quando o seu processo é específico demais pra caber em ferramenta pronta, a gente constrói o sistema em volta dele em vez de te obrigar a mudar como você trabalha.",
   },
   {
-    titulo: "Conteúdo para Instagram",
-    desc: "Imagens, vídeos e carrosséis criados com IA pra manter seu perfil sempre ativo.",
+    numero: "04",
+    titulo: "Presença digital",
+    desc: "Sites e páginas comerciais rápidas, pra quem chega entender o que você faz e falar com você. Entra como porta de entrada da operação, não como o centro dela.",
+    complementar: true,
   },
 ];
 
 export default function Servicos() {
   return (
-    <section className="px-6 md:px-10 py-24 md:py-32">
-      <p className="font-body text-xs md:text-sm tracking-[0.3em] text-fg-muted uppercase mb-12 text-center">
-        O que fazemos
-      </p>
+    <section id="solucoes" className="px-6 py-28 md:px-10 md:py-40">
+      <div className="mx-auto max-w-[110rem]">
+        <p
+          className="type-label text-fg-muted"
+          data-animate-variant="slide"
+          data-animate-on-scroll="true"
+        >
+          O que a gente constrói
+        </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border max-w-5xl mx-auto border border-border rounded-2xl overflow-hidden">
-        {SERVICOS.map((servico) => (
-          <div
-            key={servico.titulo}
-            className="bg-bg p-8 md:p-12 hover:bg-bg-elevated transition-colors"
-          >
-            <h3 className="font-display font-normal uppercase text-2xl md:text-3xl tracking-tight mb-3">
-              {servico.titulo}
-            </h3>
-            <p className="font-body text-fg-muted text-sm md:text-base">
-              {servico.desc}
-            </p>
-          </div>
-        ))}
+        <div className="mt-14 md:mt-20">
+          {FRENTES.map((frente) => (
+            <article
+              key={frente.numero}
+              className="group grid gap-6 border-t border-border py-10 last:border-b md:grid-cols-[6rem_minmax(0,1.1fr)_minmax(0,1fr)] md:items-start md:gap-12 md:py-14"
+            >
+              <span className="type-label text-accent">{frente.numero}</span>
+
+              <h3
+                className="type-lg transition-colors duration-300 group-hover:text-accent"
+                data-animate-variant="slide"
+                data-animate-on-scroll="true"
+              >
+                {frente.titulo}
+              </h3>
+
+              <div>
+                <p
+                  className="type-body max-w-xl text-fg-muted"
+                  data-animate-variant="slide"
+                  data-animate-on-scroll="true"
+                >
+                  {frente.desc}
+                </p>
+                {frente.complementar ? (
+                  <p className="type-label mt-5 text-fg-muted">
+                    Serviço complementar
+                  </p>
+                ) : null}
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <p className="type-label mt-10 max-w-2xl text-fg-muted">
+          Também produzimos conteúdo com IA para redes sociais dentro de
+          projetos já em andamento.
+        </p>
       </div>
     </section>
   );

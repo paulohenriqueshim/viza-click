@@ -29,10 +29,36 @@ html {
 }
 
 body {
+  overflow-x: clip;
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-body), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Barra de rolagem discreta, mas presente: sem ela a pessoa perde a
+   noção de onde está na página e de que ainda tem conteúdo abaixo. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border: 3px solid var(--bg);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--fg-muted);
 }
 
 ::selection {
@@ -42,4 +68,308 @@ body {
 
 .lenis.lenis-smooth {
   scroll-behavior: auto;
+}
+
+@layer base {
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  /* Título é elemento gráfico, não texto pra copiar. Evita o arrasto azul
+     feio quando a pessoa passa o mouse selecionando pela página. */
+  h1,
+  h2,
+  h3 {
+    user-select: none;
+  }
+}
+
+@layer components {
+  /* ---- Escala tipográfica ----
+     O tipo é o protagonista do layout. Os tamanhos vão até valores que
+     parecem exagerados no código de propósito: em tela cheia o título
+     precisa ocupar a largura toda, senão o efeito não acontece. */
+  /* Título do hero: precisa caber na tela inteira junto com subtítulo,
+     botões e rodapé da seção. Por isso o tamanho olha também a altura
+     (min entre vw e vh): numa tela baixa e larga, é a altura que manda. */
+  .type-hero,
+  .type-display,
+  .type-xl,
+  .type-lg,
+  .type-step {
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Título de passo: medido contra a largura da COLUNA (cqi), não da
+     tela. Com vw, ao virar grade de 4 colunas, DIAGNÓSTICO e CONSTRUÇÃO
+     ficavam maiores que a própria coluna e vazavam por cima da vizinha,
+     porque grid-cols-4 usa minmax(0, 1fr) e a coluna não cresce. */
+  .type-step {
+    font-family: var(--font-anton), system-ui, sans-serif;
+    font-size: clamp(1.5rem, 14cqi, 2.75rem);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  .type-hero {
+    font-family: var(--font-anton), system-ui, sans-serif;
+    font-size: clamp(3rem, min(9vw, 11vh), 9rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .type-display {
+    font-family: var(--font-anton), system-ui, sans-serif;
+    font-size: clamp(3rem, 11vw, 11rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .type-xl {
+    font-family: var(--font-anton), system-ui, sans-serif;
+    font-size: clamp(2.75rem, 9vw, 9rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .type-lg {
+    font-family: var(--font-anton), system-ui, sans-serif;
+    font-size: clamp(2rem, 5vw, 5rem);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  /* Texto pequeno em caixa alta, o contraponto do tipo gigante. É o que
+     dá a cara de material impresso em vez de site de template. */
+  .type-label {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .type-body {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: clamp(1rem, 1.15vw, 1.25rem);
+    line-height: 1.5;
+  }
+
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--border);
+  }
+}
+
+/* ---- Reveal de texto por máscara ----
+   Classes que o SplitText aplica (ver components/AnimatedCopy.jsx). A
+   máscara é o wrapper com overflow hidden; a linha/palavra desliza de
+   baixo pra cima de dentro dela. */
+.line,
+.word {
+  position: relative;
+  will-change: transform;
+}
+
+.line {
+  display: block;
+}
+
+.word {
+  display: inline-block;
+}
+
+.line-mask,
+.word-mask {
+  display: block;
+  overflow: hidden;
+  /* Anton tem caixa de glifo mais alta que a linha, então til e acento
+     agudo em caixa alta (OPERAÇÃO, NEGÓCIOS) batem no topo da máscara e
+     somem. A margem negativa cancela o efeito da folga no layout.
+     Só no topo: embaixo o texto ainda está deslizando pra dentro. */
+  padding-top: 0.14em;
+  margin-top: -0.14em;
+}
+
+/* ---- Preloader ----
+   Duas camadas idênticas empilhadas. No fim da timeline cada uma recebe
+   um clip-path (metade de cima / metade de baixo) e desliza pro seu lado:
+   a tela abre ao meio como cortina e revela o site por baixo.
+
+   Fundo carvão com a marca em limão: a cor de acento rende muito mais
+   como detalhe sobre escuro do que preenchendo a tela, onde ela perde a
+   eletricidade e lê como pastel. */
+.preloader,
+.split-overlay,
+.tags-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100svh;
+  pointer-events: auto;
+}
+
+.preloader,
+.split-overlay {
+  background-color: var(--bg);
+  color: var(--accent);
+}
+
+.preloader {
+  z-index: 10000;
+}
+
+.split-overlay {
+  z-index: 9999;
+}
+
+.tags-overlay {
+  z-index: 10000;
+  pointer-events: none;
+}
+
+.preloader h1,
+.split-overlay h1,
+.tags-overlay p {
+  opacity: 0;
+}
+
+.intro-title {
+  position: absolute;
+  top: 49%;
+  left: 50%;
+  width: 100%;
+  padding: 0 1.5rem;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.intro-title .char {
+  position: relative;
+  display: inline-block;
+  margin-top: 0.75rem;
+  overflow: hidden;
+  transform: translateY(2.75rem);
+}
+
+.intro-title .char span {
+  position: relative;
+  display: inline-block;
+  transform: translateY(110%);
+  will-change: transform;
+}
+
+.tag {
+  position: absolute;
+  width: max-content;
+  overflow: hidden;
+  color: var(--fg-muted);
+}
+
+.tag .word {
+  position: relative;
+  display: inline-block;
+  transform: translateY(110%);
+  will-change: transform;
+}
+
+.tag-1 {
+  top: 14%;
+  left: 8%;
+}
+
+.tag-2 {
+  bottom: 16%;
+  left: 16%;
+}
+
+.tag-3 {
+  bottom: 30%;
+  right: 8%;
+}
+
+@media (max-width: 1000px) {
+  .intro-title .char {
+    transform: translateY(1rem);
+  }
+
+  .tag-1 {
+    top: 12%;
+    left: 6%;
+  }
+
+  .tag-2 {
+    bottom: 18%;
+    left: 6%;
+  }
+
+  .tag-3 {
+    bottom: 10%;
+    right: 6%;
+  }
+}
+
+/* Celular pequeno e baixo (320x568, 360x640): o hero inteiro não cabe na
+   dobra e o botão de ação fica abaixo dela. Aqui ele abre mão da linha de
+   rótulos do rodapé, que repete informação que aparece adiante na página,
+   e aperta os respiros. Note o max-width junto: sem ele isso pegaria
+   também notebook de 1366x700, que já cabe e não precisa perder nada. */
+@media (max-height: 720px) and (max-width: 640px) {
+  .hero {
+    padding-top: 5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .hero-rodape {
+    display: none;
+  }
+}
+
+/* ---- Cursor ----
+   Só em ponteiro fino (mouse). Em touch nem existe. O blend difference
+   faz ele inverter o que estiver embaixo, então funciona tanto sobre o
+   carvão quanto sobre os blocos limão, sem precisar trocar de cor. */
+@media (pointer: fine) {
+  #custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 20001;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    opacity: 0;
+    background-color: var(--accent);
+    mix-blend-mode: difference;
+    pointer-events: none;
+    user-select: none;
+    transform: translate3d(var(--x, -100px), var(--y, -100px), 0)
+      translate(-50%, -50%) scale(var(--s, 1));
+    transition:
+      opacity 120ms ease,
+      width 200ms ease,
+      height 200ms ease;
+    will-change: transform, opacity;
+  }
+
+  #custom-cursor.is-visible {
+    opacity: 1;
+  }
+
+  #custom-cursor.is-hovering {
+    width: 48px;
+    height: 48px;
+  }
 }

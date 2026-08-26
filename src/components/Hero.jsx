@@ -1,22 +1,157 @@
-import Fall from "./Fall";
+"use client";
+
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { WHATSAPP_URL } from "@/lib/contact";
+
+/**
+ * Hero de tela cheia com o tipo como protagonista. O título inclina em 3D
+ * seguindo o mouse (adaptado do home-hero.js do projeto de referência):
+ * perspectiva de 1000px, rotação máxima de 20 graus, lerp de 0.05 pra o
+ * movimento chegar atrasado e pesado em vez de grudar no ponteiro.
+ *
+ * O atributo data-hero marca a seção pro AnimatedCopy saber quais textos
+ * precisam esperar a cortina do preloader abrir.
+ */
+function useTilt(containerRef, targetRef) {
+  useEffect(() => {
+    const container = containerRef.current;
+    const target = targetRef.current;
+    if (!container || !target) return;
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+
+    const LERP = 0.05;
+    const MAX = 20;
+    let alvoX = 0;
+    let alvoY = 0;
+    let x = 0;
+    let y = 0;
+    let raf = null;
+    let dentro = false;
+
+    const render = () => {
+      x += (alvoX - x) * LERP;
+      y += (alvoY - y) * LERP;
+
+      gsap.set(target, {
+        rotateX: y,
+        rotateY: x,
+        transformPerspective: 1000,
+        transformOrigin: "center center",
+        force3D: true,
+      });
+
+      const parado =
+        Math.abs(x - alvoX) < 0.01 && Math.abs(y - alvoY) < 0.01;
+      if (parado && !dentro) {
+        raf = null;
+        return;
+      }
+      raf = requestAnimationFrame(render);
+    };
+
+    const garantirLoop = () => {
+      if (raf === null) raf = requestAnimationFrame(render);
+    };
+
+    const mover = (e) => {
+      const rect = container.getBoundingClientRect();
+      alvoX = ((e.clientX - rect.left) / rect.width - 0.5) * MAX;
+      alvoY = -((e.clientY - rect.top) / rect.height - 0.5) * MAX;
+      dentro = true;
+      garantirLoop();
+    };
+
+    const sair = () => {
+      alvoX = 0;
+      alvoY = 0;
+      dentro = false;
+      garantirLoop();
+    };
+
+    container.addEventListener("mousemove", mover);
+    container.addEventListener("mouseleave", sair);
+
+    return () => {
+      if (raf !== null) cancelAnimationFrame(raf);
+      container.removeEventListener("mousemove", mover);
+      container.removeEventListener("mouseleave", sair);
+    };
+  }, [containerRef, targetRef]);
+}
 
 export default function Hero() {
+  const secaoRef = useRef(null);
+  const tituloRef = useRef(null);
+  useTilt(secaoRef, tituloRef);
+
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center px-6 text-center relative overflow-clip">
-      <p className="font-body text-xs md:text-sm tracking-[0.3em] text-fg-muted uppercase mb-6">
-        Agência de Inteligência Artificial
-      </p>
-
-      <Fall>
-        <h1 className="font-display font-normal uppercase leading-[1.2] text-[12vw] md:text-[7vw] tracking-tight max-w-5xl">
-          IA que trabalha enquanto você dorme
+    <section
+      ref={secaoRef}
+      data-hero
+      className="hero relative flex min-h-svh flex-col justify-center overflow-x-clip px-6 pt-28 pb-10 md:px-10 md:pt-36"
+      style={{ transformStyle: "preserve-3d", perspective: "1000px" }}
+    >
+      <div ref={tituloRef} className="will-change-transform">
+        <h1
+          className="type-hero max-w-[16ch]"
+          data-animate-variant="slide"
+          data-animate-on-scroll="false"
+          data-animate-delay="0.1"
+          data-animate-stagger="0.08"
+        >
+          Sistemas que trabalham sozinhos
         </h1>
-      </Fall>
+      </div>
 
-      <p className="font-body text-base md:text-lg text-fg-muted max-w-xl mt-8">
-        Chatbots, automações e presença digital construídos com IA para quem
-        não pode parar de vender.
-      </p>
+      <div className="mt-8 flex flex-col gap-8 md:mt-14 md:flex-row md:items-end md:justify-between">
+        <p
+          className="type-body max-w-xl text-fg-muted"
+          data-animate-variant="slide"
+          data-animate-on-scroll="false"
+          data-animate-delay="0.5"
+        >
+          Transformamos os processos manuais da sua empresa em sistemas que
+          atendem, organizam e executam sozinhos. Automação e agentes de IA
+          para pequenas empresas e profissionais liberais.
+        </p>
+
+        <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="type-label inline-flex items-center justify-center bg-accent px-8 py-5 text-bg transition-opacity hover:opacity-90"
+          >
+            Quero automatizar meu negócio
+          </a>
+          <a
+            href="#solucoes"
+            className="type-label inline-flex items-center justify-center border border-border px-8 py-5 text-fg transition-colors hover:border-accent hover:text-accent"
+          >
+            Ver soluções
+          </a>
+        </div>
+      </div>
+
+      <div className="hero-rodape mt-12 flex flex-col justify-between gap-4 border-t border-border pt-6 md:mt-20 md:flex-row">
+        <p
+          className="type-label text-fg-muted"
+          data-animate-variant="slide"
+          data-animate-on-scroll="false"
+          data-animate-delay="0.7"
+        >
+          Automação, agentes de IA e sistemas sob medida
+        </p>
+        <p
+          className="type-label text-accent"
+          data-animate-variant="slide"
+          data-animate-on-scroll="false"
+          data-animate-delay="0.8"
+        >
+          Você fala direto com quem constrói
+        </p>
+      </div>
     </section>
   );
 }
