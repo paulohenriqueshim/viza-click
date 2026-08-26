@@ -1,4 +1,5 @@
-import { WHATSAPP_URL, EMAIL } from "@/lib/contact";
+import BotaoChat from "./BotaoChat";
+import { EMAIL } from "@/lib/contact";
 
 export default function CtaFinal() {
   return (
@@ -35,14 +36,9 @@ export default function CtaFinal() {
           </p>
 
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="type-label inline-flex items-center justify-center bg-accent px-8 py-5 text-bg transition-opacity hover:opacity-90"
-            >
+            <BotaoChat className="type-label inline-flex items-center justify-center bg-accent px-8 py-5 text-bg transition-opacity hover:opacity-90">
               Quero automatizar meu negócio
-            </a>
+            </BotaoChat>
             <a
               href={`mailto:${EMAIL}`}
               className="type-label inline-flex items-center justify-center border border-border px-8 py-5 text-fg transition-colors hover:border-accent hover:text-accent"

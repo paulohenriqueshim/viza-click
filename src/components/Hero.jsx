@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { WHATSAPP_URL } from "@/lib/contact";
+import { abrirChat } from "@/lib/chat-ui";
 
 /**
  * Hero de tela cheia com o tipo como protagonista. O título inclina em 3D
@@ -116,18 +116,17 @@ export default function Hero() {
           para pequenas empresas e profissionais liberais.
         </p>
 
-        <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+        <div className="flex shrink-0 flex-col items-start gap-6 sm:flex-row sm:items-center sm:gap-8">
+          <button
+            type="button"
+            onClick={abrirChat}
             className="type-label inline-flex items-center justify-center bg-accent px-8 py-5 text-bg transition-opacity hover:opacity-90"
           >
             Quero automatizar meu negócio
-          </a>
+          </button>
           <a
             href="#solucoes"
-            className="type-label inline-flex items-center justify-center border border-border px-8 py-5 text-fg transition-colors hover:border-accent hover:text-accent"
+            className="type-label border-b border-border pb-1 text-fg-muted transition-colors hover:border-accent hover:text-accent"
           >
             Ver soluções
           </a>

@@ -34,7 +34,7 @@ export default function Header() {
         href={WHATSAPP_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="type-label shrink-0 bg-accent px-5 py-3 text-bg transition-opacity hover:opacity-90"
+        className="type-label shrink-0 border border-border px-5 py-3 text-fg transition-colors hover:border-accent hover:text-accent"
       >
         Falar agora
       </a>

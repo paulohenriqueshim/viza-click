@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Logo from "./Logo";
 import { WHATSAPP_URL } from "@/lib/contact";
+import { ABRIR_CHAT_EVENT } from "@/lib/chat-ui";
 
 // Limite simples de mensagens por sessão de navegador — contorna abuso
 // básico sem precisar de banco de dados externo (decisão registrada no
@@ -48,6 +49,7 @@ export default function ChatWidget() {
   const [ended, setEnded] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const listRef = useRef(null);
+  const painelRef = useRef(null);
   const hydrated = useRef(false);
 
   // Hidrata a partir do sessionStorage só no cliente, depois do primeiro
@@ -71,6 +73,54 @@ export default function ChatWidget() {
       listRef.current.scrollTop = listRef.current.scrollHeight;
     }
   }, [messages, open, sending]);
+
+  // Os CTAs da página abrem o chat por evento, sem precisar subir este
+  // estado pra um contexto só por causa de dois botões.
+  useEffect(() => {
+    const abrir = () => setOpen(true);
+    window.addEventListener(ABRIR_CHAT_EVENT, abrir);
+    return () => window.removeEventListener(ABRIR_CHAT_EVENT, abrir);
+  }, []);
+
+  // No iPhone, quando o teclado sobe, o viewport de LAYOUT não muda, só o
+  // visual. Um painel com height 100% continua do tamanho da tela inteira
+  // e empurra o campo de texto pra debaixo do teclado. Aqui o painel é
+  // medido pelo visualViewport, que é o que de fato está visível, e o
+  // offsetTop reposiciona ele quando o iOS desloca a página.
+  useEffect(() => {
+    if (!open) return;
+    const vv = window.visualViewport;
+    const painel = painelRef.current;
+    if (!vv || !painel) return;
+
+    const limpar = () => {
+      painel.style.height = "";
+      painel.style.transform = "";
+    };
+
+    const ajustar = () => {
+      // Só no mobile: no desktop o painel é uma caixa flutuante de
+      // tamanho fixo e não tem teclado empurrando nada.
+      if (!window.matchMedia("(max-width: 767px)").matches) {
+        limpar();
+        return;
+      }
+      painel.style.height = `${vv.height}px`;
+      painel.style.transform = `translateY(${vv.offsetTop}px)`;
+    };
+
+    ajustar();
+    vv.addEventListener("resize", ajustar);
+    vv.addEventListener("scroll", ajustar);
+    window.addEventListener("orientationchange", ajustar);
+
+    return () => {
+      vv.removeEventListener("resize", ajustar);
+      vv.removeEventListener("scroll", ajustar);
+      window.removeEventListener("orientationchange", ajustar);
+      limpar();
+    };
+  }, [open]);
 
   async function handleSend(e) {
     e.preventDefault();
@@ -144,7 +194,9 @@ export default function ChatWidget() {
 
       {open && (
         <div
-          className="fixed inset-0 md:inset-auto md:bottom-24 md:right-8 z-[59] w-full h-full md:w-[380px] md:h-[560px] md:max-h-[75vh] flex flex-col bg-bg border border-border md:rounded-2xl overflow-hidden"
+          ref={painelRef}
+          data-lenis-prevent
+          className="fixed inset-0 z-[59] flex h-[100dvh] w-full flex-col overflow-hidden border border-border bg-bg md:inset-auto md:bottom-24 md:right-8 md:h-[560px] md:max-h-[75vh] md:w-[380px] md:rounded-2xl"
           role="dialog"
           aria-label="Chat com a Viza Click"
         >
@@ -163,7 +215,7 @@ export default function ChatWidget() {
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Fechar chat"
-              className="md:hidden inline-flex items-center justify-center w-8 h-8 rounded-full text-fg-muted hover:text-fg transition-colors"
+              className="md:hidden -mr-2 inline-flex h-10 w-10 items-center justify-center rounded-full text-fg-muted transition-colors hover:text-fg"
             >
               <CloseIcon />
             </button>
@@ -185,7 +237,7 @@ export default function ChatWidget() {
 
           {/* Campo de mensagem */}
           {!ended && (
-            <form onSubmit={handleSend} className="border-t border-border p-3 shrink-0 flex gap-2">
+            <form onSubmit={handleSend} className="flex shrink-0 items-center gap-2 border-t border-border p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:pb-3">
               <input
                 type="text"
                 value={input}
@@ -193,13 +245,13 @@ export default function ChatWidget() {
                 placeholder="Escreve aqui..."
                 disabled={sending}
                 maxLength={2000}
-                className="flex-1 bg-bg-elevated border border-border rounded-full px-4 py-2.5 text-sm text-fg placeholder:text-fg-muted focus:outline-none focus:border-accent transition-colors"
+                className="min-w-0 flex-1 rounded-full border border-border bg-bg-elevated px-4 py-3 text-base text-fg transition-colors placeholder:text-fg-muted focus:border-accent focus:outline-none md:py-2.5 md:text-sm"
               />
               <button
                 type="submit"
                 disabled={sending || !input.trim()}
                 aria-label="Enviar mensagem"
-                className="inline-flex items-center justify-center bg-accent text-bg rounded-full w-10 h-10 shrink-0 disabled:opacity-40 hover:opacity-90 transition-opacity"
+                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent text-bg transition-colors hover:opacity-90 disabled:bg-bg-elevated disabled:text-fg-muted disabled:ring-1 disabled:ring-border md:h-10 md:w-10"
               >
                 <SendIcon />
               </button>
@@ -216,7 +268,7 @@ function ChatBubble({ role, content }) {
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <p
-        className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm font-body leading-relaxed whitespace-pre-wrap ${
+        className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-2.5 font-body text-[15px] leading-relaxed md:text-sm ${
           isUser
             ? "bg-accent text-bg rounded-br-sm"
             : "bg-bg-elevated text-fg border border-border rounded-bl-sm"

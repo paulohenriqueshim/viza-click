@@ -1,6 +1,5 @@
 import Image from "next/image";
 import foto from "@/assets/paulo-shim.png";
-import { WHATSAPP_URL } from "@/lib/contact";
 
 /**
  * O diferencial que a Viza Click de fato tem hoje e que agência grande
@@ -59,15 +58,6 @@ export default function Fundador() {
               velocidade. Menos gente entre o seu problema e a pessoa que vai
               resolver ele.
             </p>
-
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="type-label mt-10 inline-flex border-b border-accent pb-2 text-accent transition-opacity hover:opacity-70"
-            >
-              Falar comigo agora
-            </a>
           </div>
         </div>
       </div>
