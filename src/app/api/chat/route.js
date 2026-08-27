@@ -3,6 +3,8 @@
 // possível uso futuro de libs Node). A ANTHROPIC_API_KEY só existe aqui, no
 // servidor — nunca é enviada ao navegador.
 
+import { after } from 'next/server';
+
 import { getAIReply } from '@/lib/chat/provider';
 import { notifyHandoff } from '@/lib/chat/notify';
 
@@ -49,9 +51,19 @@ export async function POST(request) {
     const { text, handoff } = await getAIReply(history);
 
     if (handoff) {
-      // Não bloqueia a resposta ao lead esperando o e-mail sair.
-      notifyHandoff(handoff).catch((err) => {
-        console.error('[chat] erro ao notificar handoff:', err);
+      // Roda DEPOIS da resposta ir pro lead, mas dentro do `after` do
+      // Next: numa função serverless, uma promise solta (`notify().catch()`
+      // sem await) morre junto com a instância assim que a resposta é
+      // devolvida — o envio SMTP leva alguns segundos e nunca terminava,
+      // então o e-mail de lead simplesmente não saía, sem erro nenhum
+      // aparecer no log. O `after` mantém a função viva até o envio acabar
+      // sem fazer o lead esperar por isso.
+      after(async () => {
+        try {
+          await notifyHandoff(handoff);
+        } catch (err) {
+          console.error('[chat] erro ao notificar handoff:', err);
+        }
       });
     }
 
