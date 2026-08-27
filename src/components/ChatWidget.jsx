@@ -14,6 +14,10 @@ import { ABRIR_CHAT_EVENT } from "@/lib/chat-ui";
 const MAX_MESSAGES_PER_SESSION = 20;
 const STORAGE_KEY = "vc-chat-history";
 const COUNT_KEY = "vc-chat-count";
+// Marca que esta conversa já virou aviso pro Paulo (seja porque a Lia
+// chamou o handoff, seja porque o beacon de saída já foi enviado). Fica no
+// sessionStorage pra sobreviver a um F5 no meio da conversa.
+const REPORTED_KEY = "vc-chat-reportado";
 
 const GREETING = {
   role: "assistant",
@@ -52,6 +56,11 @@ export default function ChatWidget() {
   const inputRef = useRef(null);
   const painelRef = useRef(null);
   const hydrated = useRef(false);
+  // Espelho das mensagens num ref: o listener de saída da página é
+  // registrado uma vez só e leria um `messages` congelado no primeiro
+  // render se dependesse do estado.
+  const messagesRef = useRef(messages);
+  const jaReportou = useRef(false);
 
   // Hidrata a partir do sessionStorage só no cliente, depois do primeiro
   // render, pra não divergir do HTML gerado no servidor (SSR).
@@ -61,6 +70,7 @@ export default function ChatWidget() {
     if (savedMessages && savedMessages.length > 0) setMessages(savedMessages);
     setCount(savedCount);
     if (savedCount >= MAX_MESSAGES_PER_SESSION) setEnded(true);
+    if (loadSession(REPORTED_KEY, false)) jaReportou.current = true;
     hydrated.current = true;
   }, []);
 
@@ -68,6 +78,57 @@ export default function ChatWidget() {
     if (!hydrated.current) return;
     saveSession(STORAGE_KEY, messages);
   }, [messages]);
+
+  useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
+
+  // Quem fecha a aba no meio da conversa não manda mais nenhuma
+  // requisição, então o servidor nunca saberia que essa pessoa existiu. O
+  // sendBeacon é a única forma de mandar algo que sobrevive ao
+  // fechamento da página (um fetch comum é cancelado no meio).
+  //
+  // O `pagehide` cobre fechar a aba e navegar pra fora; o
+  // `visibilitychange` cobre o celular, onde trocar de app às vezes é a
+  // última coisa que acontece antes do navegador matar a página. Isso faz
+  // com que trocar de app e voltar também conte como saída — preferimos
+  // avisar demais a perder um lead, e o servidor ainda descarta o que não
+  // tiver informação concreta.
+  useEffect(() => {
+    const reportarSaida = () => {
+      if (jaReportou.current) return;
+
+      const historico = messagesRef.current;
+      // Sem nada digitado não há o que avisar (a saudação é da Lia).
+      if (!historico.some((m) => m.role === "user")) return;
+
+      jaReportou.current = true;
+      saveSession(REPORTED_KEY, true);
+
+      try {
+        navigator.sendBeacon(
+          "/api/chat/abandono",
+          new Blob([JSON.stringify({ history: historico })], {
+            type: "application/json",
+          })
+        );
+      } catch {
+        // Navegador sem sendBeacon: perde-se o aviso, mas nunca a conversa.
+      }
+    };
+
+    const aoEsconder = () => {
+      if (document.visibilityState === "hidden") reportarSaida();
+    };
+
+    document.addEventListener("visibilitychange", aoEsconder);
+    window.addEventListener("pagehide", reportarSaida);
+
+    return () => {
+      document.removeEventListener("visibilitychange", aoEsconder);
+      window.removeEventListener("pagehide", reportarSaida);
+    };
+  }, []);
 
   useEffect(() => {
     if (listRef.current) {
@@ -164,7 +225,13 @@ export default function ChatWidget() {
 
       const data = await res.json();
       setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
-      if (data.handoff) setEnded(true);
+      // A Lia já registrou esta conversa (inclusive lead frio), então o
+      // beacon de saída não pode mandar um segundo e-mail da mesma pessoa.
+      if (data.handoff) {
+        jaReportou.current = true;
+        saveSession(REPORTED_KEY, true);
+      }
+      if (data.encerrar) setEnded(true);
     } catch (err) {
       setErrorMsg(
         err.message || "Não consegui responder agora. Tenta de novo em instantes."

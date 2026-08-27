@@ -15,11 +15,25 @@ const SERVICO_LABELS = {
   chatbot_whatsapp: 'Chatbot de IA para WhatsApp',
   conteudo_ia: 'Conteúdo com IA',
   automacao: 'Automação',
+  presenca_digital: 'Presença digital (site + atendimento)',
   nao_definido: 'Não definido ainda',
+};
+
+// O assunto do e-mail precisa dizer, sem abrir, se aquilo exige ação sua
+// agora ou se é só registro — desde que o lead frio também notifica, a
+// caixa recebe os dois tipos misturados.
+const SAIDA_LABELS = {
+  lead_qualificado: 'Lead qualificado',
+  reuniao_agendada: 'REUNIÃO MARCADA',
+  pediu_humano: 'Pediu falar com você',
+  lead_frio: 'Lead frio (só registro)',
+  abandonou: 'Saiu no meio da conversa',
 };
 
 function formatHandoffSummary(handoff) {
   const linhas = [
+    `Tipo: ${SAIDA_LABELS[handoff.tipo_de_saida] || handoff.tipo_de_saida || 'não informado'}`,
+    handoff.reuniao ? `>>> REUNIÃO: ${handoff.reuniao}` : null,
     handoff.nome ? `Nome: ${handoff.nome}` : null,
     `Negócio: ${handoff.negocio || 'não informado'}`,
     `Dor/necessidade: ${handoff.dor_ou_necessidade || 'não informado'}`,
@@ -74,7 +88,7 @@ export async function notifyHandoff(handoff) {
     await transporter.sendMail({
       from: `"Widget Viza Click" <${process.env.SMTP_USER}>`,
       to,
-      subject: `Novo lead pelo chat do site${handoff.nome ? ` — ${handoff.nome}` : ''}`,
+      subject: `[${SAIDA_LABELS[handoff.tipo_de_saida] || 'Contato'}] chat do site${handoff.nome ? ` — ${handoff.nome}` : ''}`,
       text: resumo,
     });
   } catch (err) {

@@ -67,7 +67,12 @@ export async function POST(request) {
       });
     }
 
-    return Response.json({ reply: text, handoff: Boolean(handoff) });
+    // Lead frio dispara a ferramenta só pra registrar a conversa pro Paulo —
+    // a pessoa continua livre pra voltar a escrever. Fechar o campo aí seria
+    // expulsar do chat justamente quem ainda estava em cima do muro.
+    const encerrar = Boolean(handoff) && handoff.tipo_de_saida !== 'lead_frio';
+
+    return Response.json({ reply: text, handoff: Boolean(handoff), encerrar });
   } catch (err) {
     console.error('[chat] erro ao chamar a IA:', err);
     return Response.json(

@@ -3,7 +3,7 @@
 // Só a função usada pelo widget (Claude) foi portada; o bot original também
 // suporta OpenAI como alternativa, mas o site não precisa dessa opção.
 
-import { SYSTEM_PROMPT, HANDOFF_TOOL } from './systemPrompt';
+import { buildSystemPrompt, HANDOFF_TOOL } from './systemPrompt';
 
 const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-haiku-4-5-20251001';
 const AI_MAX_TOKENS = parseInt(process.env.AI_MAX_TOKENS, 10) || 500;
@@ -32,7 +32,9 @@ export async function getAIReply(history) {
     body: JSON.stringify({
       model: ANTHROPIC_MODEL,
       max_tokens: AI_MAX_TOKENS,
-      system: SYSTEM_PROMPT,
+      // Montado na hora: leva a data e a hora de Brasília, sem as quais
+      // as regras de agendamento não têm como ser calculadas.
+      system: buildSystemPrompt(),
       tools: [HANDOFF_TOOL],
       messages: history.map((m) => ({ role: m.role, content: m.content })),
     }),
