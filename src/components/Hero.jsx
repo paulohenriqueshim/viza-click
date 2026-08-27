@@ -100,7 +100,7 @@ export default function Hero() {
           data-animate-delay="0.1"
           data-animate-stagger="0.08"
         >
-          Sistemas que trabalham sozinhos
+          Seu próximo funcionário não dorme
         </h1>
       </div>
 
@@ -111,9 +111,9 @@ export default function Hero() {
           data-animate-on-scroll="false"
           data-animate-delay="0.5"
         >
-          Transformamos os processos manuais da sua empresa em sistemas que
-          atendem, organizam e executam sozinhos. Automação e agentes de IA
-          para pequenas empresas e profissionais liberais.
+          Ele atende no WhatsApp e no site, responde na hora, separa quem tem
+          interesse real, agenda e cobra o retorno que ficou parado. Você entra
+          só quando precisa entrar.
         </p>
 
         <div className="flex shrink-0 flex-col items-start gap-6 sm:flex-row sm:items-center sm:gap-8">
@@ -122,13 +122,13 @@ export default function Hero() {
             onClick={abrirChat}
             className="type-label inline-flex items-center justify-center bg-accent px-8 py-5 text-bg transition-opacity hover:opacity-90"
           >
-            Quero automatizar meu negócio
+            Descobrir o que automatizar
           </button>
           <a
-            href="#solucoes"
+            href="#funcionarios"
             className="type-label border-b border-border pb-1 text-fg-muted transition-colors hover:border-accent hover:text-accent"
           >
-            Ver soluções
+            Ver as funções
           </a>
         </div>
       </div>
@@ -140,7 +140,7 @@ export default function Hero() {
           data-animate-on-scroll="false"
           data-animate-delay="0.7"
         >
-          Automação, agentes de IA e sistemas sob medida
+          Atendimento, vendas, agendamento e processos internos
         </p>
         <p
           className="type-label text-accent"

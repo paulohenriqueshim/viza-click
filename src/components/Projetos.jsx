@@ -214,25 +214,6 @@ export default function Projetos() {
           })}
         </div>
       </div>
-
-      <div className="mx-auto mt-20 max-w-[110rem] px-6 md:mt-28 md:px-10">
-        <div className="border-t border-border pt-10 md:pt-14">
-          <p className="type-label text-accent">Teste agora</p>
-          <h3
-            className="type-lg mt-8 max-w-[20ch]"
-            data-animate-variant="slide"
-            data-animate-on-scroll="true"
-          >
-            O atendimento deste site é um agente de IA nosso
-          </h3>
-          <p className="type-body mt-8 max-w-xl text-fg-muted">
-            A Lia atende quem chega aqui, entende o caso e me passa a conversa
-            quando faz sentido. É o mesmo tipo de agente que eu implemento no
-            atendimento da sua empresa. Abre o chat no canto da tela e vê
-            funcionando.
-          </p>
-        </div>
-      </div>
     </section>
   );
 }

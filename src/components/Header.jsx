@@ -1,12 +1,23 @@
 import Logo from "./Logo";
-import { WHATSAPP_URL } from "@/lib/contact";
+import BotaoChat from "./BotaoChat";
 
 const NAV = [
-  { label: "Soluções", href: "#solucoes" },
+  { label: "Funções", href: "#funcionarios" },
   { label: "Processo", href: "#como-funciona" },
   { label: "Clientes", href: "#clientes" },
 ];
 
+/**
+ * O CTA fixo abre a Lia, não o WhatsApp direto (decisão de 26/08/2026).
+ * O bot de WhatsApp está pausado desde 21/08 em favor deste widget, então
+ * o wa.me cai no número pessoal do Paulo, respondido na mão: era o botão
+ * mais visível de um site que promete atendimento que não dorme apontando
+ * pro único canal que dorme.
+ *
+ * O WhatsApp não some do funil, só muda de lugar: o ChatWidget oferece o
+ * link depois do handoff, quando a Lia já levantou nome, negócio e dor e
+ * o Paulo já recebeu o e-mail de resumo.
+ */
 export default function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between gap-4 px-6 py-5 md:px-10">
@@ -30,14 +41,9 @@ export default function Header() {
         ))}
       </nav>
 
-      <a
-        href={WHATSAPP_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="type-label shrink-0 border border-border px-5 py-3 text-fg transition-colors hover:border-accent hover:text-accent"
-      >
+      <BotaoChat className="type-label shrink-0 border border-border px-5 py-3 text-fg transition-colors hover:border-accent hover:text-accent">
         Falar agora
-      </a>
+      </BotaoChat>
     </header>
   );
 }

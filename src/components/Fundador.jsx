@@ -43,10 +43,12 @@ export default function Fundador() {
               data-animate-variant="slide"
               data-animate-on-scroll="true"
             >
-              A Viza Click é pequena de propósito. Não tem camada de
-              atendimento repassando recado, não tem terceirização, não tem
-              reunião pra alinhar com alguém que nunca viu o seu processo. Quem
-              escuta o seu problema é quem escreve o sistema.
+              Eu sou o Paulo, fundador da Viza Click. Montei a empresa depois
+              de ver pequeno negócio perdendo hora todo dia em tarefa que uma
+              máquina resolve sozinha. Aqui não tem camada de atendimento
+              repassando recado, não tem terceirização, não tem reunião pra
+              alinhar com alguém que nunca viu o seu processo. Quem escuta o
+              seu problema é quem escreve o sistema.
             </p>
 
             <p

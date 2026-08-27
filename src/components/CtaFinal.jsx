@@ -37,7 +37,7 @@ export default function CtaFinal() {
 
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
             <BotaoChat className="type-label inline-flex items-center justify-center bg-accent px-8 py-5 text-bg transition-opacity hover:opacity-90">
-              Quero automatizar meu negócio
+              Descobrir o que automatizar
             </BotaoChat>
             <a
               href={`mailto:${EMAIL}`}
