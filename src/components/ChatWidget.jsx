@@ -49,6 +49,7 @@ export default function ChatWidget() {
   const [ended, setEnded] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const listRef = useRef(null);
+  const inputRef = useRef(null);
   const painelRef = useRef(null);
   const hydrated = useRef(false);
 
@@ -137,6 +138,13 @@ export default function ChatWidget() {
     setInput("");
     setSending(true);
     setErrorMsg("");
+
+    // Devolve o foco pro campo ainda DENTRO do gesto de envio (clique no
+    // botão ou Enter). Sem isso, quem envia clicando no botão deixa o foco
+    // no botão e precisa clicar no campo de novo pra continuar escrevendo.
+    // Tem que ser síncrono aqui: no iOS, focus() disparado depois do await
+    // do fetch já está fora do gesto do usuário e o teclado não sobe.
+    inputRef.current?.focus();
 
     const nextCount = count + 1;
     setCount(nextCount);
@@ -235,15 +243,23 @@ export default function ChatWidget() {
             {ended && !errorMsg && <EndedNotice />}
           </div>
 
-          {/* Campo de mensagem */}
+          {/* Campo de mensagem.
+
+              O input NÃO leva `disabled={sending}` de propósito: desabilitar
+              um campo faz o navegador tirar o foco dele, e reabilitar não
+              devolve — era isso que obrigava a clicar no campo de novo a
+              cada mensagem enviada. Sem o disabled, dá pra continuar
+              escrevendo enquanto a Lia responde, e no celular o teclado não
+              fecha e reabre a cada envio. Quem segura o envio duplicado é o
+              botão (disabled) mais a checagem de `sending` no handleSend. */}
           {!ended && (
             <form onSubmit={handleSend} className="flex shrink-0 items-center gap-2 border-t border-border p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:pb-3">
               <input
+                ref={inputRef}
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Escreve aqui..."
-                disabled={sending}
                 maxLength={2000}
                 className="min-w-0 flex-1 rounded-full border border-border bg-bg-elevated px-4 py-3 text-base text-fg transition-colors placeholder:text-fg-muted focus:border-accent focus:outline-none md:py-2.5 md:text-sm"
               />
