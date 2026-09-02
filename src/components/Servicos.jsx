@@ -7,34 +7,40 @@ import BotaoChat from "./BotaoChat";
  * fala com o dono da empresa. Cada item tem uma promessa curta em cima da
  * descrição, porque é a promessa que a pessoa lê ao passar o olho.
  *
- * A ordem é a ordem de dor: quem chega aqui geralmente está perdendo venda
- * por demora, depois perdendo tempo com agenda, e só então pensa em processo
- * interno.
+ * Os cargos são os que a empresa já contrata (01/09/2026): vendedor, marketing,
+ * administrativo e secretária. Antes eram nomes criados por nós ("recuperador de
+ * leads", "operação nos bastidores"). Descreviam bem o serviço, mas o dono
+ * precisava parar pra entender o que eram e não tinha referência de preço na
+ * cabeça pra comparar. Com cargo conhecido, ele já sabe quanto custa a versão
+ * humana. A recuperação de lead virou atribuição do vendedor.
+ *
+ * A ordem é a de valor percebido: primeiro quem traz dinheiro, depois quem traz
+ * gente, e por último quem sustenta a operação.
  */
 const FUNCOES = [
   {
     numero: "01",
-    titulo: "Vendedor digital",
+    titulo: "Vendedor",
     promessa: "Nenhum lead fica sem resposta.",
-    desc: "Atende na hora quem chama no WhatsApp e no site, entende o que a pessoa procura, apresenta seu serviço e separa quem tem interesse real. Se o cliente some no meio da conversa, ele volta a falar.",
+    desc: "Responde todo lead novo na hora, no WhatsApp e no site, apresenta seu serviço e entende o que a pessoa precisa. Separa quem tem interesse real e volta a falar com quem pediu orçamento e sumiu.",
   },
   {
     numero: "02",
-    titulo: "Recepção digital",
-    promessa: "Sua agenda enche sem parar o seu dia.",
-    desc: "Responde as perguntas de sempre, agenda, confirma e lembra o cliente do compromisso. Você fica com o atendimento que exige você de verdade.",
+    titulo: "Marketing",
+    promessa: "Você para de postar no escuro.",
+    desc: "Identifica que tipo de conteúdo traz cliente de verdade, cria e acompanha campanha e anúncio, e lê o comportamento de quem chega pra saber o que atrai mais gente parecida.",
   },
   {
     numero: "03",
-    titulo: "Recuperador de leads",
-    promessa: "Você já pagou por esses contatos.",
-    desc: "Volta a falar com quem pediu orçamento e sumiu, reabre a conversa e devolve pro seu time só quem ainda tem interesse. Sem mudar nada na sua operação atual.",
+    titulo: "Administrativo",
+    promessa: "O trabalho que ninguém vê, mas alguém faz.",
+    desc: "Automatiza processo interno, organiza documento, acompanha indicador e monta relatório. Quando o processo é específico demais pra caber em ferramenta pronta, a gente constrói o sistema em volta dele.",
   },
   {
     numero: "04",
-    titulo: "Operação nos bastidores",
-    promessa: "O trabalho que ninguém vê, mas alguém faz.",
-    desc: "Cadastro, planilha, relatório e dado copiado de um sistema pro outro na mão. Quando o processo é específico demais pra caber em ferramenta pronta, a gente constrói o sistema em volta dele.",
+    titulo: "Secretária",
+    promessa: "Sua agenda enche sem parar o seu dia.",
+    desc: "Agenda compromisso, responde a dúvida repetida, manda lembrete e organiza a informação do cliente. Você fica com o atendimento que exige você de verdade.",
   },
 ];
 
