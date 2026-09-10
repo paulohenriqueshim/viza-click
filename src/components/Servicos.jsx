@@ -22,7 +22,7 @@ const FUNCOES = [
     numero: "01",
     titulo: "Vendedor",
     promessa: "Nenhum lead fica sem resposta.",
-    desc: "Responde todo lead novo na hora, no WhatsApp e no site, apresenta seu serviço e entende o que a pessoa precisa. Separa quem tem interesse real e volta a falar com quem pediu orçamento e sumiu.",
+    desc: "Responde todo lead novo na hora, no WhatsApp e no site, apresenta seu serviço e entende o que a pessoa procura. Separa quem tem interesse real e volta a falar com quem pediu orçamento e sumiu.",
   },
   {
     numero: "02",
@@ -39,8 +39,8 @@ const FUNCOES = [
   {
     numero: "04",
     titulo: "Secretária",
-    promessa: "Sua agenda enche sem parar o seu dia.",
-    desc: "Agenda compromisso, responde a dúvida repetida, manda lembrete e organiza a informação do cliente. Você fica com o atendimento que exige você de verdade.",
+    promessa: "Sua agenda enche, sem parar seu dia.",
+    desc: "Agenda compromisso, responde dúvida repetida, manda lembrete e organiza a informação do cliente. Você fica com o atendimento que exige você de verdade.",
   },
 ];
 

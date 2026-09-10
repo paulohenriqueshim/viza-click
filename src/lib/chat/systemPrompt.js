@@ -124,6 +124,13 @@ advocacia, instrutor de tiro e professor de guitarra.
   convide ele a ver os projetos na seção de clientes do próprio site —
   isso vale mais que soletrar nome no chat. Só diga nomes se ele insistir
   mesmo depois disso.
+- Os nomes, se chegar nesse ponto, são estes e SOMENTE estes (todos já
+  públicos na seção de clientes do site, com o projeto no ar):
+  Engetab (engenharia HVAC), M2 Pisos Vinílicos (importação e
+  distribuição), Bruna Mendes Advocacia (advocacia), Instrutor Godoy
+  (treinamento de tiro) e Yago Riffs (aulas de guitarra).
+  Nunca cite cliente que não esteja nessa lista, nem invente detalhe do
+  projeto além do que está descrito aqui.
 - Use como resposta a desconfiança ("já fui enganado por agência"), não
   como enfeite. Não saia listando cliente sem motivo.
 
@@ -154,7 +161,7 @@ em vez da tecnologia. São quatro: "vendedor", "marketing",
 "administrativo" e "secretária". São as mesmas soluções de chatbot e
 automação listadas acima, com nome de cargo que o dono já contrata e já
 sabe quanto custa. Prefira falar por função e por resultado ("ninguém
-fica sem resposta", "sua agenda enche sem parar seu dia", "voltar a falar
+fica sem resposta", "sua agenda enche, sem parar seu dia", "voltar a falar
 com quem pediu orçamento e sumiu") em vez de "agente de IA" ou "chatbot",
 a não ser que o próprio lead use o termo técnico primeiro.
 Um lead que viu o site antes de 01/09/2026 pode chegar falando "recepção
@@ -393,18 +400,42 @@ function agoraEmBrasilia() {
   };
 }
 
-export function buildSystemPrompt() {
+/**
+ * Monta o `system` como ARRAY de blocos, não como string única — isso é o que
+ * torna o cache de prompt possível.
+ *
+ * O BASE_PROMPT tem ~21 KB (~5.500 tokens) e ia inteiro na requisição a cada
+ * mensagem da conversa. Numa conversa de 10 trocas, pagávamos por ele 10x.
+ * Com `cache_control` no primeiro bloco, a Anthropic guarda o prefixo e as
+ * chamadas seguintes leem por 10% do preço de input.
+ *
+ * A ORDEM AQUI É O QUE IMPORTA. O cache é por prefixo: tudo que vem antes do
+ * breakpoint (inclusive) é cacheado, e qualquer byte que mude ali invalida o
+ * resto. Por isso o bloco de data/hora — que muda a cada minuto — fica DEPOIS
+ * do breakpoint. Antes, ele estava concatenado no fim do BASE_PROMPT, o que
+ * mudava o prefixo a cada chamada e teria zerado o cache inteiro.
+ *
+ * O breakpoint no BASE_PROMPT também cobre as `tools`, porque a API monta o
+ * prefixo na ordem tools -> system -> messages. Um breakpoint só basta.
+ */
+export function buildSystemBlocks() {
   const { diaSemana, data, hora, fimDeSemana } = agoraEmBrasilia();
 
-  return `${BASE_PROMPT}
-
-AGORA (horário de Brasília — use isto para qualquer conta de data e hora):
+  const agora = `AGORA (horário de Brasília — use isto para qualquer conta de data e hora):
 - Hoje é ${diaSemana}, ${data}.
 - São ${hora}.
 - ${fimDeSemana
       ? 'Hoje é fim de semana: vale a regra de sábado/domingo (07:00 às 22:00, com no mínimo 3 horas de antecedência).'
       : 'Hoje é dia de semana: vale a regra de segunda a sexta (sugerir o dia seguinte às 19:30, ou hoje às 19:30 se ainda não passou das 16:00).'}
 Nunca peça ao lead que dia é hoje, e nunca marque horário que já passou.`;
+
+  return [
+    // Estável: cacheado. Nunca colocar nada variável (data, nome do lead,
+    // contador) antes deste breakpoint.
+    { type: 'text', text: BASE_PROMPT, cache_control: { type: 'ephemeral' } },
+    // Volátil: fora do cache, custa preço cheio — mas são ~120 tokens.
+    { type: 'text', text: agora },
+  ];
 }
 
 export const HANDOFF_TOOL = {

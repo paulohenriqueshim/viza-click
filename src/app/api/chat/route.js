@@ -7,6 +7,7 @@ import { after } from 'next/server';
 
 import { getAIReply } from '@/lib/chat/provider';
 import { notifyHandoff } from '@/lib/chat/notify';
+import { ipDaRequisicao, verificarLimite } from '@/lib/chat/rateLimit';
 
 export const runtime = 'nodejs';
 
@@ -17,6 +18,18 @@ const MAX_HISTORY_MESSAGES = 40;
 const MAX_MESSAGE_LENGTH = 2000;
 
 export async function POST(request) {
+  // Trava de custo ANTES de qualquer coisa: nada de gastar chamada de API (nem
+  // fazer parse de body grande) por conta de quem está martelando o endpoint.
+  const ip = ipDaRequisicao(request);
+  const limite = verificarLimite(ip);
+  if (!limite.permitido) {
+    console.warn(`[chat] limite atingido (${limite.motivo}) para ${ip}`);
+    return Response.json(
+      { error: 'Muitas mensagens em pouco tempo. Espera um instante e tenta de novo.' },
+      { status: 429, headers: { 'retry-after': String(limite.esperarSegundos) } }
+    );
+  }
+
   let body;
   try {
     body = await request.json();
@@ -48,7 +61,7 @@ export async function POST(request) {
   }
 
   try {
-    const { text, handoff } = await getAIReply(history);
+    const { text, handoff, custo } = await getAIReply(history);
 
     if (handoff) {
       // Roda DEPOIS da resposta ir pro lead, mas dentro do `after` do
@@ -71,6 +84,13 @@ export async function POST(request) {
     // a pessoa continua livre pra voltar a escrever. Fechar o campo aí seria
     // expulsar do chat justamente quem ainda estava em cima do muro.
     const encerrar = Boolean(handoff) && handoff.tipo_de_saida !== 'lead_frio';
+
+    // O custo por chamada não vai pra resposta — é só log de servidor. Expor
+    // isso ao navegador entregaria de graça qual modelo e qual volume a gente
+    // usa, além de não servir pra nada do lado do lead.
+    if (handoff && custo) {
+      console.log(`[chat] handoff concluído — custo desta chamada R$${custo.brl.toFixed(4)}`);
+    }
 
     return Response.json({ reply: text, handoff: Boolean(handoff), encerrar });
   } catch (err) {
