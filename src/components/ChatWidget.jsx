@@ -245,39 +245,21 @@ export default function ChatWidget() {
 
   return (
     <>
-      {/* Botão flutuante — z acima do Header (z-50) pra ficar sempre no topo. */}
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        aria-label={open ? "Fechar chat" : "Abrir chat com a Viza Click"}
-        className={`fixed bottom-5 right-5 md:bottom-8 md:right-8 z-[60] inline-flex items-center gap-2.5 bg-accent text-bg rounded-full pl-4 pr-5 py-3.5 shadow-none hover:opacity-90 transition-opacity ${
-          open ? "max-md:hidden" : ""
-        }`}
-      >
-        {open ? (
-          <CloseIcon />
-        ) : (
-          <>
-            <Logo size={20} />
-            <span className="font-body font-medium text-sm hidden sm:inline">
-              Falar com a Lia
-            </span>
-          </>
-        )}
-      </button>
-
+      {/* Sem botão flutuante (09/09/2026): a página já tem três CTAs que
+          abrem a Lia (hero, seção dela e fechamento), e mais um botão fixo
+          na tela virava repetição em cima de repetição. A entrada agora é
+          só pelos CTAs, via evento ABRIR_CHAT_EVENT. */}
       {open && (
         <div
           ref={painelRef}
           data-lenis-prevent
-          className="fixed inset-0 z-[59] flex h-[100dvh] w-full flex-col overflow-hidden border border-border bg-bg md:inset-auto md:bottom-24 md:right-8 md:h-[560px] md:max-h-[75vh] md:w-[380px] md:rounded-2xl"
+          className="fixed inset-0 z-[59] flex h-[100dvh] w-full flex-col overflow-hidden border border-border bg-bg md:inset-auto md:bottom-8 md:right-8 md:h-[560px] md:max-h-[75vh] md:w-[380px] md:rounded-2xl"
           role="dialog"
           aria-label="Chat com a Viza Click"
         >
-          {/* Cabeçalho — o X só aparece no mobile, onde o painel cobre a
-              tela inteira e não há botão flutuante visível pra fechar
-              (no desktop o botão flutuante continua acima do painel). */}
+          {/* Cabeçalho — o X vale pros dois tamanhos desde que o botão
+              flutuante saiu: ele é agora a única forma de fechar o painel,
+              então não pode mais ficar escondido no desktop. */}
           <div className="flex items-center gap-2.5 border-b border-border bg-bg/85 backdrop-blur-sm px-5 py-4 shrink-0">
             <Logo size={22} className="text-accent" />
             <div className="flex flex-col leading-tight flex-1">
@@ -290,7 +272,7 @@ export default function ChatWidget() {
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Fechar chat"
-              className="md:hidden -mr-2 inline-flex h-10 w-10 items-center justify-center rounded-full text-fg-muted transition-colors hover:text-fg"
+              className="-mr-2 inline-flex h-10 w-10 items-center justify-center rounded-full text-fg-muted transition-colors hover:text-fg"
             >
               <CloseIcon />
             </button>

@@ -1,7 +1,7 @@
 import Logo from "./Logo";
 
 const NAV = [
-  { label: "Funções", href: "#funcionarios" },
+  { label: "A Lia", href: "#lia" },
   { label: "Processo", href: "#como-funciona" },
   { label: "Clientes", href: "#clientes" },
 ];

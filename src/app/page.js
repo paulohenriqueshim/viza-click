@@ -2,7 +2,7 @@ import Starfield from "@/components/Starfield";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Manifesto from "@/components/Manifesto";
-import Servicos from "@/components/Servicos";
+import Lia from "@/components/Lia";
 import ComoFunciona from "@/components/ComoFunciona";
 import Projetos from "@/components/Projetos";
 import Fundador from "@/components/Fundador";
@@ -17,7 +17,7 @@ export default function Home() {
       <main>
         <Hero />
         <Manifesto />
-        <Servicos />
+        <Lia />
         <ComoFunciona />
         <Projetos />
         <Fundador />

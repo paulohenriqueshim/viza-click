@@ -22,7 +22,7 @@ export default function Fundador() {
           Você fala direto com quem constrói
         </h2>
 
-        <div className="mt-14 grid items-start gap-10 md:mt-20 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] md:gap-16 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
+        <div className="mt-14 grid items-center gap-10 md:mt-20 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] md:gap-16 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
           <figure className="m-0">
             <Image
               src={foto}
@@ -39,26 +39,14 @@ export default function Fundador() {
 
           <div className="max-w-xl">
             <p
-              className="type-body text-fg-muted"
+              className="type-quote text-fg-muted"
               data-animate-variant="slide"
               data-animate-on-scroll="true"
             >
-              Eu sou o Paulo, fundador da Viza Click. Montei a empresa depois
-              de ver pequeno negócio perdendo hora todo dia em tarefa que uma
-              máquina resolve sozinha. Aqui não tem camada de atendimento
-              repassando recado, não tem terceirização, não tem reunião pra
-              alinhar com alguém que nunca viu o seu processo. Quem escuta o
-              seu problema é quem escreve o sistema.
-            </p>
-
-            <p
-              className="type-body mt-8 text-fg-muted"
-              data-animate-variant="slide"
-              data-animate-on-scroll="true"
-            >
-              Empresa pequena tem uma vantagem que empresa grande não tem:
-              velocidade. Menos gente entre o seu problema e a pessoa que vai
-              resolver ele.
+              Sou o Paulo, fundador da Viza Click. Depois de ver empresas
+              perdendo clientes por falta de presença digital e tempo em
+              processos que poderiam ser automatizados, decidi criar soluções
+              que simplificam seu negócio.
             </p>
           </div>
         </div>

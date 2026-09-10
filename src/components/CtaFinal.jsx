@@ -36,12 +36,10 @@ export default function CtaFinal() {
           </p>
 
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
-            <BotaoChat className="type-label inline-flex items-center justify-center bg-accent px-8 py-5 text-bg transition-opacity hover:opacity-90">
-              Descobrir o que automatizar
-            </BotaoChat>
+            <BotaoChat>Descobrir o que automatizar</BotaoChat>
             <a
               href={`mailto:${EMAIL}`}
-              className="type-label inline-flex items-center justify-center border border-border px-8 py-5 text-fg transition-colors hover:border-accent hover:text-accent"
+              className="type-label inline-flex items-center justify-center border border-border px-10 py-5 text-fg transition-colors hover:border-accent hover:text-accent"
             >
               Falar por e-mail
             </a>

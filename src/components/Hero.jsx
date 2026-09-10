@@ -2,13 +2,18 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { abrirChat } from "@/lib/chat-ui";
+import BotaoChat from "./BotaoChat";
 
 /**
- * Hero de tela cheia com o tipo como protagonista. O título inclina em 3D
- * seguindo o mouse (adaptado do home-hero.js do projeto de referência):
- * perspectiva de 1000px, rotação máxima de 20 graus, lerp de 0.05 pra o
- * movimento chegar atrasado e pesado em vez de grudar no ponteiro.
+ * Hero de tela cheia com o tipo como protagonista, centralizado. O título
+ * inclina em 3D seguindo o mouse (adaptado do home-hero.js do projeto de
+ * referência): perspectiva de 1000px, rotação máxima de 20 graus, lerp de
+ * 0.05 pra o movimento chegar atrasado e pesado em vez de grudar no
+ * ponteiro.
+ *
+ * Composição enxugada em 09/09/2026: um CTA só, sem rótulos de rodapé e
+ * sem link secundário. Tudo que competia com o título saiu, porque numa
+ * dobra centralizada cada elemento a mais divide a atenção em vez de somar.
  *
  * O atributo data-hero marca a seção pro AnimatedCopy saber quais textos
  * precisam esperar a cortina do preloader abrir.
@@ -89,67 +94,33 @@ export default function Hero() {
     <section
       ref={secaoRef}
       data-hero
-      className="hero relative flex min-h-svh flex-col justify-center overflow-x-clip px-6 pt-28 pb-10 md:px-10 md:pt-36"
+      className="hero relative flex min-h-svh flex-col items-center justify-center overflow-x-clip px-6 pt-28 pb-16 text-center md:px-10 md:pt-36"
       style={{ transformStyle: "preserve-3d", perspective: "1000px" }}
     >
       <div ref={tituloRef} className="will-change-transform">
         <h1
-          className="type-hero max-w-[16ch]"
+          className="type-hero mx-auto max-w-[15ch]"
           data-animate-variant="slide"
           data-animate-on-scroll="false"
           data-animate-delay="0.1"
           data-animate-stagger="0.08"
         >
-          Seu próximo funcionário não dorme
+          Sua presença digital rodando sozinha
         </h1>
       </div>
 
-      <div className="mt-8 flex flex-col gap-8 md:mt-14 md:flex-row md:items-end md:justify-between">
-        <p
-          className="type-body max-w-xl text-fg-muted"
-          data-animate-variant="slide"
-          data-animate-on-scroll="false"
-          data-animate-delay="0.5"
-        >
-          Ele atende no WhatsApp e no site, responde na hora, separa quem tem
-          interesse real, agenda e cobra o retorno que ficou parado. Você entra
-          só quando precisa entrar.
-        </p>
+      <p
+        className="type-body mx-auto mt-10 max-w-xl text-fg-muted md:mt-12"
+        data-animate-variant="slide"
+        data-animate-on-scroll="false"
+        data-animate-delay="0.5"
+      >
+        Site, atendimento e processos funcionando juntos, sem depender de
+        alguém estar disponível. Você entra só quando precisa entrar.
+      </p>
 
-        <div className="flex shrink-0 flex-col items-start gap-6 sm:flex-row sm:items-center sm:gap-8">
-          <button
-            type="button"
-            onClick={abrirChat}
-            className="type-label inline-flex items-center justify-center bg-accent px-8 py-5 text-bg transition-opacity hover:opacity-90"
-          >
-            Descobrir o que automatizar
-          </button>
-          <a
-            href="#funcionarios"
-            className="type-label border-b border-border pb-1 text-fg-muted transition-colors hover:border-accent hover:text-accent"
-          >
-            Ver as funções
-          </a>
-        </div>
-      </div>
-
-      <div className="hero-rodape mt-12 flex flex-col justify-between gap-4 border-t border-border pt-6 md:mt-20 md:flex-row">
-        <p
-          className="type-label text-fg-muted"
-          data-animate-variant="slide"
-          data-animate-on-scroll="false"
-          data-animate-delay="0.7"
-        >
-          Atendimento, vendas, agendamento e processos internos
-        </p>
-        <p
-          className="type-label text-accent"
-          data-animate-variant="slide"
-          data-animate-on-scroll="false"
-          data-animate-delay="0.8"
-        >
-          Você fala direto com quem constrói
-        </p>
+      <div className="mt-12 md:mt-14">
+        <BotaoChat>Ver funcionando</BotaoChat>
       </div>
     </section>
   );
