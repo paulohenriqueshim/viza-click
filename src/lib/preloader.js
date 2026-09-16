@@ -1,6 +1,11 @@
-// Constantes compartilhadas entre o preloader, o scroll e o sistema de
-// reveal de texto. Ficam num módulo só porque os três precisam concordar
-// sobre o mesmo instante: a hora em que a cortina abre.
+// Constantes compartilhadas entre o preloader e o sistema de reveal de
+// texto. Ficam num módulo só porque os dois precisam concordar sobre o
+// mesmo instante: a hora em que a cortina abre.
+//
+// Estes tempos já foram encurtados uma vez (15/09/2026, na faxina de
+// performance) e o Paulo mandou voltar no mesmo dia: a abertura rápida
+// ficou apressada e a marca não aparecia. A abertura é o produto, não
+// gordura pra cortar. Não encurtar de novo sem ele pedir.
 
 export const PRELOADER_DONE_EVENT = "vc:preloader-done";
 

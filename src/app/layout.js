@@ -1,6 +1,5 @@
 import { Anton, Inter } from "next/font/google";
 import "./globals.css";
-import SmoothScroll from "@/components/SmoothScroll";
 import ChatWidget from "@/components/ChatWidget";
 import Preloader from "@/components/Preloader";
 import AnimatedCopy from "@/components/AnimatedCopy";
@@ -20,9 +19,9 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Viza Click | Automação e IA para pequenas empresas",
+  title: "Viza Click | Presença digital para pequenas empresas",
   description:
-    "Transformamos os processos manuais da sua empresa em sistemas que atendem, organizam e executam sozinhos. Automação e agentes de IA para pequenas empresas e profissionais liberais.",
+    "Sites e landing pages, cartão NFC, atendimento com IA no site e no WhatsApp, criação de conteúdo e automações sob medida. A parte digital do seu negócio rodando sozinha.",
 };
 
 export default function RootLayout({ children }) {
@@ -30,7 +29,6 @@ export default function RootLayout({ children }) {
     <html lang="pt-BR" className={`${anton.variable} ${inter.variable}`}>
       <body>
         <Preloader />
-        <SmoothScroll />
         {children}
         <ChatWidget />
         <AnimatedCopy />

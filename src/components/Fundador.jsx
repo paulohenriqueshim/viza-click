@@ -39,7 +39,7 @@ export default function Fundador() {
 
           <div className="max-w-xl">
             <p
-              className="type-quote text-fg-muted"
+              className="type-body text-fg-muted"
               data-animate-variant="slide"
               data-animate-on-scroll="true"
             >
