@@ -10,11 +10,11 @@
 import nodemailer from 'nodemailer';
 
 const SERVICO_LABELS = {
-  landing_page: 'Landing Page',
-  site_completo: 'Site completo',
-  chatbot_whatsapp: 'Chatbot de IA para WhatsApp',
-  conteudo_ia: 'Conteúdo com IA',
-  automacao: 'Automação',
+  site: 'Site ou landing page',
+  cartao_nfc: 'Cartão NFC',
+  atendimento_ia: 'Atendimento com IA (site ou WhatsApp)',
+  conteudo_ia: 'Criação de conteúdo com IA',
+  automacao: 'Automação sob medida',
   presenca_digital: 'Presença digital (site + atendimento)',
   nao_definido: 'Não definido ainda',
 };
@@ -27,6 +27,7 @@ const SAIDA_LABELS = {
   reuniao_agendada: 'REUNIÃO MARCADA',
   pediu_humano: 'Pediu falar com você',
   lead_frio: 'Lead frio (só registro)',
+  fora_do_perfil: 'Fora do perfil (a Lia recusou)',
   abandonou: 'Saiu no meio da conversa',
 };
 

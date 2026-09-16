@@ -51,6 +51,10 @@ export default function ChatWidget() {
   const [sending, setSending] = useState(false);
   const [count, setCount] = useState(0);
   const [ended, setEnded] = useState(false);
+  // Como a conversa acabou: decide o que aparece no lugar do campo de
+  // texto. "handoff" promete retorno do Paulo, "fora_do_perfil" não promete
+  // nada e só deixa o WhatsApp à mão, "abuso" não oferece saída nenhuma.
+  const [desfecho, setDesfecho] = useState("handoff");
   const [errorMsg, setErrorMsg] = useState("");
   const listRef = useRef(null);
   const inputRef = useRef(null);
@@ -231,7 +235,10 @@ export default function ChatWidget() {
         jaReportou.current = true;
         saveSession(REPORTED_KEY, true);
       }
-      if (data.encerrar) setEnded(true);
+      if (data.encerrar) {
+        if (data.desfecho) setDesfecho(data.desfecho);
+        setEnded(true);
+      }
     } catch (err) {
       setErrorMsg(
         err.message || "Não consegui responder agora. Tenta de novo em instantes."
@@ -252,7 +259,6 @@ export default function ChatWidget() {
       {open && (
         <div
           ref={painelRef}
-          data-lenis-prevent
           className="fixed inset-0 z-[59] flex h-[100dvh] w-full flex-col overflow-hidden border border-border bg-bg md:inset-auto md:bottom-8 md:right-8 md:h-[560px] md:max-h-[75vh] md:w-[380px] md:rounded-2xl"
           role="dialog"
           aria-label="Chat com a Viza Click"
@@ -289,7 +295,7 @@ export default function ChatWidget() {
                 {errorMsg}
               </p>
             )}
-            {ended && !errorMsg && <EndedNotice />}
+            {ended && !errorMsg && <EndedNotice desfecho={desfecho} />}
           </div>
 
           {/* Campo de mensagem.
@@ -357,20 +363,47 @@ function TypingBubble() {
   );
 }
 
-function EndedNotice() {
+/**
+ * O que fica no lugar do campo de texto quando a conversa fecha.
+ *
+ * São três finais diferentes porque prometer "o Paulo vai te chamar" pra
+ * quem acabou de ouvir que não é caso pra Viza Click seria contradição na
+ * cara da pessoa. E quem veio derrubar o chat não ganha canal nenhum: o
+ * WhatsApp é do Paulo, não é prêmio de consolação.
+ */
+const FINAIS = {
+  handoff: {
+    texto:
+      "O Paulo vai te chamar por aqui em breve. Se quiser adiantar, é só chamar no WhatsApp.",
+    botao: "Chamar no WhatsApp",
+  },
+  fora_do_perfil: {
+    texto:
+      "Obrigado pela conversa. Se quiser falar com o Paulo mesmo assim, é só chamar.",
+    botao: "Falar com o Paulo",
+  },
+  abuso: {
+    texto: "Conversa encerrada.",
+    botao: null,
+  },
+};
+
+function EndedNotice({ desfecho = "handoff" }) {
+  const final = FINAIS[desfecho] || FINAIS.handoff;
+
   return (
     <div className="bg-bg-elevated border border-border rounded-2xl px-4 py-3.5 flex flex-col gap-2.5">
-      <p className="text-sm font-body text-fg leading-relaxed">
-        O Paulo vai te chamar por aqui em breve. Se quiser adiantar, é só chamar no WhatsApp.
-      </p>
-      <a
-        href={WHATSAPP_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center justify-center bg-accent text-bg font-medium rounded-full px-4 py-2 text-sm hover:opacity-90 transition-opacity"
-      >
-        Chamar no WhatsApp
-      </a>
+      <p className="text-sm font-body text-fg leading-relaxed">{final.texto}</p>
+      {final.botao && (
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center bg-accent text-bg font-medium rounded-full px-4 py-2 text-sm hover:opacity-90 transition-opacity"
+        >
+          {final.botao}
+        </a>
+      )}
     </div>
   );
 }

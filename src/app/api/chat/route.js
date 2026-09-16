@@ -63,7 +63,17 @@ export async function POST(request) {
   try {
     const { text, handoff, custo } = await getAIReply(history);
 
-    if (handoff) {
+    // Abuso não vira e-mail. Quem está martelando o chat de propósito
+    // adoraria transformar cada tentativa numa notificação na caixa do
+    // Paulo: seria trocar gasto de API por spam. Fica no log do servidor,
+    // que é onde isso interessa.
+    const ehAbuso = handoff?.tipo_de_saida === 'abuso';
+
+    if (ehAbuso) {
+      console.warn(`[chat] conversa encerrada por abuso — ip ${ip}`);
+    }
+
+    if (handoff && !ehAbuso) {
       // Roda DEPOIS da resposta ir pro lead, mas dentro do `after` do
       // Next: numa função serverless, uma promise solta (`notify().catch()`
       // sem await) morre junto com a instância assim que a resposta é
@@ -85,6 +95,20 @@ export async function POST(request) {
     // expulsar do chat justamente quem ainda estava em cima do muro.
     const encerrar = Boolean(handoff) && handoff.tipo_de_saida !== 'lead_frio';
 
+    // O widget precisa saber COMO a conversa acabou pra escolher o que
+    // mostrar no fim: prometer retorno do Paulo só faz sentido pra quem foi
+    // qualificado. Quem ouviu que não é caso pra Viza Click recebe a porta
+    // aberta do WhatsApp em vez de uma promessa, e quem veio abusar não
+    // recebe nem uma coisa nem outra. Só o rótulo do desfecho vai pro
+    // navegador, nunca o conteúdo do registro.
+    const desfecho = !encerrar
+      ? null
+      : ehAbuso
+        ? 'abuso'
+        : handoff.tipo_de_saida === 'fora_do_perfil'
+          ? 'fora_do_perfil'
+          : 'handoff';
+
     // O custo por chamada não vai pra resposta — é só log de servidor. Expor
     // isso ao navegador entregaria de graça qual modelo e qual volume a gente
     // usa, além de não servir pra nada do lado do lead.
@@ -92,7 +116,12 @@ export async function POST(request) {
       console.log(`[chat] handoff concluído — custo desta chamada R$${custo.brl.toFixed(4)}`);
     }
 
-    return Response.json({ reply: text, handoff: Boolean(handoff), encerrar });
+    return Response.json({
+      reply: text,
+      handoff: Boolean(handoff),
+      encerrar,
+      desfecho,
+    });
   } catch (err) {
     console.error('[chat] erro ao chamar a IA:', err);
     return Response.json(
