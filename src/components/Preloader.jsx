@@ -26,7 +26,7 @@ gsap.registerPlugin(CustomEase, SplitText);
  * renderizado no servidor pra cobrir a página desde a primeira pintura,
  * sem flash de conteúdo por baixo.
  */
-const TAGS = ["Automação", "Agentes de IA", "Sistemas sob medida"];
+const TAGS = ["Sites", "Atendimento com IA", "Automações"];
 
 export default function Preloader() {
   useEffect(() => {
@@ -46,6 +46,16 @@ export default function Preloader() {
       esconder();
       window.dispatchEvent(new Event(PRELOADER_DONE_EVENT));
     };
+
+    // Aba aberta em segundo plano (ctrl+clique, link restaurado na sessão)
+    // não recebe requestAnimationFrame, e o GSAP anda por ele: a timeline
+    // ficaria parada no primeiro frame e a pessoa encontraria a cortina
+    // preta com a página travada ao voltar. Ninguém está vendo a abertura
+    // mesmo, então ela é pulada por inteiro.
+    if (document.hidden) {
+      finalizar();
+      return;
+    }
 
     CustomEase.create("hop", ".8, 0, .3, 1");
     document.documentElement.style.overflow = "hidden";

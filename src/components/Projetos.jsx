@@ -10,45 +10,54 @@ import Core from "smooothy";
  * marca (só limão, off-white e carvão, sem as cores variadas do original)
  * e pra abrir o site do cliente ao clicar.
  *
- * Ordem pensada pra venda: começa pelos projetos de maior autoridade
- * técnica e empresas mais estabelecidas, e vai abrindo pro público de
- * profissional liberal, mostrando que atende os dois portes.
+ * Ordem definida pelo Paulo em 15/09/2026. O rótulo do link é por cliente
+ * (campo `acao`), porque nem toda entrega é site: a da Engetab é cartão de
+ * visitas, e chamar de "ver site" entregava a coisa errada.
+ *
+ * A cor NÃO é escolhida cliente por cliente: ela sai da posição na fila,
+ * girando claro > limão > escuro. Quando era campo manual, reordenar a
+ * lista deixou dois cards limão colados e ficou feio. Com o ciclo, duas
+ * cores iguais nunca encostam, não importa quem entre ou saia, e o limão
+ * (que é o acento da marca, forte demais pra repetir) volta só de três em
+ * três. Cliente novo entra sem ninguém precisar pensar em cor.
  */
+const CICLO_DE_CORES = ["claro", "lima", "escuro"];
+
 const CLIENTES = [
-  {
-    nome: "Engetab",
-    segmento: "Engenharia HVAC",
-    desc: "Testes e certificação de sistemas de ar condicionado para hospitais, indústria e farmacêutico.",
-    url: "https://humberto.viza.click/",
-    tema: "lima",
-  },
   {
     nome: "M2 Pisos Vinílicos",
     segmento: "Importação e distribuição",
     desc: "Representante de pisos vinílicos LG Chem no Brasil, atuando desde 1998.",
     url: "https://m2pisos.viza.click/",
-    tema: "claro",
+    acao: "Ver site",
   },
   {
     nome: "Bruna Mendes Advocacia",
     segmento: "Advocacia",
     desc: "Escritório com atuação em direito civil, empresarial, trabalhista e de família.",
     url: "https://mendeslimaadv.viza.click/",
-    tema: "escuro",
+    acao: "Ver site",
   },
   {
     nome: "Instrutor Godoy",
     segmento: "Treinamento de tiro",
     desc: "Instrução de tiro do básico ao avançado, com aulas em clubes a céu aberto.",
     url: "https://instrutorgodoy.viza.click/",
-    tema: "lima",
+    acao: "Ver site",
+  },
+  {
+    nome: "Engetab",
+    segmento: "Engenharia HVAC",
+    desc: "Testes e certificação de sistemas de ar condicionado para hospitais, indústria e farmacêutico.",
+    url: "https://humberto.viza.click/",
+    acao: "Ver cartão de visitas",
   },
   {
     nome: "Yago Riffs",
     segmento: "Aulas de guitarra",
     desc: "Aulas particulares de guitarra online, com acompanhamento durante a semana.",
     url: "https://yagoriffs.viza.click/",
-    tema: "claro",
+    acao: "Ver site",
   },
 ];
 
@@ -72,6 +81,23 @@ export default function Projetos() {
     wrapper.style.userSelect = "none";
     wrapper.style.touchAction = "pan-y";
 
+    // Largura e posição de cada card, medidas uma vez. Ler offsetWidth e
+    // offsetLeft obriga o navegador a recalcular o layout na hora, e isso
+    // acontecia dez vezes por quadro, sessenta vezes por segundo, no meio
+    // de um loop que também escrevia transform nos mesmos elementos: o
+    // clássico layout thrashing. Como a medida só muda quando a janela
+    // muda de tamanho, ela é tirada do loop e refeita no resize.
+    let metricas = [];
+    let vwOffset = 0;
+    const medir = () => {
+      metricas = slides.map((slide) => ({
+        largura: slide.offsetWidth,
+        esquerda: slide.offsetLeft,
+      }));
+      vwOffset = window.innerWidth * 0.1;
+    };
+    medir();
+
     const slider = new Core(wrapper, {
       infinite: false,
       snap: false,
@@ -85,15 +111,13 @@ export default function Projetos() {
         return totalWidth - lastSlideOffset;
       },
       onUpdate: (instance) => {
-        const vwOffset = window.innerWidth * 0.1;
-
         slides.forEach((slide, i) => {
-          const slideWidth = slide.offsetWidth;
-          const slideLeft = slide.offsetLeft + instance.current;
+          const { largura, esquerda } = metricas[i];
+          const slideLeft = esquerda + instance.current;
           const isLast = i === CLIENTES.length - 1;
 
           if (slideLeft < 0 && !isLast) {
-            const ratio = Math.min(1, Math.abs(slideLeft) / slideWidth);
+            const ratio = Math.min(1, Math.abs(slideLeft) / largura);
             slide.style.transformOrigin = "left 80%";
             slide.style.transform = `translateX(${
               instance.current + Math.abs(slideLeft) + ratio * vwOffset
@@ -108,11 +132,21 @@ export default function Projetos() {
       },
     });
 
-    let animId;
+    let animId = null;
     let wasDragging = false;
     let momentum = 0;
+    let visivel = false;
     const MOMENTUM_MULTIPLIER = 10;
     const MOMENTUM_DECAY = 0.96;
+
+    // O loop parava de existir só ao desmontar, ou seja: nunca. Ele rodava
+    // com o carrossel fora da tela e com o carrossel parado, gastando um
+    // quadro inteiro pra recalcular a mesma posição. Agora ele só roda
+    // quando a seção está na tela E ainda tem movimento pra resolver.
+    const parado = () =>
+      !slider.isDragging &&
+      Math.abs(momentum) <= 0.5 &&
+      Math.abs(slider.target - slider.current) < 0.05;
 
     function animate() {
       slider.update();
@@ -130,12 +164,48 @@ export default function Projetos() {
         slider.target = Math.max(slider.maxScroll, Math.min(0, slider.target));
       }
 
+      if (parado()) {
+        animId = null;
+        return;
+      }
       animId = requestAnimationFrame(animate);
     }
-    animate();
+
+    // Acordar é sempre mais barato que ficar acordado: qualquer gesto que
+    // possa mexer no carrossel religa o loop, que se desliga sozinho de
+    // novo quando a inércia acaba.
+    const acordar = () => {
+      if (animId === null && visivel) animId = requestAnimationFrame(animate);
+    };
+    const gestos = ["pointerdown", "pointermove", "wheel", "touchstart", "touchmove"];
+    gestos.forEach((evt) =>
+      wrapper.addEventListener(evt, acordar, { passive: true })
+    );
+
+    const observador = new IntersectionObserver(
+      ([entrada]) => {
+        visivel = entrada.isIntersecting;
+        if (visivel) acordar();
+        else if (animId !== null) {
+          cancelAnimationFrame(animId);
+          animId = null;
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    observador.observe(wrapper);
+
+    const aoRedimensionar = () => {
+      medir();
+      acordar();
+    };
+    window.addEventListener("resize", aoRedimensionar);
 
     return () => {
-      cancelAnimationFrame(animId);
+      if (animId !== null) cancelAnimationFrame(animId);
+      observador.disconnect();
+      window.removeEventListener("resize", aoRedimensionar);
+      gestos.forEach((evt) => wrapper.removeEventListener(evt, acordar));
       wrapper.removeEventListener("selectstart", preventSelect);
       slider.destroy();
     };
@@ -159,8 +229,8 @@ export default function Projetos() {
           Negócios que já contam com a gente
         </h2>
         <p className="type-body mt-8 max-w-xl text-fg-muted">
-          Sites e páginas comerciais entregues pela Viza Click. Arraste para o
-          lado para abrir cada projeto.
+          Sites, páginas comerciais e cartões entregues pela Viza Click. Arraste
+          para o lado para abrir cada projeto.
         </p>
       </div>
 
@@ -170,7 +240,7 @@ export default function Projetos() {
           className="flex items-center will-change-transform cursor-grab active:cursor-grabbing pl-6 md:pl-10"
         >
           {CLIENTES.map((cliente, index) => {
-            const tema = TEMAS[cliente.tema];
+            const tema = TEMAS[CICLO_DE_CORES[index % CICLO_DE_CORES.length]];
             return (
               <a
                 key={cliente.nome}
@@ -206,7 +276,7 @@ export default function Projetos() {
                     {cliente.desc}
                   </p>
                   <span className="font-body text-sm md:text-base font-medium">
-                    Ver site
+                    {cliente.acao}
                   </span>
                 </div>
               </a>

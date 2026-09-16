@@ -1,128 +1,128 @@
 import BotaoChat from "./BotaoChat";
 
 /**
- * As frentes de trabalho apresentadas como funções de um funcionário, não
- * como tecnologia. A decisão veio de uma leitura externa do site (26/08/2026):
- * "agente de IA" fala com departamento de TI, "vendedor que não perde lead"
- * fala com o dono da empresa. Cada item tem uma promessa curta em cima da
- * descrição, porque é a promessa que a pessoa lê ao passar o olho.
+ * Os cinco serviços da casa, escritos em 15/09/2026 junto com a ampliação
+ * do posicionamento para presença digital.
  *
- * Os cargos são os que a empresa já contrata (01/09/2026): vendedor, marketing,
- * administrativo e secretária. Antes eram nomes criados por nós ("recuperador de
- * leads", "operação nos bastidores"). Descreviam bem o serviço, mas o dono
- * precisava parar pra entender o que eram e não tinha referência de preço na
- * cabeça pra comparar. Com cargo conhecido, ele já sabe quanto custa a versão
- * humana. A recuperação de lead virou atribuição do vendedor.
+ * Substitui a lista anterior de "funcionários digitais" (vendedor,
+ * marketing, administrativo, secretária), que estava fora da página desde
+ * 09/09/2026. Aqueles nomes descreviam bem o atendimento por IA, mas não
+ * davam lugar a site, cartão e conteúdo, que hoje são serviço vendido e
+ * não apoio.
  *
- * A ordem é a de valor percebido: primeiro quem traz dinheiro, depois quem traz
- * gente, e por último quem sustenta a operação.
+ * Cada item tem uma promessa curta antes da descrição, porque é a promessa
+ * que a pessoa lê ao passar o olho pela lista. A ordem é comercial e foi
+ * definida pelo Paulo: começa pelo que todo mundo já sabe que precisa
+ * (site), emenda no cartão, e só depois entra no que exige explicação.
+ *
+ * O cartão chegou a ter um selo "Novo" ao lado do título. Saiu no mesmo
+ * dia, a pedido dele: a posição na lista já dá o destaque.
  */
-const FUNCOES = [
+const SERVICOS = [
   {
     numero: "01",
-    titulo: "Vendedor",
-    promessa: "Nenhum lead fica sem resposta.",
-    desc: "Responde todo lead novo na hora, no WhatsApp e no site, apresenta seu serviço e entende o que a pessoa procura. Separa quem tem interesse real e volta a falar com quem pediu orçamento e sumiu.",
+    titulo: "Sites e landing pages",
+    promessa: "Um site que vende, não só um site bonito.",
+    desc: "Site profissional, rápido e com animação de verdade, construído pra transformar visitante em cliente. Funciona igual no computador e no celular, abre sem fazer ninguém esperar e é feito pra ser achado no Google.",
   },
   {
     numero: "02",
-    titulo: "Marketing",
-    promessa: "Você para de postar no escuro.",
-    desc: "Identifica que tipo de conteúdo traz cliente de verdade, cria e acompanha campanha e anúncio, e lê o comportamento de quem chega pra saber o que atrai mais gente parecida.",
+    titulo: "Cartão NFC",
+    promessa: "Apresente seu negócio com um toque.",
+    desc: "Cartão de visita que abre sua página na hora, sem app e sem ninguém digitar nada. Encoste no celular da pessoa e ela vê seu trabalho, seus contatos e salva você na agenda. A página pode ter IA atendendo ou levar direto pra sua avaliação no Google.",
   },
   {
     numero: "03",
-    titulo: "Administrativo",
-    promessa: "O trabalho que ninguém vê, mas alguém faz.",
-    desc: "Automatiza processo interno, organiza documento, acompanha indicador e monta relatório. Quando o processo é específico demais pra caber em ferramenta pronta, a gente constrói o sistema em volta dele.",
+    titulo: "Atendimento com IA",
+    promessa: "Nenhum cliente fica sem resposta, no site ou no WhatsApp.",
+    desc: "Uma IA treinada no seu negócio responde na hora, tira dúvida, entende o que a pessoa procura e te entrega o contato já qualificado. Atende de madrugada, no fim de semana e enquanto você está ocupado com outro cliente.",
   },
   {
     numero: "04",
-    titulo: "Secretária",
-    promessa: "Sua agenda enche, sem parar seu dia.",
-    desc: "Agenda compromisso, responde dúvida repetida, manda lembrete e organiza a informação do cliente. Você fica com o atendimento que exige você de verdade.",
+    titulo: "Criação de conteúdo com IA",
+    promessa: "Seu perfil para de ficar parado.",
+    desc: "Imagem, vídeo curto e carrossel criados com IA dentro da identidade da sua marca. Material pronto pra publicar, sem sessão de foto, sem banco de imagem genérico e sem esperar semanas por uma arte.",
+  },
+  {
+    numero: "05",
+    titulo: "Automações sob medida",
+    promessa: "O trabalho repetido deixa de ser seu.",
+    desc: "Orçamento, cobrança, planilha, relatório, cadastro. A gente mapeia o que se repete no seu dia, constrói o fluxo que faz isso sozinho e coloca pra rodar dentro das ferramentas que sua empresa já usa.",
   },
 ];
 
 export default function Servicos() {
   return (
-    <section id="funcionarios" className="px-6 py-28 md:px-10 md:py-40">
+    <section
+      id="servicos"
+      className="border-t border-border px-6 py-28 md:px-10 md:py-40"
+    >
       <div className="mx-auto max-w-[110rem]">
         <p
           className="type-label text-fg-muted"
           data-animate-variant="slide"
           data-animate-on-scroll="true"
         >
-          Funcionário digital
+          Serviços
         </p>
 
         <h2
-          className="type-xl mt-8 max-w-[14ch]"
+          className="type-xl mt-8 max-w-[13ch]"
           data-animate-variant="slide"
           data-animate-on-scroll="true"
         >
-          Escolha o que ele vai assumir
+          Tudo que faz seu digital rodar
         </h2>
 
+        <p
+          className="type-body mt-8 max-w-xl text-fg-muted"
+          data-animate-variant="slide"
+          data-animate-on-scroll="true"
+        >
+          Do site ao cartão na sua mão, de ponta a ponta. Você pode começar por
+          um e ir somando: cada peça funciona sozinha e funciona melhor junto
+          com as outras.
+        </p>
+
         <div className="mt-14 md:mt-20">
-          {FUNCOES.map((funcao) => (
+          {SERVICOS.map((servico) => (
             <article
-              key={funcao.numero}
+              key={servico.numero}
               className="group grid gap-6 border-t border-border py-10 last:border-b md:grid-cols-[6rem_minmax(0,1.1fr)_minmax(0,1fr)] md:items-start md:gap-12 md:py-14"
             >
-              <span className="type-label text-accent">{funcao.numero}</span>
+              <span className="type-label text-accent">{servico.numero}</span>
 
               <h3
                 className="type-lg transition-colors duration-300 group-hover:text-accent"
                 data-animate-variant="slide"
                 data-animate-on-scroll="true"
               >
-                {funcao.titulo}
+                {servico.titulo}
               </h3>
 
               <div>
                 <p className="type-body font-medium text-fg">
-                  {funcao.promessa}
+                  {servico.promessa}
                 </p>
                 <p
                   className="type-body mt-4 max-w-xl text-fg-muted"
                   data-animate-variant="slide"
                   data-animate-on-scroll="true"
                 >
-                  {funcao.desc}
+                  {servico.desc}
                 </p>
               </div>
             </article>
           ))}
         </div>
 
-        <p className="type-label mt-10 max-w-2xl text-fg-muted">
-          Sites, páginas comerciais e conteúdo com IA entram como apoio da
-          operação, não como o centro dela.
-        </p>
+        <div className="mt-14 flex flex-col gap-8 md:mt-20 md:flex-row md:items-end md:justify-between">
+          <p className="type-body max-w-xl text-fg-muted">
+            Não sabe por onde começar? Me conta como seu negócio funciona hoje e
+            eu te digo o que resolve mais rápido.
+          </p>
 
-        <div className="mt-20 border-t border-border pt-10 md:mt-28 md:pt-14">
-          <p className="type-label text-accent">Rodando agora</p>
-          <h3
-            className="type-lg mt-8 max-w-[20ch]"
-            data-animate-variant="slide"
-            data-animate-on-scroll="true"
-          >
-            A Lia é um funcionário digital da Viza
-          </h3>
-
-          <div className="mt-8 flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
-            <p className="type-body max-w-xl text-fg-muted">
-              Ela atende quem chega neste site, entende o caso e me passa a
-              conversa quando faz sentido. É o mesmo tipo de funcionário que
-              entra no atendimento da sua empresa. Fala com ela e vê
-              funcionando antes de decidir qualquer coisa.
-            </p>
-
-            <BotaoChat className="type-label inline-flex shrink-0 items-center justify-center border border-accent px-8 py-5 text-accent transition-colors hover:bg-accent hover:text-bg">
-              Falar com a Lia
-            </BotaoChat>
-          </div>
+          <BotaoChat className="shrink-0">Descobrir o meu caso</BotaoChat>
         </div>
       </div>
     </section>

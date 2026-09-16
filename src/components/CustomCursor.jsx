@@ -29,11 +29,21 @@ export default function CustomCursor() {
     let raf = null;
     const SUAVIDADE = 0.15;
 
+    // Com o mouse parado o ponto já alcançou o alvo e o loop passava a
+    // recalcular a mesma posição pra sempre. Como o cursor usa
+    // mix-blend-mode, cada quadro desses custava uma recomposição da tela
+    // inteira. Chegando ao destino, o loop se desliga e volta no próximo
+    // movimento do ponteiro.
     const tick = () => {
       x += (alvoX - x) * SUAVIDADE;
       y += (alvoY - y) * SUAVIDADE;
       el.style.setProperty("--x", `${x}px`);
       el.style.setProperty("--y", `${y}px`);
+
+      if (Math.abs(alvoX - x) < 0.1 && Math.abs(alvoY - y) < 0.1) {
+        raf = null;
+        return;
+      }
       raf = requestAnimationFrame(tick);
     };
 
