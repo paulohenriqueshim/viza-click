@@ -228,7 +228,14 @@ export default function ChatWidget() {
       }
 
       const data = await res.json();
-      setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
+      // Quando a Lia encerra, ela às vezes chama só a ferramenta de registro
+      // e não escreve nada junto. Sem esta guarda, o chat ganhava uma bolha
+      // vazia como última mensagem. Quem fecha a conversa nesse caso é o
+      // aviso de encerramento logo abaixo, que já diz o que precisa.
+      const resposta = (data.reply || "").trim();
+      if (resposta) {
+        setMessages((prev) => [...prev, { role: "assistant", content: resposta }]);
+      }
       // A Lia já registrou esta conversa (inclusive lead frio), então o
       // beacon de saída não pode mandar um segundo e-mail da mesma pessoa.
       if (data.handoff) {

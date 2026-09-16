@@ -86,6 +86,19 @@ export async function getAIReply(history) {
       `custo=R$${custo.brl.toFixed(4)}`
   );
 
+  // Alarme de regressão de custo. Os dois zerados juntos significam que a API
+  // ignorou o cache_control, e o motivo mais provável é o prefixo ter caído
+  // abaixo do mínimo do modelo (4.096 tokens no Haiku 4.5) depois de alguém
+  // encurtar o prompt. É falha silenciosa: nada quebra, a conversa responde
+  // normalmente, e a fatura sobe várias vezes. Ver o comentário do
+  // systemPrompt.js.
+  if (!usage.cache_read_input_tokens && !usage.cache_creation_input_tokens) {
+    console.warn(
+      '[chat:uso] ATENÇÃO: cache de prompt não pegou. Prefixo provavelmente ' +
+        'abaixo do mínimo do modelo. Toda mensagem está custando preço cheio.'
+    );
+  }
+
   return {
     text: textBlock ? textBlock.text.trim() : '',
     handoff: toolBlock ? toolBlock.input || {} : null,
