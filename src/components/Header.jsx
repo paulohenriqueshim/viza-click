@@ -3,7 +3,6 @@ import Logo from "./Logo";
 const NAV = [
   { label: "Serviços", href: "#servicos" },
   { label: "A Lia", href: "#lia" },
-  { label: "Processo", href: "#como-funciona" },
   { label: "Clientes", href: "#clientes" },
 ];
 

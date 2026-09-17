@@ -3,7 +3,6 @@ import Hero from "@/components/Hero";
 import Manifesto from "@/components/Manifesto";
 import Servicos from "@/components/Servicos";
 import Lia from "@/components/Lia";
-import ComoFunciona from "@/components/ComoFunciona";
 import Projetos from "@/components/Projetos";
 import Fundador from "@/components/Fundador";
 import CtaFinal from "@/components/CtaFinal";
@@ -18,7 +17,6 @@ export default function Home() {
         <Manifesto />
         <Servicos />
         <Lia />
-        <ComoFunciona />
         <Projetos />
         <Fundador />
         <CtaFinal />
