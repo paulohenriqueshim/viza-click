@@ -21,7 +21,7 @@ const inter = Inter({
 export const metadata = {
   title: "Viza Click | Presença digital para pequenas empresas",
   description:
-    "Sites e landing pages, cartão NFC, atendimento com IA no site e no WhatsApp, criação de conteúdo e automações sob medida. A parte digital do seu negócio rodando sozinha.",
+    "Cartão Viza Click, atendimento com IA no seu site, cartão de avaliação no Google, sites e landing pages, automações e sistemas sob medida. A parte digital do seu negócio rodando sozinha.",
 };
 
 export default function RootLayout({ children }) {

@@ -10,11 +10,12 @@
 import nodemailer from 'nodemailer';
 
 const SERVICO_LABELS = {
+  cartao_contato: 'Cartão Viza Click (só contato)',
+  cartao_ia: 'Cartão Viza Click (contato + IA)',
+  atendimento_ia: 'Atendimento com IA no site',
+  cartao_avaliacao: 'Cartão de Avaliação (Google)',
   site: 'Site ou landing page',
-  cartao_nfc: 'Cartão NFC',
-  atendimento_ia: 'Atendimento com IA (site ou WhatsApp)',
-  conteudo_ia: 'Criação de conteúdo com IA',
-  automacao: 'Automação sob medida',
+  automacao: 'Automações e sistemas sob medida',
   presenca_digital: 'Presença digital (site + atendimento)',
   nao_definido: 'Não definido ainda',
 };
@@ -23,11 +24,9 @@ const SERVICO_LABELS = {
 // agora ou se é só registro — desde que o lead frio também notifica, a
 // caixa recebe os dois tipos misturados.
 const SAIDA_LABELS = {
-  lead_qualificado: 'Lead qualificado',
+  quer_comprar: 'Quer comprar / pediu preço',
   reuniao_agendada: 'REUNIÃO MARCADA',
-  pediu_humano: 'Pediu falar com você',
-  lead_frio: 'Lead frio (só registro)',
-  fora_do_perfil: 'Fora do perfil (a Lia recusou)',
+  pediu_humano: 'Pediu você ou dúvida que a Lia não sabe',
   abandonou: 'Saiu no meio da conversa',
 };
 
@@ -37,9 +36,9 @@ function formatHandoffSummary(handoff) {
     handoff.reuniao ? `>>> REUNIÃO: ${handoff.reuniao}` : null,
     handoff.nome ? `Nome: ${handoff.nome}` : null,
     `Negócio: ${handoff.negocio || 'não informado'}`,
-    `Dor/necessidade: ${handoff.dor_ou_necessidade || 'não informado'}`,
+    `O que quer / dúvida: ${handoff.dor_ou_necessidade || 'não informado'}`,
     handoff.ja_tentou ? `Já tentou: ${handoff.ja_tentou}` : null,
-    `Serviço indicado: ${SERVICO_LABELS[handoff.servico_indicado] || handoff.servico_indicado || 'não definido'}`,
+    `Produto de interesse: ${SERVICO_LABELS[handoff.servico_indicado] || handoff.servico_indicado || 'não definido'}`,
     handoff.contato ? `Contato informado: ${handoff.contato}` : null,
     `Resumo: ${handoff.resumo_para_atendente || ''}`,
   ].filter(Boolean);
@@ -89,7 +88,10 @@ export async function notifyHandoff(handoff) {
     await transporter.sendMail({
       from: `"Widget Viza Click" <${process.env.SMTP_USER}>`,
       to,
-      subject: `[${SAIDA_LABELS[handoff.tipo_de_saida] || 'Contato'}] chat do site${handoff.nome ? ` — ${handoff.nome}` : ''}`,
+      // "(sem contato)" no assunto: a Lia passa a venda assim que a pessoa
+      // pergunta preço, antes de ela deixar telefone ou e-mail. Se ela
+      // mandar o contato depois, chega um segundo e-mail, já com ele.
+      subject: `[${SAIDA_LABELS[handoff.tipo_de_saida] || 'Contato'}] chat do site${handoff.nome ? ` — ${handoff.nome}` : ''}${handoff.contato ? '' : ' (sem contato)'}`,
       text: resumo,
     });
   } catch (err) {

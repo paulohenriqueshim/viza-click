@@ -8,6 +8,9 @@ import BotaoChat from "./BotaoChat";
  * "roda sozinho" pede demonstração imediata, não uma lista de funções
  * antes. Quem acabou de ler que o processo roda sozinho consegue testar
  * isso na linha seguinte, em vez de rolar a página inteira até achar.
+ *
+ * O título era "A Lia é um funcionário digital da Viza" até 05/11/2026; o
+ * Paulo trocou por "assistente" porque "funcionário digital" não soa bem.
  */
 export default function Lia() {
   return (
@@ -29,7 +32,7 @@ export default function Lia() {
           data-animate-variant="slide"
           data-animate-on-scroll="true"
         >
-          A Lia é um funcionário digital da Viza
+          A Lia é a assistente da Viza Click
         </h2>
 
         <div className="mt-12 flex flex-col gap-10 md:mt-16 md:flex-row md:items-end md:justify-between">
@@ -38,8 +41,8 @@ export default function Lia() {
             data-animate-variant="slide"
             data-animate-on-scroll="true"
           >
-            Ela atende quem chega neste site, entende o caso e me passa a
-            conversa quando faz sentido. É o mesmo tipo de atendimento que
+            Ela atende quem chega neste site, tira as dúvidas e me passa a
+            conversa quando a pessoa quer fechar. É o mesmo tipo de atendimento que
             entra na sua empresa. Fala com ela e vê funcionando antes de
             decidir qualquer coisa.
           </p>

@@ -1,7 +1,8 @@
 // Decide se uma conversa abandonada (visitante fechou a aba sem se
-// despedir) tem informação concreta o suficiente pra valer um e-mail pro
-// Paulo. A regra dele: quem sai sem dizer nada de útil não vira aviso;
-// quem já deu nome, ramo do negócio ou uma dor, vira.
+// despedir) vale um e-mail pro Paulo. A regra dele desde 05/11/2026: só
+// venda ou contato. Curioso que tirou dúvida e saiu não vira aviso, mesmo
+// que tenha contado o ramo do negócio; quem deixou telefone ou e-mail, ou
+// disse que quer contratar, vira.
 //
 // Roda em dois estágios de propósito. O primeiro é uma peneira local e
 // gratuita, que descarta "oi" e teste sem gastar chamada de API — a maior
@@ -38,27 +39,23 @@ export function pareceVazio(history) {
 
 const EXTRACAO_SYSTEM = `
 Você recebe o histórico de uma conversa que um visitante teve com o chat da
-Viza.click (agência de IA) e abandonou sem se despedir. Sua tarefa é decidir
-se sobrou informação concreta o bastante pra valer avisar o Paulo, dono da
-agência, e extrair o que houver.
+Viza.click e abandonou sem se despedir. Sua tarefa é decidir se a conversa
+vale avisar o Paulo, dono da agência, e extrair o que houver. O Paulo só quer
+aviso de VENDA ou CONTATO, não de curioso.
 
-CONTA COMO INFORMAÇÃO CONCRETA (qualquer uma já basta):
-- O nome da pessoa.
-- O ramo, profissão ou tipo de negócio dela.
-- Uma dor, gargalo ou necessidade que ela descreveu.
-- Um serviço específico que ela pediu.
-- Um contato que ela deixou (telefone, e-mail).
+VALE AVISAR (qualquer uma já basta):
+- O visitante deixou um contato (telefone, WhatsApp, e-mail).
+- O visitante disse que quer contratar, comprar, fechar ou receber proposta.
+- O visitante marcou ou pediu reunião.
 
-NÃO CONTA COMO INFORMAÇÃO CONCRETA:
-- Só saudação ("oi", "bom dia").
-- Só teste ("teste", "asdf", "123").
-- Pergunta genérica sem nada sobre quem está perguntando ("quanto custa?",
-  "vocês fazem site?") quando o visitante não disse nada sobre si.
-- Conversa em que só a atendente falou.
+NÃO VALE AVISAR:
+- Só tirou dúvida sobre como os produtos funcionam, mesmo que tenha contado
+  o nome ou o ramo do negócio.
+- Perguntou preço e saiu sem deixar contato nem dizer que quer contratar.
+- Só saudação, teste ou conversa em que só a atendente falou.
 
-Seja conservador: na dúvida entre avisar e não avisar por causa de
-informação vaga demais, NÃO avise. O objetivo é que todo e-mail que chegue
-tenha serventia real.
+Seja conservador: na dúvida, NÃO avise. Todo e-mail que chegar tem que ser
+venda ou ter um jeito de falar com a pessoa.
 
 Chame sempre a ferramenta registrar_abandono, com tem_info_relevante true
 ou false conforme a análise.
@@ -74,7 +71,7 @@ const EXTRACAO_TOOL = {
       tem_info_relevante: {
         type: 'boolean',
         description:
-          'true se a conversa tem pelo menos uma informação concreta sobre o visitante ou o negócio dele; false se foi só saudação, teste ou pergunta genérica.',
+          'true se o visitante deixou contato, disse que quer contratar ou pediu reunião; false se foi só dúvida, curiosidade, saudação ou teste.',
       },
       nome: { type: 'string', description: 'Nome do visitante, se ele informou.' },
       negocio: {

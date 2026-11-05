@@ -31,6 +31,20 @@ function estimarCusto(usage) {
 }
 
 /**
+ * Rede de segurança pro que o prompt já proíbe e o modelo às vezes faz
+ * mesmo assim (visto nos testes de 05/11/2026): travessão longo, que é regra
+ * do Paulo pra todo texto da Viza, e negrito em markdown, que o chat mostra
+ * cru, com os asteriscos.
+ */
+function limparTexto(texto) {
+  return texto
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/\s*—\s*/g, ', ')
+    .replace(/,\s*([.,:;!?])/g, '$1')
+    .trim();
+}
+
+/**
  * @typedef {{text: string, handoff: null | Record<string, string>,
  *   usage: object, custo: {usd: number, brl: number}}} AIReply
  */
@@ -100,7 +114,7 @@ export async function getAIReply(history) {
   }
 
   return {
-    text: textBlock ? textBlock.text.trim() : '',
+    text: textBlock ? limparTexto(textBlock.text) : '',
     handoff: toolBlock ? toolBlock.input || {} : null,
     usage,
     custo,

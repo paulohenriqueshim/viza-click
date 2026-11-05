@@ -37,7 +37,7 @@ export async function POST(request) {
     return Response.json({ error: 'JSON inválido' }, { status: 400 });
   }
 
-  const { history } = body || {};
+  const { history, jaPassou } = body || {};
 
   if (!Array.isArray(history) || history.length === 0) {
     return Response.json({ error: 'history é obrigatório' }, { status: 400 });
@@ -61,7 +61,9 @@ export async function POST(request) {
   }
 
   try {
-    const { text, handoff, custo } = await getAIReply(history);
+    const resposta = await getAIReply(history);
+    const { handoff, custo } = resposta;
+    let { text } = resposta;
 
     // Abuso não vira e-mail. Quem está martelando o chat de propósito
     // adoraria transformar cada tentativa numa notificação na caixa do
@@ -73,7 +75,18 @@ export async function POST(request) {
       console.warn(`[chat] conversa encerrada por abuso — ip ${ip}`);
     }
 
-    if (handoff && !ehAbuso) {
+    // A Lia não enxerga as próprias chamadas de ferramenta nas mensagens
+    // seguintes (o histórico guarda só texto). Visto nos testes de
+    // 05/11/2026: ela passava a venda sem escrever nada e, duas mensagens
+    // depois, passava de novo, mandando outro e-mail igual. O widget conta
+    // se já houve passagem e se já tinha contato; e-mail repetido só sai se
+    // agora chegou um contato novo ou uma reunião marcada.
+    const repetido =
+      Boolean(jaPassou?.passou) &&
+      handoff?.tipo_de_saida !== 'reuniao_agendada' &&
+      (Boolean(jaPassou?.temContato) || !handoff?.contato?.trim());
+
+    if (handoff && !ehAbuso && !repetido) {
       // Roda DEPOIS da resposta ir pro lead, mas dentro do `after` do
       // Next: numa função serverless, uma promise solta (`notify().catch()`
       // sem await) morre junto com a instância assim que a resposta é
@@ -90,24 +103,27 @@ export async function POST(request) {
       });
     }
 
-    // Lead frio dispara a ferramenta só pra registrar a conversa pro Paulo —
-    // a pessoa continua livre pra voltar a escrever. Fechar o campo aí seria
-    // expulsar do chat justamente quem ainda estava em cima do muro.
-    const encerrar = Boolean(handoff) && handoff.tipo_de_saida !== 'lead_frio';
+    // Desde 05/11/2026 só o abuso fecha o chat. Quando a Lia passa a venda
+    // pro Paulo, o widget mostra o botão do WhatsApp e a pessoa continua
+    // livre pra tirar dúvida (pedido do Paulo: o limite de mensagens por
+    // sessão e o rate limit por IP seguram quem quiser gastar à toa).
+    const encerrar = ehAbuso;
+    const desfecho = ehAbuso ? 'abuso' : null;
 
-    // O widget precisa saber COMO a conversa acabou pra escolher o que
-    // mostrar no fim: prometer retorno do Paulo só faz sentido pra quem foi
-    // qualificado. Quem ouviu que não é caso pra Viza Click recebe a porta
-    // aberta do WhatsApp em vez de uma promessa, e quem veio abusar não
-    // recebe nem uma coisa nem outra. Só o rótulo do desfecho vai pro
-    // navegador, nunca o conteúdo do registro.
-    const desfecho = !encerrar
-      ? null
-      : ehAbuso
-        ? 'abuso'
-        : handoff.tipo_de_saida === 'fora_do_perfil'
-          ? 'fora_do_perfil'
-          : 'handoff';
+    // O widget escolhe o texto do aviso: com contato, "o Paulo vai te
+    // chamar"; sem contato, só o convite pro WhatsApp. Vai pro navegador só
+    // o fato de ter ou não contato, nunca o contato em si.
+    const passouProPaulo = Boolean(handoff) && !ehAbuso;
+    const temContato = passouProPaulo && Boolean(handoff.contato?.trim());
+
+    // Passagem sem texto deixa a pessoa sem confirmação e some do histórico
+    // (é por isso que a Lia esquecia que já tinha registrado). Uma frase
+    // padrão resolve as duas coisas.
+    if (passouProPaulo && !text) {
+      text = temContato
+        ? 'Anotado! O Paulo vai te chamar nesse contato.'
+        : 'Anotado! O Paulo te passa valores e condições.';
+    }
 
     // O custo por chamada não vai pra resposta — é só log de servidor. Expor
     // isso ao navegador entregaria de graça qual modelo e qual volume a gente
@@ -118,7 +134,8 @@ export async function POST(request) {
 
     return Response.json({
       reply: text,
-      handoff: Boolean(handoff),
+      handoff: passouProPaulo,
+      temContato,
       encerrar,
       desfecho,
     });

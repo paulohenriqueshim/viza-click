@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import Logo from "./Logo";
 import { WHATSAPP_URL } from "@/lib/contact";
 import { ABRIR_CHAT_EVENT } from "@/lib/chat-ui";
@@ -18,11 +18,17 @@ const COUNT_KEY = "vc-chat-count";
 // chamou o handoff, seja porque o beacon de saída já foi enviado). Fica no
 // sessionStorage pra sobreviver a um F5 no meio da conversa.
 const REPORTED_KEY = "vc-chat-reportado";
+// Onde fica o aviso "fala com o Paulo no WhatsApp" depois que a Lia passa
+// a venda (índice da mensagem e se a pessoa já deixou contato).
+const AVISO_KEY = "vc-chat-aviso";
 
+// Desde 05/11/2026 a Lia existe pra tirar dúvida sobre os produtos. A
+// saudação antiga ("me conta o que seu negócio faz") já abria a conversa
+// como questionário, que era justamente o que o Paulo queria tirar.
 const GREETING = {
   role: "assistant",
   content:
-    "Oi! Sou a Lia, da Viza Click. Me conta rapidinho o que seu negócio faz que eu já te digo onde a IA pode ajudar.",
+    "Oi! Sou a Lia, da Viza Click. Pode me perguntar o que quiser sobre o cartão, o atendimento com IA, sites ou automações.",
 };
 
 function loadSession(key, fallback) {
@@ -52,9 +58,11 @@ export default function ChatWidget() {
   const [count, setCount] = useState(0);
   const [ended, setEnded] = useState(false);
   // Como a conversa acabou: decide o que aparece no lugar do campo de
-  // texto. "handoff" promete retorno do Paulo, "fora_do_perfil" não promete
-  // nada e só deixa o WhatsApp à mão, "abuso" não oferece saída nenhuma.
-  const [desfecho, setDesfecho] = useState("handoff");
+  // texto. Só dois jeitos de acabar desde 05/11/2026: "limite" (bateu o
+  // teto de mensagens da sessão, ganha o WhatsApp) e "abuso" (sem saída).
+  // Passar a venda pro Paulo NÃO acaba a conversa: vira o aviso abaixo.
+  const [desfecho, setDesfecho] = useState("limite");
+  const [aviso, setAviso] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
   const listRef = useRef(null);
   const inputRef = useRef(null);
@@ -74,6 +82,7 @@ export default function ChatWidget() {
     if (savedMessages && savedMessages.length > 0) setMessages(savedMessages);
     setCount(savedCount);
     if (savedCount >= MAX_MESSAGES_PER_SESSION) setEnded(true);
+    setAviso(loadSession(AVISO_KEY, null));
     if (loadSession(REPORTED_KEY, false)) jaReportou.current = true;
     hydrated.current = true;
   }, []);
@@ -219,7 +228,12 @@ export default function ChatWidget() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ history: nextHistory }),
+        // jaPassou: o servidor não guarda estado, então é o widget que conta
+        // se a venda já foi passada pro Paulo (evita e-mail repetido).
+        body: JSON.stringify({
+          history: nextHistory,
+          jaPassou: aviso ? { passou: true, temContato: aviso.temContato } : null,
+        }),
       });
 
       if (!res.ok) {
@@ -236,11 +250,19 @@ export default function ChatWidget() {
       if (resposta) {
         setMessages((prev) => [...prev, { role: "assistant", content: resposta }]);
       }
-      // A Lia já registrou esta conversa (inclusive lead frio), então o
-      // beacon de saída não pode mandar um segundo e-mail da mesma pessoa.
+      // A Lia passou a venda pro Paulo: o e-mail já saiu, então o beacon
+      // de saída não pode mandar um segundo da mesma pessoa. O aviso com o
+      // botão do WhatsApp aparece logo depois desta resposta (se ela passar
+      // de novo, ele desce junto) e o campo continua aberto.
       if (data.handoff) {
         jaReportou.current = true;
         saveSession(REPORTED_KEY, true);
+        const novoAviso = {
+          depoisDe: nextHistory.length - (resposta ? 0 : 1),
+          temContato: Boolean(data.temContato || aviso?.temContato),
+        };
+        setAviso(novoAviso);
+        saveSession(AVISO_KEY, novoAviso);
       }
       if (data.encerrar) {
         if (data.desfecho) setDesfecho(data.desfecho);
@@ -294,7 +316,12 @@ export default function ChatWidget() {
           {/* Mensagens */}
           <div ref={listRef} className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-3">
             {messages.map((m, i) => (
-              <ChatBubble key={i} role={m.role} content={m.content} />
+              <Fragment key={i}>
+                <ChatBubble role={m.role} content={m.content} />
+                {aviso && aviso.depoisDe === i && (
+                  <AvisoPaulo temContato={aviso.temContato} />
+                )}
+              </Fragment>
             ))}
             {sending && <TypingBubble />}
             {errorMsg && (
@@ -371,23 +398,43 @@ function TypingBubble() {
 }
 
 /**
- * O que fica no lugar do campo de texto quando a conversa fecha.
+ * Aviso que entra na conversa quando a Lia passa a venda pro Paulo. Não
+ * fecha o chat: a pessoa pode continuar tirando dúvida embaixo dele.
  *
- * São três finais diferentes porque prometer "o Paulo vai te chamar" pra
- * quem acabou de ouvir que não é caso pra Viza Click seria contradição na
- * cara da pessoa. E quem veio derrubar o chat não ganha canal nenhum: o
- * WhatsApp é do Paulo, não é prêmio de consolação.
+ * O texto depende de ela já ter deixado contato. Sem contato, prometer
+ * "o Paulo vai te chamar" seria mentira: ele não teria como.
+ */
+function AvisoPaulo({ temContato }) {
+  return (
+    <div className="bg-bg-elevated border border-border rounded-2xl px-4 py-3.5 flex flex-col gap-2.5">
+      <p className="text-sm font-body text-fg leading-relaxed">
+        {temContato
+          ? "O Paulo vai te chamar no contato que você deixou. Se quiser adiantar, é só chamar no WhatsApp."
+          : "Pra falar direto com o Paulo, chama ele no WhatsApp. Ou deixa um contato aqui que ele te chama."}
+      </p>
+      <a
+        href={WHATSAPP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center justify-center bg-accent text-bg font-medium rounded-full px-4 py-2 text-sm hover:opacity-90 transition-opacity"
+      >
+        Chamar o Paulo no WhatsApp
+      </a>
+    </div>
+  );
+}
+
+/**
+ * O que fica no lugar do campo de texto quando a conversa fecha. Só fecha
+ * por limite de mensagens (quem chegou lá ganha o WhatsApp pra continuar)
+ * ou por abuso (sem canal nenhum: o WhatsApp é do Paulo, não é prêmio de
+ * consolação pra quem veio derrubar o chat).
  */
 const FINAIS = {
-  handoff: {
+  limite: {
     texto:
-      "O Paulo vai te chamar por aqui em breve. Se quiser adiantar, é só chamar no WhatsApp.",
+      "Essa conversa chegou no limite de mensagens. Pra continuar, chama o Paulo no WhatsApp.",
     botao: "Chamar no WhatsApp",
-  },
-  fora_do_perfil: {
-    texto:
-      "Obrigado pela conversa. Se quiser falar com o Paulo mesmo assim, é só chamar.",
-    botao: "Falar com o Paulo",
   },
   abuso: {
     texto: "Conversa encerrada.",
@@ -395,8 +442,8 @@ const FINAIS = {
   },
 };
 
-function EndedNotice({ desfecho = "handoff" }) {
-  const final = FINAIS[desfecho] || FINAIS.handoff;
+function EndedNotice({ desfecho = "limite" }) {
+  const final = FINAIS[desfecho] || FINAIS.limite;
 
   return (
     <div className="bg-bg-elevated border border-border rounded-2xl px-4 py-3.5 flex flex-col gap-2.5">
