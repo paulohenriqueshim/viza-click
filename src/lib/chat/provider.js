@@ -38,6 +38,8 @@ function estimarCusto(usage) {
  */
 function limparTexto(texto) {
   return texto
+    .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, '')
+    .replace(/[ \t]+\n/g, '\n')
     .replace(/\*\*(.+?)\*\*/g, '$1')
     .replace(/\s*—\s*/g, ', ')
     .replace(/,\s*([.,:;!?])/g, '$1')
@@ -51,9 +53,11 @@ function limparTexto(texto) {
 
 /**
  * @param {{role: 'user'|'assistant', content: string}[]} history
+ * @param {{forcarPassagem?: boolean}} [opcoes] forcarPassagem obriga a Lia a
+ *   chamar handoff_to_team nesta resposta (pergunta de preço, ver route.js).
  * @returns {Promise<AIReply>}
  */
-export async function getAIReply(history) {
+export async function getAIReply(history, { forcarPassagem = false } = {}) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     throw new Error('ANTHROPIC_API_KEY não configurada nas variáveis de ambiente');
@@ -73,6 +77,7 @@ export async function getAIReply(history) {
       // `cache_control` e o de data/hora vem depois. Ver buildSystemBlocks().
       system: buildSystemBlocks(),
       tools: [HANDOFF_TOOL],
+      ...(forcarPassagem ? { tool_choice: { type: 'tool', name: HANDOFF_TOOL.name } } : {}),
       messages: history.map((m) => ({ role: m.role, content: m.content })),
     }),
   });

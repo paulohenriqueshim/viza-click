@@ -17,6 +17,9 @@ export const runtime = 'nodejs';
 const MAX_HISTORY_MESSAGES = 40;
 const MAX_MESSAGE_LENGTH = 2000;
 
+const PERGUNTA_DE_PRECO =
+  /\b(pre[çc]os?|quanto (custa|custam|fica|ficam|sai|saem|cobra|cobram|[ée]|seria|ficaria|t[áa])|qual (o|[ée] o|seria o) valor|valores|parcel\w*|desconto|forma de pagamento|tabela de pre[çc]o)/i;
+
 export async function POST(request) {
   // Trava de custo ANTES de qualquer coisa: nada de gastar chamada de API (nem
   // fazer parse de body grande) por conta de quem está martelando o endpoint.
@@ -60,8 +63,17 @@ export async function POST(request) {
     return Response.json({ error: 'history inválido' }, { status: 400 });
   }
 
+  // Pergunta de preço SEMPRE passa pro Paulo (regra dele). Só o prompt não
+  // segurou: nos testes de 05/11/2026 a Lia às vezes explicava "depende do
+  // caso" e devolvia uma pergunta, sem passar a venda nem mostrar o botão do
+  // WhatsApp. Aqui a passagem é obrigatória nessa resposta. A lista evita
+  // de propósito "orçamento" (é coisa que a automação faz) e "valor" solto
+  // ("agrega valor"), pra não tratar dúvida de produto como venda.
+  const ultimaDoUsuario = [...history].reverse().find((m) => m.role === 'user')?.content || '';
+  const perguntouPreco = PERGUNTA_DE_PRECO.test(ultimaDoUsuario);
+
   try {
-    const resposta = await getAIReply(history);
+    const resposta = await getAIReply(history, { forcarPassagem: perguntouPreco });
     const { handoff, custo } = resposta;
     let { text } = resposta;
 
@@ -117,12 +129,24 @@ export async function POST(request) {
     const temContato = passouProPaulo && Boolean(handoff.contato?.trim());
 
     // Passagem sem texto deixa a pessoa sem confirmação e some do histórico
-    // (é por isso que a Lia esquecia que já tinha registrado). Uma frase
-    // padrão resolve as duas coisas.
+    // (é por isso que a Lia esquecia que já tinha registrado). Com a
+    // passagem forçada por pergunta de preço, a API costuma devolver só a
+    // ferramenta, sem texto: essas frases cobrem esse caso também.
     if (passouProPaulo && !text) {
-      text = temContato
-        ? 'Anotado! O Paulo vai te chamar nesse contato.'
-        : 'Anotado! O Paulo te passa valores e condições.';
+      if (temContato && !jaPassou?.temContato) {
+        text = 'Anotado! O Paulo vai te chamar nesse contato.';
+      } else if (jaPassou?.temContato) {
+        text = 'Isso quem passa é o Paulo, e ele vai te chamar no contato que você deixou. Se quiser adiantar, é só chamar ele no WhatsApp aqui embaixo.';
+      } else {
+        // Três jeitos de dizer a mesma coisa, sorteados: a Lia não pode soar
+        // como resposta pronta (pedido do Paulo).
+        const frases = [
+          'Valores e condições quem passa é o Paulo, porque a proposta é montada em cima do seu caso. Me passa seu nome e um WhatsApp ou e-mail que ele te chama, ou se preferir, chama ele direto no WhatsApp aqui embaixo.',
+          'Essa parte é com o Paulo: ele monta a proposta de acordo com o que você precisa. Se me passar seu nome e um WhatsApp ou e-mail, ele te chama. Ou, se quiser adiantar, é só chamar ele no WhatsApp aqui embaixo.',
+          'Quem fala de valores é o Paulo, porque cada proposta sai sob medida. Me deixa seu nome e um contato (WhatsApp ou e-mail) que ele te procura, ou chama ele agora mesmo pelo botão do WhatsApp aqui embaixo.',
+        ];
+        text = frases[Math.floor(Math.random() * frases.length)];
+      }
     }
 
     // O custo por chamada não vai pra resposta — é só log de servidor. Expor

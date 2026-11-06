@@ -24,11 +24,11 @@ const AVISO_KEY = "vc-chat-aviso";
 
 // Desde 05/11/2026 a Lia existe pra tirar dúvida sobre os produtos. A
 // saudação antiga ("me conta o que seu negócio faz") já abria a conversa
-// como questionário, que era justamente o que o Paulo queria tirar.
+// como questionário, e a seguinte listava os produtos, o que o Paulo achou
+// com cara de robô. Fica curta e aberta.
 const GREETING = {
   role: "assistant",
-  content:
-    "Oi! Sou a Lia, da Viza Click. Pode me perguntar o que quiser sobre o cartão, o atendimento com IA, sites ou automações.",
+  content: "Oi! Sou a Lia, assistente da Viza Click. Como posso te ajudar?",
 };
 
 function loadSession(key, fallback) {
