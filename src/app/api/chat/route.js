@@ -129,10 +129,11 @@ export async function POST(request) {
     const temContato = passouProPaulo && Boolean(handoff.contato?.trim());
 
     // Passagem sem texto deixa a pessoa sem confirmação e some do histórico
-    // (é por isso que a Lia esquecia que já tinha registrado). Com a
-    // passagem forçada por pergunta de preço, a API costuma devolver só a
-    // ferramenta, sem texto: essas frases cobrem esse caso também.
-    if (passouProPaulo && !text) {
+    // (é por isso que a Lia esquecia que já tinha registrado). Em pergunta
+    // de preço o texto do modelo é trocado SEMPRE por estas frases: em
+    // produção, mesmo com a passagem forçada, ela escrevia junto e puxava
+    // versões e mensalidade, e o Paulo quer preço só passado pra ele.
+    if (passouProPaulo && (!text || perguntouPreco)) {
       if (temContato && !jaPassou?.temContato) {
         text = 'Anotado! O Paulo vai te chamar nesse contato.';
       } else if (jaPassou?.temContato) {
