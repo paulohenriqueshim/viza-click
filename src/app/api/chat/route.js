@@ -7,6 +7,7 @@ import { after } from 'next/server';
 
 import { getAIReply } from '@/lib/chat/provider';
 import { notifyHandoff } from '@/lib/chat/notify';
+import { negouServico, fraseDePassagem } from '@/lib/chat/negacao';
 import { ipDaRequisicao, verificarLimite } from '@/lib/chat/rateLimit';
 
 export const runtime = 'nodejs';
@@ -74,8 +75,31 @@ export async function POST(request) {
 
   try {
     const resposta = await getAIReply(history, { forcarPassagem: perguntouPreco });
-    const { handoff, custo } = resposta;
-    let { text } = resposta;
+    const { custo } = resposta;
+    let { text, handoff } = resposta;
+
+    // A Lia nunca diz que a Viza "não faz" algo fora da lista fechada do
+    // que de fato não fazemos (ver negacao.js). Em 12/11/2026 ela disse a
+    // visitantes que a Viza não trabalha com sistema de escala, e o Paulo
+    // perdeu cliente. Se ela negar, a resposta vira passagem pro Paulo, com
+    // a pergunta no e-mail pra ele responder. Pergunta de preço já tem a
+    // passagem própria logo abaixo, e abuso não passa pro Paulo.
+    const negouSemSaber =
+      !perguntouPreco &&
+      handoff?.tipo_de_saida !== 'abuso' &&
+      negouServico(text, ultimaDoUsuario);
+
+    if (negouSemSaber) {
+      console.warn('[chat] Lia ia dizer que a Viza não faz algo; trocado por passagem pro Paulo');
+      text = fraseDePassagem({ jaTemContato: Boolean(jaPassou?.temContato) });
+      handoff = handoff || {
+        tipo_de_saida: 'pediu_humano',
+        servico_indicado: 'nao_definido',
+        dor_ou_necessidade: ultimaDoUsuario.slice(0, 300),
+        resumo_para_atendente:
+          'Perguntou se a Viza faz algo que a Lia não sabia. Responda você.',
+      };
+    }
 
     // Abuso não vira e-mail. Quem está martelando o chat de propósito
     // adoraria transformar cada tentativa numa notificação na caixa do
@@ -93,7 +117,10 @@ export async function POST(request) {
     // depois, passava de novo, mandando outro e-mail igual. O widget conta
     // se já houve passagem e se já tinha contato; e-mail repetido só sai se
     // agora chegou um contato novo ou uma reunião marcada.
+    // Pergunta que a Lia ia negar sempre vira e-mail: é dúvida nova, que
+    // só o Paulo responde, mesmo que a conversa já tenha passado antes.
     const repetido =
+      !negouSemSaber &&
       Boolean(jaPassou?.passou) &&
       handoff?.tipo_de_saida !== 'reuniao_agendada' &&
       (Boolean(jaPassou?.temContato) || !handoff?.contato?.trim());
