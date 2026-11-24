@@ -189,16 +189,16 @@ html {
   margin-top: -0.14em;
 }
 
-/* ---- Preloader ----
-   Duas camadas idênticas empilhadas. No fim da timeline cada uma recebe
-   um clip-path (metade de cima / metade de baixo) e desliza pro seu lado:
-   a tela abre ao meio como cortina e revela o site por baixo.
+/* ---- Preloader (abertura "o clique", 24/11/2026) ----
+   Uma camada carvão com o logo e o nome por cima do site. No fim da
+   timeline ela ganha um buraco redondo que cresce a partir do miolo do
+   logo e revela o site por baixo (ver Preloader.jsx). Até 24/11/2026 eram
+   duas camadas que se partiam ao meio como cortina.
 
    Fundo carvão com a marca em limão: a cor de acento rende muito mais
    como detalhe sobre escuro do que preenchendo a tela, onde ela perde a
    eletricidade e lê como pastel. */
 .preloader,
-.split-overlay,
 .tags-overlay {
   position: fixed;
   inset: 0;
@@ -207,18 +207,10 @@ html {
   pointer-events: auto;
 }
 
-.preloader,
-.split-overlay {
-  background-color: var(--bg);
-  color: var(--accent);
-}
-
 .preloader {
   z-index: 10000;
-}
-
-.split-overlay {
-  z-index: 9999;
+  background-color: var(--bg);
+  color: var(--accent);
 }
 
 .tags-overlay {
@@ -227,7 +219,6 @@ html {
 }
 
 .preloader h1,
-.split-overlay h1,
 .tags-overlay p {
   opacity: 0;
 }
@@ -236,10 +227,61 @@ html {
   position: absolute;
   top: 49%;
   left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   padding: 0 1.5rem;
   text-align: center;
   transform: translate(-50%, -50%);
+}
+
+/* O logo fica em cima do nome. Ele começa invisível como os títulos e o
+   Preloader.jsx revela quando a fonte carrega. */
+.intro-logo {
+  width: clamp(4.5rem, 9vw, 8.5rem);
+  height: clamp(4.5rem, 9vw, 8.5rem);
+  margin-bottom: -1rem;
+  color: var(--accent);
+  opacity: 0;
+}
+
+.intro-logo svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  will-change: transform;
+}
+
+/* O buraco que abre o site: tudo fora do círculo continua carvão, dentro
+   dele a camada some. --cx, --cy e --r vêm do Preloader.jsx a cada quadro.
+   Dura 0,9s e só existe durante a abertura. */
+.preloader.abrindo {
+  -webkit-mask-image: radial-gradient(
+    circle at var(--cx) var(--cy),
+    transparent var(--r),
+    #000 calc(var(--r) + 1px)
+  );
+  mask-image: radial-gradient(
+    circle at var(--cx) var(--cy),
+    transparent var(--r),
+    #000 calc(var(--r) + 1px)
+  );
+}
+
+/* A onda limão na borda do buraco. */
+.intro-onda {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 .intro-title .char {
@@ -317,6 +359,15 @@ html {
   .hero {
     padding-top: 5rem;
     padding-bottom: 1.5rem;
+  }
+}
+
+/* Celular comum (24/11/2026): com o selo da escala e os dois botões, o hero
+   precisa caber na primeira tela sem esconder o WhatsApp. O título cai um
+   pouco só no celular; no computador continua igual. */
+@media (max-width: 640px) {
+  .hero .type-hero {
+    font-size: clamp(2.6rem, 12vw, 3.25rem);
   }
 }
 

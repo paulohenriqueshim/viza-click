@@ -38,7 +38,7 @@ function animar(el, { preloaderVisivel, hero }) {
 
   let delay = parseFloat(el.getAttribute("data-animate-delay")) || 0;
 
-  // O atraso do preloader só vale pro hero, e só enquanto a cortina
+  // O atraso do preloader só vale pro hero, e só enquanto a abertura
   // estiver rodando. Sem isso o texto do hero animaria escondido atrás
   // dela e a pessoa só veria o resultado, nunca o movimento.
   if (preloaderVisivel && !noScroll && hero?.contains(el)) {

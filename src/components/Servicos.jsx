@@ -1,4 +1,6 @@
 import BotaoChat from "./BotaoChat";
+import { IconeWhatsApp } from "./BotaoWhatsApp";
+import { whatsappUrl } from "@/lib/contact";
 
 /**
  * Os cinco serviços da casa. A lista nasceu em 15/09/2026, junto com a
@@ -24,33 +26,38 @@ import BotaoChat from "./BotaoChat";
 const SERVICOS = [
   {
     numero: "01",
+    assunto: "cartao",
     titulo: "Cartão Viza Click",
     promessa: "Apresente seu negócio com um toque.",
     desc: "Cartão de visita que abre sua página na hora, sem app e sem ninguém digitar nada. Encoste no celular da pessoa e ela vê seu trabalho, seus contatos e salva você na agenda. Pode vir só com seus contatos ou com uma IA que atende quem chegou pela página. Preto, branco ou com a sua logo.",
   },
   {
     numero: "02",
+    assunto: "atendimento",
     titulo: "Atendimento com IA",
     promessa: "Nenhum visitante do seu site fica sem resposta.",
     desc: "Uma IA treinada no seu negócio atende quem chega no seu site: responde na hora, tira dúvida, entende o que a pessoa procura e te entrega o contato já qualificado. Pode até marcar horário na sua agenda. Atende de madrugada, no fim de semana e enquanto você está ocupado com outro cliente.",
   },
   {
     numero: "03",
+    assunto: "avaliacao",
     titulo: "Cartão de Avaliação",
     promessa: "Mais avaliações no Google, com um toque.",
     desc: "Cartão que abre direto a página de avaliação do seu negócio no Google. O cliente satisfeito encosta o celular e avalia na hora, sem precisar procurar seu perfil. Deixa no balcão ou entrega junto com o serviço.",
   },
   {
     numero: "04",
+    assunto: "site",
     titulo: "Sites e landing pages",
     promessa: "Um site que vende, não só um site bonito.",
     desc: "Site profissional, loja virtual ou landing page, rápido e com animação de verdade, construído pra transformar visitante em cliente. Funciona igual no computador e no celular, abre sem fazer ninguém esperar e é feito pra ser achado no Google.",
   },
   {
     numero: "05",
+    assunto: "sistema",
     titulo: "Automações e sistemas sob medida",
     promessa: "O trabalho repetido deixa de ser seu.",
-    desc: "Orçamento, cobrança, planilha, relatório, cadastro. A gente mapeia o que se repete no seu dia e coloca pra rodar sozinho, dentro das ferramentas que sua empresa já usa ou num sistema feito do jeito que ela trabalha.",
+    desc: "Escala de funcionários, orçamento, cobrança, planilha, relatório, cadastro. A gente mapeia o que se repete no seu dia e coloca pra rodar sozinho, dentro das ferramentas que sua empresa já usa ou num sistema feito do jeito que ela trabalha.",
   },
 ];
 
@@ -114,6 +121,32 @@ export default function Servicos() {
                 >
                   {servico.desc}
                 </p>
+                {/* Atalho por serviço (24/11/2026): a mensagem já sai com o
+                    assunto, então o Paulo sabe do que se trata antes de
+                    responder. */}
+                <a
+                  href={whatsappUrl(servico.assunto)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="type-label mt-6 inline-flex items-center gap-2.5 text-accent transition-all duration-300 hover:gap-4"
+                >
+                  <IconeWhatsApp size={14} />
+                  Falar sobre isso
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    aria-hidden="true"
+                    className="shrink-0"
+                  >
+                    <path
+                      d="M1 7h11M7.5 2.5 12 7l-4.5 4.5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    />
+                  </svg>
+                </a>
               </div>
             </article>
           ))}

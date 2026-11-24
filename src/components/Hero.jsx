@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import BotaoChat from "./BotaoChat";
+import BotaoWhatsApp from "./BotaoWhatsApp";
 
 /**
  * Hero de tela cheia com o tipo como protagonista, centralizado. O título
@@ -15,8 +15,13 @@ import BotaoChat from "./BotaoChat";
  * sem link secundário. Tudo que competia com o título saiu, porque numa
  * dobra centralizada cada elemento a mais divide a atenção em vez de somar.
  *
+ * Reaberta em 24/11/2026, a pedido do Paulo: com os Reels da escala, a
+ * maioria das visitas vem do Instagram querendo falar com ele ou ver o
+ * sistema funcionando. Entraram o selo da escala, o WhatsApp como botão
+ * principal e o "Ver como funciona". O título continua sozinho no centro.
+ *
  * O atributo data-hero marca a seção pro AnimatedCopy saber quais textos
- * precisam esperar a cortina do preloader abrir.
+ * precisam esperar a abertura do preloader revelar o site.
  */
 function useTilt(containerRef, targetRef) {
   useEffect(() => {
@@ -94,9 +99,33 @@ export default function Hero() {
     <section
       ref={secaoRef}
       data-hero
-      className="hero relative flex min-h-svh flex-col items-center justify-center overflow-x-clip px-6 pt-28 pb-16 text-center md:px-10 md:pt-36"
+      className="hero relative flex min-h-svh flex-col items-center justify-center overflow-x-clip px-6 pt-24 pb-14 text-center md:px-10 md:pt-36 md:pb-16"
       style={{ transformStyle: "preserve-3d", perspective: "1000px" }}
     >
+      {/* Selo pra quem chegou pelos Reels da escala: confirma na primeira
+          olhada que é aqui mesmo e leva direto pro vídeo do sistema. Sem
+          pulso nem brilho em loop (o Paulo recusa movimento ambiente). */}
+      <a
+        href="#como-funciona"
+        className="group type-label mb-8 inline-flex max-w-full items-center gap-3 border border-border px-4 py-3 text-fg-muted transition-colors hover:border-accent hover:text-fg md:mb-12"
+      >
+        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+        <span className="truncate">
+          Sistema de escala pra 5x2
+          <span className="hidden sm:inline"> · Veja como funciona</span>
+        </span>
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 14 14"
+          fill="none"
+          aria-hidden="true"
+          className="shrink-0 text-accent transition-transform duration-300 group-hover:translate-y-0.5"
+        >
+          <path d="M7 1v11M2.5 7.5 7 12l4.5-4.5" stroke="currentColor" strokeWidth="1.5" />
+        </svg>
+      </a>
+
       <div ref={tituloRef} className="will-change-transform">
         <h1
           className="type-hero mx-auto max-w-[15ch]"
@@ -110,7 +139,7 @@ export default function Hero() {
       </div>
 
       <p
-        className="type-body mx-auto mt-10 max-w-xl text-fg-muted md:mt-12"
+        className="type-body mx-auto mt-8 max-w-xl text-fg-muted md:mt-12"
         data-animate-variant="slide"
         data-animate-on-scroll="false"
         data-animate-delay="0.5"
@@ -119,9 +148,34 @@ export default function Hero() {
         alguém estar disponível. Você entra só quando precisa entrar.
       </p>
 
-      <div className="mt-12 md:mt-14">
-        <BotaoChat>Ver funcionando</BotaoChat>
+      {/* Dois caminhos, um pra cada tipo de visita que chega do Instagram:
+          quem já quer fechar (WhatsApp direto com o Paulo) e quem ainda quer
+          entender (desce pro vídeo do sistema). Até 24/11/2026 o hero tinha
+          um botão só, que abria a Lia; ela continua na seção dela e no
+          fechamento da página. */}
+      <div className="mt-10 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center md:mt-14">
+        <BotaoWhatsApp>Chamar no WhatsApp</BotaoWhatsApp>
+        <a
+          href="#como-funciona"
+          className="group type-label inline-flex items-center justify-center gap-3 border border-border px-8 py-5 text-fg transition-all duration-300 hover:gap-5 hover:border-accent hover:text-accent sm:px-10"
+        >
+          Ver como funciona
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            aria-hidden="true"
+            className="shrink-0 transition-transform duration-300 group-hover:translate-y-0.5"
+          >
+            <path d="M7 1v11M2.5 7.5 7 12l4.5-4.5" stroke="currentColor" strokeWidth="1.5" />
+          </svg>
+        </a>
       </div>
+
+      <p className="type-label mt-6 text-fg-muted">
+        Quem responde é o Paulo, fundador
+      </p>
     </section>
   );
 }

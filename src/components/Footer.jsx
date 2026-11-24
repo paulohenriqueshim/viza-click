@@ -1,5 +1,5 @@
 import Logo from "./Logo";
-import { INSTAGRAM_URL, EMAIL } from "@/lib/contact";
+import { INSTAGRAM_URL, EMAIL, WHATSAPP_URL } from "@/lib/contact";
 
 export default function Footer() {
   return (
@@ -12,6 +12,14 @@ export default function Footer() {
       </div>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-10">
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="type-label text-fg-muted transition-colors hover:text-accent"
+        >
+          WhatsApp
+        </a>
         <a
           href={INSTAGRAM_URL}
           target="_blank"
